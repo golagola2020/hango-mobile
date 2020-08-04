@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView idText = (TextView)findViewById(R.id.nametext);
+        TextView idText = (TextView)findViewById(R.id.NameText);
         Intent intent = getIntent();
         String UserId = intent.getStringExtra("userId");
         String _UserId = UserId + "님";
