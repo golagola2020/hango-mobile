@@ -22,6 +22,6 @@ public class CreateVendingRequest extends StringRequest{
     public Map getParams() throws AuthFailureError{
         Map<String,Map<String,String>> vending = new HashMap<String,Map<String,String>>();
         vending.put("vending", vending_parameters);
-        return vending_parameters;
+        return vending;
     }
 }
