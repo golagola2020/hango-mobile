@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/mainlogo"
+        android:id="@+id/MainLogo"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_margin ="5dp"
@@ -31,7 +31,7 @@
         android:background="@drawable/btn_radius" >
 
         <TextView
-            android:id="@+id/nametext"
+            android:id="@+id/NameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -49,12 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/vending_num"
+                android:id="@+id/VendingNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"/>
             <TextView
-                android:id="@+id/logout"
+                android:id="@+id/LogOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -63,30 +63,38 @@
                 android:layout_gravity="right"/>
         </GridLayout>
     </LinearLayout>
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize = "22sp"
-        android:layout_margin ="12dp"
-        android:text="자판기를 추가하세요"
-        android:gravity = "center_vertical"
-        android:drawableLeft="@drawable/ic_add_box_24px"
-        android:background="@drawable/main_radius"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <ScrollView
+        <EditText
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/main_radius"
+            android:drawableLeft="@drawable/ic_search"
+            android:gravity="center_vertical"
+            android:text="자판기를 검색하세요"
+            android:textColor="#d3d3d3"
+            android:textSize="18sp" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:background="#F1F1F1"
+            android:layout_gravity="center"
+            android:focusableInTouchMode="true"
+            android:src = "@drawable/ic_add_circle_outline"
+            />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/MainListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin ="6dp"
-        android:visibility="visible"
-        android:background="@drawable/main_shadow"
-        android:scrollbars ="none"
-        android:fillViewport="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </ScrollView>
+        android:background="@drawable/main_shadow">
+    </ListView>
 
 </LinearLayout>
