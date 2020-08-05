@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CreateVendingRequest extends StringRequest{
-    final static private String URL = "http://ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com/mobile/vending/create";
+public class UpdateVendingRequest extends StringRequest{
+    final static private String URL = "http://ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com/mobile/vending/update";
     private Map<String, String> vending_parameters= new HashMap<String, String>();;
 
-    public CreateVendingRequest(String Name, String Discription, String FullSize, String SirialNumber, Response.Listener<String> listener){
+    public UpdateVendingRequest(String Name, String Discription, String FullSize, String SirialNumber, Response.Listener<String> listener){
         super (Method.POST, URL, listener, null);
         vending_parameters.put("vending_name", Name);
         vending_parameters.put("vending_discription", Discription);

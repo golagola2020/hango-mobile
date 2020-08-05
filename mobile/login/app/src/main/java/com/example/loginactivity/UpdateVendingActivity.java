@@ -1,6 +1,5 @@
 package com.example.loginactivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,14 +15,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CreateVendingActivity extends AppCompatActivity {
+public class UpdateVendingActivity extends AppCompatActivity {
     private Button btn_add_vending;
     private EditText vending_name, vending_comment, vending_size, vending_SN;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_create_vending);
+        setContentView(R.layout.activity_update_vending);
 
         vending_name = findViewById(R.id.Vending_name);
         vending_comment = findViewById(R.id.Vending_comment);
@@ -55,8 +54,8 @@ public class CreateVendingActivity extends AppCompatActivity {
                     }
                 };
 
-                CreateVendingRequest createvendingrequest = new CreateVendingRequest(vendingName,vendingComment,vendingSize,vendingSN, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(CreateVendingActivity.this);
+                UpdateVendingRequest createvendingrequest = new UpdateVendingRequest(vendingName,vendingComment,vendingSize,vendingSN, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(UpdateVendingActivity.this);
                 queue.add(createvendingrequest);
 
             }
