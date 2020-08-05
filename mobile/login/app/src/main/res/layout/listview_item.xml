@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_weight="9"
         android:orientation="vertical">
         <TextView
@@ -19,7 +19,7 @@
             android:layout_marginBottom="2dp"
             android:textSize = "20dp"/>
         <TextView
-            android:id = "@+id/vending_list_comment"
+            android:id = "@+id/vending_list_discription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text = "자판기 설명"
