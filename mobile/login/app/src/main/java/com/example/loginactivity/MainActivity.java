@@ -10,60 +10,43 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-<<<<<<< Updated upstream
-=======
+
 
 import android.util.Log;
 import android.widget.ListView;
->>>>>>> Stashed changes
+
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< Updated upstream
-public class MainActivity extends AppCompatActivity {
-=======
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+
+
 public class MainActivity extends AppCompatActivity {
     private ListView vendingListView;
->>>>>>> Stashed changes
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< Updated upstream
 
-        TextView idText = (TextView)findViewById(R.id.nametext);
-        Intent intent = getIntent();
-        String UserId = intent.getStringExtra("userId");
-        String _UserId = UserId + "님";
-        SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        idText.setText(s_User_Id);
-=======
         //사용자 이름 출력 기능
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
@@ -122,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }){
-            protected Map<String,String> getParams() throws AuthFailureError{
+            protected Map<String,String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", UserId);
                 return params;
@@ -130,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         queue.add(strReq);
->>>>>>> Stashed changes
+
     }
     private void printVendingCount(ArrayList<VendingData> VData){
         TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);

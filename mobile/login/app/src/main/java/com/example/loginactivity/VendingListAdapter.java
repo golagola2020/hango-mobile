@@ -48,9 +48,9 @@ public class VendingListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listview_item, parent,false);
         }
         TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
-        TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_discription);
+        TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_description);
 
-        TextVendingName.setText(VData.get(position).VendingName);
+        TextVendingName.setText((position+1) +". "+ VData.get(position).VendingName);
         TextVendingDiscription.setText(VData.get(position).VendingDescription);
 
         return convertView;
