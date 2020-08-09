@@ -79,11 +79,14 @@ public class VendingListAdapter extends BaseAdapter{
             @Override
             public void onClick(View v){
                 Log.i("TAG",position+" : delete");
+                MainActivity main = new MainActivity();
+                main.VendingDeleteRequest(VData,VData.get(position).vendingSerialNumber);
             }
         });
 
         return convertView;
     }
+
 
 
 }

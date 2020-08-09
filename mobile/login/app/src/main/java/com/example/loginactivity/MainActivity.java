@@ -142,4 +142,42 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void VendingDeleteRequest(final ArrayList<VendingData> VData, final String SerialNumber){
+        RequestQueue queue = Volley.newRequestQueue((this));
+        final String url = "http://192.168.0.31:80/mobile/vending/delete";
+        StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject object = new JSONObject(response);
+                    boolean success = object.getBoolean("success");
+                    if(success){
+                        VendingListAdapter vendingAdapter = new VendingListAdapter(VData);
+                        vendingListView.setAdapter(vendingAdapter);
+                        vendingAdapter.notifyDataSetChanged();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            protected Map<String,String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("SerialNumber", SerialNumber);
+                return params;
+            }
+        };
+
+        queue.add(strReq);
+    }
+
 }
