@@ -13,6 +13,8 @@ import android.text.style.RelativeSizeSpan;
 
 
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             vdata.VendingName = vending.getString("name");
                             vdata.VendingDescription = vending.getString("description");
                             vdata.vendingSerialNumber = vending.getString("serialNumber");
+
                             VData.add(vdata);
                         }
                         //자판기 보유수 출력
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         queue.add(strReq);
 
+
     }
     private void printVendingCount(ArrayList<VendingData> VData){
         TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);
@@ -131,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
         s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         idText.setText(s_User_Id);
+    }
+    public void intentVendingUpdate(String SerialNumber){
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.putExtra("SerialNumber", SerialNumber);
+        startActivity(intent);
     }
 
 }

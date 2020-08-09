@@ -33,7 +33,7 @@
             android:textSize = "20dp"/>
     </LinearLayout>
     <ImageButton
-        android:id = "@+id/vending_list_edit"
+        android:id = "@+id/Btn_vending_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -42,7 +42,7 @@
         android:focusableInTouchMode="true"
         android:src = "@drawable/ic_edit"/>
     <ImageButton
-        android:id = "@+id/vending_list_delete"
+        android:id = "@+id/Btn_vending_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
