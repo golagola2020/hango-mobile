@@ -1,5 +1,6 @@
 package com.example.loginactivity;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -17,22 +19,26 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class VendingListAdapter extends BaseAdapter{
+
+public class VendingListAdapter extends BaseAdapter {
+
 
     LayoutInflater inflater = null;
     private ArrayList<VendingData> VData = null;
     private int nListCnt = 0;
+
     private ListBtnClickListener ListBtnClickListener;
+
     public VendingListAdapter(ArrayList<VendingData> _VData){
         VData = _VData;
         nListCnt = VData.size();
     }
 
 
+
     public interface ListBtnClickListener{
         void onListBtnClick(int position);
     }
-
 
     @Override
     public int getCount() {
@@ -51,7 +57,9 @@ public class VendingListAdapter extends BaseAdapter{
     }
 
     @Override
+
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         if(convertView == null){
             final Context context = parent.getContext();
             if(inflater == null){
@@ -60,6 +68,7 @@ public class VendingListAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.listview_item, parent,false);
         }
         TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
+
         TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_description);
 
         TextVendingName.setText((position+1) +". "+ VData.get(position).VendingName);
@@ -86,6 +95,7 @@ public class VendingListAdapter extends BaseAdapter{
 
         return convertView;
     }
+
 
 
 

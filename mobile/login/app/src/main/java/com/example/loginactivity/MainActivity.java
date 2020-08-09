@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 
 
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,20 +37,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
-
 public class MainActivity extends AppCompatActivity {
-    private ListView vendingListView;
-
-
+    private ListView vendingListView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //사용자 이름 출력 기능
+
+        TextView idText = (TextView)findViewById(R.id.NameText);
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
         printUserName(UserId);
@@ -135,6 +131,48 @@ public class MainActivity extends AppCompatActivity {
         s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         idText.setText(s_User_Id);
+
+        //자판기 정보 ListView 출력 기능
+        final ArrayList<VendingData> VData = new ArrayList<>();
+
+        //자판기 데이터 파싱하기
+        RequestQueue queue = Volley.newRequestQueue((this));
+        String url = "http://ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com/mobile/vending";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("vending");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject vending = jsonArray.getJSONObject(i);
+                                VendingData vdata = new VendingData();
+                                vdata.Vending_name = vending.getString("vending_name");
+                                vdata.Vending_discription = vending.getString("vending_discription");
+                                VData.add(vdata);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+
+                });
+        queue.add(request);
+
+
+        //ListView, Adapter 생성 및 연결
+        vendingListView = (ListView)findViewById(R.id.MainListView);
+        VendingListAdapter vendingAdapter = new VendingListAdapter(VData);
+        vendingListView.setAdapter(vendingAdapter);
+
     }
     public void intentVendingUpdate(String SerialNumber){
         Intent intent = new Intent(MainActivity.this, MainActivity.class);

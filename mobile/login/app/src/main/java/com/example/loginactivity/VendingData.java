@@ -1,5 +1,6 @@
 package com.example.loginactivity;
 
+
 import android.view.View;
 
 public class VendingData {
