@@ -1,11 +1,10 @@
 void accuracy(float distance, int i) { //손의 위치를 카운트 하는 함수
   if (distance <= 60 && distance >= 0) {
-    if (distance >= 0 && distance < 12)count[i][6] += 1; //제일 오른쪽 음료수
-    if (distance >= 12 && distance < 19)count[i][5] += 1;
-    if (distance >= 19 && distance < 26)count[i][4] += 1;
-    if (distance >= 26 && distance < 33)count[i][3] += 1; //제일 왼쪽 음료수
-    if (distance >= 33 && distance < 45)count[i][2] += 1;
-    if (distance >= 45 && distance < 60)count[i][1] += 1;
+    if (distance >= 0 && distance < 12)count[i][5] += 1; //제일 오른쪽 음료수
+    if (distance >= 12 && distance < 22)count[i][4] += 1;
+    if (distance >= 22 && distance < 34)count[i][3] += 1;
+    if (distance >= 34 && distance < 45)count[i][2] += 1; //제일 왼쪽 음료수
+    if (distance >= 45 && distance < 56)count[i][1] += 1;
   }
   else count[i][0] += 1; //손이 감지되지 않음
 }
