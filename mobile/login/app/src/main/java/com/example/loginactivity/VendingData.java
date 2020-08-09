@@ -1,6 +1,11 @@
 package com.example.loginactivity;
 
+
+import android.view.View;
+
 public class VendingData {
-    public String Vending_name;
-    public String Vending_discription;
+    public String VendingName;
+    public String VendingDescription;
+    public String vendingSerialNumber;
+
 }
