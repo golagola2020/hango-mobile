@@ -26,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                             VendingData vdata = new VendingData();
                             vdata.VendingName = vending.getString("name");
                             vdata.VendingDescription = vending.getString("description");
-                            vdata.vendingSerialNumber = vending.getString("serialNumber");
+                            vdata.VendingSerialNumber = vending.getString("serialNumber");
 
                             VData.add(vdata);
                         }
@@ -124,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         s_vendingCountText.setSpan(new ForegroundColorSpan(Color.parseColor("#d3d3d3")), 0, _vendingCountText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         vendingCountText.setText(_vendingCountText);
     }
+
+
     private void printUserName(String UserId){
         TextView idText = (TextView) findViewById(R.id.NameText);
         String _UserId = UserId + "님";
@@ -132,46 +135,6 @@ public class MainActivity extends AppCompatActivity {
         s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         idText.setText(s_User_Id);
 
-        //자판기 정보 ListView 출력 기능
-        final ArrayList<VendingData> VData = new ArrayList<>();
-
-        //자판기 데이터 파싱하기
-        RequestQueue queue = Volley.newRequestQueue((this));
-        String url = "http://ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com/mobile/vending";
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("vending");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject vending = jsonArray.getJSONObject(i);
-                                VendingData vdata = new VendingData();
-                                vdata.Vending_name = vending.getString("vending_name");
-                                vdata.Vending_discription = vending.getString("vending_discription");
-                                VData.add(vdata);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-
-                });
-        queue.add(request);
-
-
-        //ListView, Adapter 생성 및 연결
-        vendingListView = (ListView)findViewById(R.id.MainListView);
-        VendingListAdapter vendingAdapter = new VendingListAdapter(VData);
-        vendingListView.setAdapter(vendingAdapter);
 
     }
     public void intentVendingUpdate(String SerialNumber){
