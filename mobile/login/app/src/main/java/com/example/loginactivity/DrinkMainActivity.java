@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,9 +27,14 @@ public class DrinkMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
-        //mainActivity에서 받아온 serialNumber로 수정예정
-        final String serialNumber = null;
+        //mainActivity에서 받아온 자판기 정보로 수정예정
+        String vendingName = null;
+        String vendingDescription = null;
+        int vendingFullSize = 0;
+        final String vendingSerialNumber = null;
+        printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
+        //음료정보 파싱
         RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -69,7 +75,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         }){
             protected Map<String,String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("serialNumber", serialNumber);
+                params.put("serialNumber", vendingSerialNumber);
                 return params;
             }
         };
@@ -77,6 +83,18 @@ public class DrinkMainActivity extends AppCompatActivity {
         queue.add(drinkRequest);
 
 
+    }
+
+    public void printVendingInfo(String name,String description, int fullsize,String serialNumber){
+        TextView vendingName = (TextView) findViewById(R.id.drinkPageVendingName);
+        TextView vendingDescription = (TextView) findViewById(R.id.drinkPageVendingDescription);
+        TextView vendingFullsize = (TextView) findViewById(R.id.drinkPageVendingFullsize);
+        TextView vendingSerialNumber =(TextView) findViewById(R.id.drinkPageVendingSerialNumber);
+
+        vendingName.setText(name);
+        vendingDescription.setText(description);
+        vendingFullsize.setText(fullsize);
+        vendingSerialNumber.setText(serialNumber);
     }
 
 }
