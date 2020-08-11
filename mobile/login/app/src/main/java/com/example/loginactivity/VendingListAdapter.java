@@ -81,7 +81,7 @@ public class VendingListAdapter extends BaseAdapter {
                     public void onClick(View v){
                 Log.i("TAG",position+" : update");
                 MainActivity main = new MainActivity();
-                main.intentVendingUpdate(VData.get(position).vendingSerialNumber);
+                main.intentVendingUpdate(VData.get(position).VendingSerialNumber);
             }
         });
         btnVendingDelete.setOnClickListener(new View.OnClickListener(){
@@ -89,7 +89,7 @@ public class VendingListAdapter extends BaseAdapter {
             public void onClick(View v){
                 Log.i("TAG",position+" : delete");
                 MainActivity main = new MainActivity();
-                main.VendingDeleteRequest(VData,VData.get(position).vendingSerialNumber);
+                main.VendingDeleteRequest(VData,VData.get(position).VendingSerialNumber);
             }
         });
 

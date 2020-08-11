@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:background="@drawable/shadow_radius">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/position"
+        android:layout_margin = "10dp"
+        android:text = "position"
+        android:textSize = "20dp"
+        android:textColor="@android:color/black"
+        android:textStyle = "bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/nameText"
+        android:layout_margin = "10dp"
+        android:text = "drinkName"
+        android:textSize = "30dp"
+        android:textColor="@android:color/black"
+        android:textStyle = "bold"
+        android:gravity="center"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/numberText"
+        android:layout_margin = "10dp"
+        android:text = "price"
+        android:textSize = "20dp"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle = "bold"
+        android:gravity="center"/>
+
+</LinearLayout>
+
+
