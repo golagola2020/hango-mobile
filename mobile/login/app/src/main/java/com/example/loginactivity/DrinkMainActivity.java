@@ -34,8 +34,8 @@ public class DrinkMainActivity extends AppCompatActivity {
         final String vendingSerialNumber = null;
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
-        //음료정보 파싱
-        RequestQueue queue = Volley.newRequestQueue((this));
+        //음료정보 파싱싱
+       RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -47,13 +47,15 @@ public class DrinkMainActivity extends AppCompatActivity {
                     GridView drinkGridView = findViewById(R.id.drink_gridView);
                     DrinkListAdapter drinkAdater = new DrinkListAdapter();
                     if(success){
-
+                        //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject drink = jsonArray.getJSONObject(i);
-                            drinkAdater.addDrinkItem(new DrinkItem(drink.getInt("position"),drink.getString("name"),drink.getString("price")));
+                            //음료 수많큼 gridview에 drink_item 생성
+                            drinkAdater.addDrinkItem(drink.getInt("position"),drink.getString("name"),drink.getString("price"));
                         }
 
-
+                        //add_drink_item 생성(음료 추가버튼)
+                        drinkAdater.addDrinkItem();
                         //gridview 목록 출력
                         drinkGridView.setAdapter(drinkAdater);
 
