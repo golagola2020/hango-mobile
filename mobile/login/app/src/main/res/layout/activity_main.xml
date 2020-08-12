@@ -8,15 +8,29 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/MainLogo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_margin ="5dp"
-        android:text="Hango"
-        android:textColor="#ff7f00"
-        android:textSize="45sp"
-        android:typeface="normal" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/MainLogo"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_margin="5dp"
+            android:text="Hango"
+            android:textColor="#ff7f00"
+            android:textSize="45sp"
+            android:typeface="normal" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+    </RelativeLayout>
 
     <View
         android:background="#B2B2B2"
