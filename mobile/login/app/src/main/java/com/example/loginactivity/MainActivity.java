@@ -16,6 +16,7 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -45,17 +46,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        // xml 객체 파싱
         TextView idText = (TextView)findViewById(R.id.NameText);
+        ImageButton btn_user_info = (ImageButton)findViewById(R.id.btn_user_info);
+
+        // 로그인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
         printUserName(UserId);
 
+        // 유저 정보 화면(InfoActivity)로 이동
+        btn_user_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 유저 정보 화면으로 userId 전달
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                intent.putExtra("userId", UserId);
+                startActivity(intent);
+            }
+        });
+
+
         //자판기 정보
         final ArrayList<VendingData> VData = new ArrayList<>();
         final JSONArray vendingArray = new JSONArray();
-
-        //자판기 정보 ListView 출력 기능
 
         //ListView, Adapter 생성 및 연결
         vendingListView = (ListView) findViewById(R.id.MainListView);
@@ -131,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         TextView idText = (TextView) findViewById(R.id.NameText);
         String _UserId = UserId + "님";
         SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         idText.setText(s_User_Id);
 
 
