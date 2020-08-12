@@ -1,27 +1,25 @@
 package com.example.loginactivity;
 
 public class DrinkItem {
-    int drinkPosition;
-    String drinkName;
-    String drinkPrice;
+    private int drinkPosition;
+    private String drinkName;
+    private String drinkPrice;
 
-    public DrinkItem(int drinkPosition,String drinkName,String drinkPrice){
-        this.drinkPosition = drinkPosition;
-        this.drinkName = drinkName;
-        this.drinkPrice = drinkPrice;
-    }
+    private int type;
 
     public int getDrinkPosition() {
-        return drinkPosition;
+        return this.drinkPosition;
     }
 
     public String getDrinkName() {
-        return drinkName;
+        return this.drinkName;
     }
 
     public String getDrinkPrice() {
-        return drinkPrice;
+        return this.drinkPrice;
     }
+
+    public int getType(){return this.type;}
 
     public void setDrinkPosition(int drinkPosition) {
         this.drinkPosition = drinkPosition;
@@ -34,4 +32,6 @@ public class DrinkItem {
     public void setDrinkPrice(String drinkPrice) {
         this.drinkPrice = drinkPrice;
     }
+
+    public void setType(int type){this.type = type;}
 }
