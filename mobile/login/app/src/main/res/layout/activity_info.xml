@@ -35,7 +35,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_change_info"
+                android:id="@+id/btn_info_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"

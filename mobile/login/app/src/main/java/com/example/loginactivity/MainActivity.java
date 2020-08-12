@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         TextView idText = (TextView) findViewById(R.id.NameText);
         String _UserId = UserId + "님";
         SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         idText.setText(s_User_Id);
 
 
