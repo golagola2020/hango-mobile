@@ -142,12 +142,12 @@ public class InfoActivity extends AppCompatActivity {
                                     // 서버 응답 데이터의 JSON 파싱 중 에러 발생시 실행
                                     e.printStackTrace();
                                     dialogInterface.dismiss(); // 팝업 메시지 닫기
-                                    Toast.makeText(getApplicationContext(), "회원 탈퇴를 요청하실 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "JSON 파싱 중 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
                             @Override
-                            // 비정상 응답이 올경우 => 서버에서 반환하는 에러가 아닌 클라이언트 자체 에러로 보임.
+                            // 비정상 응답이 올경우 => 서버가 닫혀있거나, 해당 경로가 존재하지 않을 때 발생
                             public void onErrorResponse(VolleyError error) {
                                 dialogInterface.dismiss(); // 팝업 메시지 닫기
                                 Toast.makeText(getApplicationContext(), "회원 탈퇴를 요청하실 수 없습니다.", Toast.LENGTH_SHORT).show();
