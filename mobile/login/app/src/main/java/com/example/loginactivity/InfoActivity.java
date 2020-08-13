@@ -55,6 +55,41 @@ public class InfoActivity extends AppCompatActivity {
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
         tv_user_name.setText(userId + "님");
 
+        // 로그아웃 클릭 이벤트
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 팝업 메시지 객체 생성
+                AlertDialog.Builder ad = new AlertDialog.Builder(InfoActivity.this);
+                ad.setTitle("로그아웃하시겠습니까?");
+
+                // 탈퇴 버튼 클릭시 실행
+                ad.setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss(); // 팝업 메시지 닫기
+
+                        // 로그인 화면으로 이동
+                        Intent intent = new Intent(InfoActivity.this, LoginActivity.class);
+                        startActivity(intent);
+
+                        Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // 취소 버튼 클릭시 실행
+                ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss(); // 팝업 메시지 닫기
+                    }
+                });
+
+                // 팝업 메시지 띄우기
+                ad.show();
+            }
+        });
+
         // 회원 탈퇴 버튼 클릭 이벤트
         btn_withdrawal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +107,7 @@ public class InfoActivity extends AppCompatActivity {
                         // Volly를 사용하여 요청 큐 인스턴스 생성
                         RequestQueue queue = Volley.newRequestQueue((InfoActivity.this));
                         // 요청 URL 생성
-                        final String url = "http://192.168.0.31:80/mobile/user/delete";
+                        final String url = "http://192.168.123.106:80/mobile/user/delete";
 
                         // 요청 정보 구현
                         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -100,7 +135,7 @@ public class InfoActivity extends AppCompatActivity {
                                     else{
                                         // 데이터 처리 실패 메시지를 응답 받았다면 실행
                                         dialogInterface.dismiss(); // 팝업 메시지 닫기
-                                        Toast.makeText(getApplicationContext(), "회원 탈퇴를 요청하실 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "서버에서 데이터 처리에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                     }
 
                                 } catch (JSONException e){
