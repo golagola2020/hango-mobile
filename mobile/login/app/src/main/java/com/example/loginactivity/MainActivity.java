@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         //자판기 데이터 파싱하기
         RequestQueue queue = Volley.newRequestQueue((this));
-        final String url = "http://192.168.0.31:80/mobile/vending/read";
+        final String url = "http://192.168.123.106:80/mobile/vending/read";
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

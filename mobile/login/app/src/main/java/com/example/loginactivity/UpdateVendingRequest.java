@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class UpdateVendingRequest extends StringRequest{
-    final static private String URL = "http://ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com/mobile/vending/update";
+    final static private String URL = "http://192.168.123.106:80/mobile/vending/update";
     private Map<String, String> vending_parameters= new HashMap<String, String>();;
 
     public UpdateVendingRequest(String Name, String Discription, String FullSize, String SirialNumber, Response.Listener<String> listener){
