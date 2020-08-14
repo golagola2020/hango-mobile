@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class SignupActivity extends AppCompatActivity {
 
     // 참조변수 선언
-    private EditText et_user_name, et_user_id, et_user_passwd, et_user_passwd_check;
+    private EditText et_user_name, et_user_id, et_user_email, et_user_passwd, et_user_passwd_check;
     private Button btn_signup;
     private EditText textView;
 
@@ -34,6 +34,7 @@ public class SignupActivity extends AppCompatActivity {
         // xml의 id 불러오기
         et_user_name = findViewById(R.id.et_user_name);
         et_user_id = findViewById(R.id.et_user_id);
+        et_user_email = findViewById(R.id.et_user_email);
         et_user_passwd = findViewById(R.id.et_user_passwd);
         et_user_passwd_check = findViewById(R.id.et_user_passwd_check);
         btn_signup = findViewById(R.id.btn_signup);
@@ -44,11 +45,12 @@ public class SignupActivity extends AppCompatActivity {
                 // EditText에 입력된 값 가져오기
                 String userName = et_user_name.getText().toString();
                 String userId = et_user_id.getText().toString();
+                String userEmail = et_user_email.getText().toString();
                 String userPasswd = et_user_passwd.getText().toString();
                 String userPasswdCheck = et_user_passwd_check.getText().toString();
 
                 // 입력된 데이터 검사
-                if (userName.length() == 0 || userId.length() == 0 || userPasswd.length() == 0 || userPasswdCheck.length() == 0) {
+                if (userName.length() == 0 || userId.length() == 0 || userEmail.length() == 0 || userPasswd.length() == 0 || userPasswdCheck.length() == 0) {
                     Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -82,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
                 };
 
                 // Volley를 이용하여 서버로 회원가입 요청 => 이때 리스너가 실행됨.
-                SignupRequest signupRequest = new SignupRequest(userName, userId, userPasswd, responseListener);
+                SignupRequest signupRequest = new SignupRequest(userName, userId, userEmail, userPasswd, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
                 queue.add(signupRequest);
             }
