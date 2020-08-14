@@ -3,7 +3,6 @@ package com.example.loginactivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,7 +32,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // xml의 id 불러오기
         et_user_name = findViewById(R.id.et_user_name);
-        et_user_id = findViewById(R.id.et_user_id);
+        et_user_id = findViewById(R.id.et_user_name);
         et_user_email = findViewById(R.id.et_user_email);
         et_user_passwd = findViewById(R.id.et_user_passwd);
         et_user_passwd_check = findViewById(R.id.et_user_passwd_check);

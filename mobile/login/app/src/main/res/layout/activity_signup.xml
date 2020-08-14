@@ -37,7 +37,7 @@
         android:typeface="monospace" />
 
     <EditText
-        android:id="@+id/et_user_id"
+        android:id="@+id/et_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
