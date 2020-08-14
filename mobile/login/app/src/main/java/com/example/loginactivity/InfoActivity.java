@@ -55,6 +55,17 @@ public class InfoActivity extends AppCompatActivity {
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
         tv_user_name.setText(userId + "님");
 
+        // 유저 정보 변경 클릭 이벤트
+        btn_info_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 로그인 화면으로 이동
+                Intent intent = new Intent(InfoActivity.this, InfoUpdateActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
+
         // 로그아웃 클릭 이벤트
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
