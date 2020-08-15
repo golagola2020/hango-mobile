@@ -140,8 +140,9 @@ public class MainActivity extends AppCompatActivity {
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG","listview 클릭 : "+ position);
                 VendingData vdata = (VendingData) vendingAdapter.getItem(position);
-                Intent intent = new Intent(MainActivity.this,DrinkMainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
                 intent.putExtra("name",vdata.getVendingName());
                 intent.putExtra("description",vdata.getVendingDescription());
                 intent.putExtra("fullSize",vdata.getVendingFullsize());
