@@ -11,6 +11,7 @@ def main():
     drink_mid = 'non'
     hand_mid= 'non'
     dup = 'zero'
+    serialNumber = '20200814042555141'
     i = 0
     while port.readable:
         input = port.readline()
@@ -18,7 +19,7 @@ def main():
 
         #print(arr)
 
-        dict_result = { 'hand' : hand_mid[2:-1], 'drink' : drink_mid[2:-1] ,'duplicate' : dup[2:-1] }
+        dict_result = { 'hand' : hand_mid[2:-1], 'drink' : drink_mid[2:-1] ,'duplicate' : dup[2:-1], 'serialNumber' :20200814042555141 }
         
 
         json_vending_result = json.dumps(dict_result) 
