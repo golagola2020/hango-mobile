@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView vendingListView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +80,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         //ListView, Adapter 생성 및 연결
-        vendingListView = (ListView) findViewById(R.id.MainListView);
+        final ListView vendingListView = (ListView) findViewById(R.id.MainListView);
         final VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
 
         //자판기 데이터 파싱하기
         RequestQueue queue = Volley.newRequestQueue((this));
 
         final String url = "http://192.168.0.31:80/mobile/vending/read";
+
 
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -100,14 +100,15 @@ public class MainActivity extends AppCompatActivity {
 
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject vending = jsonArray.getJSONObject(i);
-                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullsize"));
+                            Log.d("TAG","출력 : " +vending);
+                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
                         }
                         //자판기 보유수 출력
                         printVendingCount();
 
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
-                        vendingAdapter.notifyDataSetChanged();
+                        //vendingAdapter.notifyDataSetChanged();
 
 
                     }
@@ -140,10 +141,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 VendingData vdata = (VendingData) vendingAdapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
+                Intent intent = new Intent(MainActivity.this,DrinkMainActivity.class);
                 intent.putExtra("name",vdata.getVendingName());
                 intent.putExtra("description",vdata.getVendingDescription());
-                intent.putExtra("fullsize",vdata.getVendingFullsize());
+                intent.putExtra("fullSize",vdata.getVendingFullsize());
                 intent.putExtra("serialNumber",vdata.getVendingSerialNumber());
                 startActivity(intent);
             }
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void VendingDeleteRequest(final ArrayList<VendingData> VData, final String SerialNumber){
+        final ListView vendingListView = (ListView) findViewById(R.id.MainListView);
         RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/vending/delete";
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {

@@ -1,23 +1,34 @@
 package com.example.loginactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UpdateVendingActivity extends AppCompatActivity {
     private Button btn_add_vending;
-    private EditText vending_name, vending_comment, vending_size, vending_SN;
+    private EditText vending_name, vending_description, vending_fullsize;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,42 +36,72 @@ public class UpdateVendingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_vending);
 
         vending_name = findViewById(R.id.Vending_name);
-        vending_comment = findViewById(R.id.Vending_comment);
-        vending_size = findViewById(R.id.Vending_size);
-        vending_SN = findViewById(R.id.Vending_SN);
+        vending_description = findViewById(R.id.Vending_comment);
+        vending_fullsize = findViewById(R.id.Vending_size);
         btn_add_vending = findViewById(R.id.btn_Regi_vending);
 
-        btn_add_vending.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                String vendingName = vending_name.getText().toString();
-                String vendingComment = vending_comment.getText().toString();
-                String vendingSize = vending_size.getText().toString();
-                String vendingSN = vending_SN.getText().toString();
+        Intent intent = getIntent();
+        final String VendingSerialNumber = intent.getStringExtra("VendingSerialNumber"); //intent로 받아온 userID
 
-                Response.Listener<String> responseListener = new Response.Listener<String>(){
-                    public void onResponse(String response){
-                        try{
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
-                            if(success){
+        final RequestQueue queue = Volley.newRequestQueue((this));
+
+        btn_add_vending.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                String vendingName = vending_name.getText().toString();
+                String vendingDescription = vending_description.getText().toString();
+                String vendingFullSize = vending_fullsize.getText().toString();
+                /*final Map<String, String> vending_parameters = new HashMap<String, String>();
+                vending_parameters.put("name", vendingName);
+                vending_parameters.put("description", vendingDescription);
+                vending_parameters.put("fullSize", vendingFullSize);*/
+                JSONObject vending_parameters = new JSONObject();
+                try {
+                    vending_parameters.put("name",vendingName);
+                    vending_parameters.put("description",vendingDescription);
+                    vending_parameters.put("fullSize",vendingFullSize);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                JSONObject object = new JSONObject();
+
+                try {
+                    object.put("serialNumber", VendingSerialNumber);
+                    object.put("vending",vending_parameters);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("TAG", "결과 : " + object);
+                String URL = "http://192.168.0.31:80/mobile/vending/update";
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL,object, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            boolean success = response.getBoolean("success");
+                            Log.d("TAG", "결과 : " + success);
+                            if (success) {
+                                Log.d("TAG", "성공");
                                 finish();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
                             }
-                            else{
-                                Toast.makeText(getApplicationContext(),"등록에 실패했습니다.",Toast.LENGTH_SHORT).show();
-                            }
-                        }catch(JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                };
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                UpdateVendingRequest createvendingrequest = new UpdateVendingRequest(vendingName,vendingComment,vendingSize,vendingSN, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(UpdateVendingActivity.this);
-                queue.add(createvendingrequest);
+                    }
+                });
 
+                queue.add(objectRequest);
             }
-
         });
-
     }
 }
