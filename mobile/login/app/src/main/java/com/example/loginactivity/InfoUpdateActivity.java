@@ -68,9 +68,10 @@ public class InfoUpdateActivity extends AppCompatActivity {
                     // 서버의 데이터 처리 성공 여부 검사
                     if(success){
                         // 유저 정보 받아오기
-                        String userName = object.getString("userName");
-                        String userId = object.getString("userId");
-                        String userEmail = object.getString("userEmail");
+                        JSONObject user = object.getJSONObject("user");
+                        String userName = user.getString("name");
+                        String userId = user.getString("id");
+                        String userEmail = user.getString("email");
 
                         // EditText에 기존 정보 세팅
                         et_user_name.setText(userName);
