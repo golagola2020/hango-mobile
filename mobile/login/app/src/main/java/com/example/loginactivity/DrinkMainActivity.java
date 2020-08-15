@@ -34,7 +34,8 @@ public class DrinkMainActivity extends AppCompatActivity {
         String vendingName = "이름 : "+intent.getStringExtra("name");;
         String vendingDescription = "설명 : " + intent.getStringExtra("description");;
         String vendingFullSize = "칸 수 : " + intent.getStringExtra("fullSize");
-        final String vendingSerialNumber = "등록번호 : " + intent.getStringExtra("serialNumber");;
+        final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
+        final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
         Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
@@ -42,7 +43,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
         final DrinkListAdapter drinkAdater = new DrinkListAdapter();
         //음료정보 파싱싱
-       RequestQueue queue = Volley.newRequestQueue((this));
+        RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -62,6 +63,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                             JSONObject drink = jsonArray.getJSONObject(i);
                             //음료 수많큼 gridview에 drink_item 생성
                             drinkAdater.addDrinkItem(drink.getInt("position"),drink.getString("name"),drink.getString("price"));
+                            Log.d("TAG",i+"번쨰 어댑터 값 :  " + drink.getInt("position")+" : " + drink.getString("name")+" : " + drink.getString("price"));
                         }
 
                         //add_drink_item 생성(음료 추가버튼)
@@ -87,7 +89,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         }){
             protected Map<String,String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("serialNumber", vendingSerialNumber);
+                params.put("serialNumber", _vendingSerialNumber);
                 return params;
             }
         };
