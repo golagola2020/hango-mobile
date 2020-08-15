@@ -77,25 +77,10 @@
         android:inputType="textPersonName"
         android:textSize="20sp"
         android:background="@drawable/textbox_radius"/>
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop = "20dp"
-        android:text = "등록번호"
-        android:textColor="#3f3f3f"
-        android:fontFamily="@font/barungothicbold"
-        android:textSize = "30sp"/>
-    <EditText
-        android:id="@+id/Vending_SN"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="자판기의 등록번호를 입력해주세요"
-        android:padding="15dp"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        android:background="@drawable/textbox_radius"/>
+        android:layout_height="match_parent"
+        android:gravity="bottom">
     <Button
         android:id="@+id/btn_Regi_vending"
         android:layout_width="match_parent"
@@ -103,11 +88,12 @@
         android:layout_marginTop = "40dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/btn_radius"
         android:fontFamily="@font/barungothicbold"
         android:text="추가"
         android:textColor="#3f3f3f"
         android:textSize="20sp" />
-
+    </LinearLayout>
 
 </LinearLayout>
