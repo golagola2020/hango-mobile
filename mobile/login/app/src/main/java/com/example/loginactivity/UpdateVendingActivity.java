@@ -50,10 +50,19 @@ public class UpdateVendingActivity extends AppCompatActivity {
                 String vendingName = vending_name.getText().toString();
                 String vendingDescription = vending_description.getText().toString();
                 String vendingFullSize = vending_fullsize.getText().toString();
-                final Map<String, String> vending_parameters = new HashMap<String, String>();
+                /*final Map<String, String> vending_parameters = new HashMap<String, String>();
                 vending_parameters.put("name", vendingName);
                 vending_parameters.put("description", vendingDescription);
-                vending_parameters.put("fullSize", vendingFullSize);
+                vending_parameters.put("fullSize", vendingFullSize);*/
+                JSONObject vending_parameters = new JSONObject();
+                try {
+                    vending_parameters.put("name",vendingName);
+                    vending_parameters.put("description",vendingDescription);
+                    vending_parameters.put("fullSize",vendingFullSize);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
                 JSONObject object = new JSONObject();
 
