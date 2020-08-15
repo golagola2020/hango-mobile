@@ -158,12 +158,15 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 }){
                     // 서버에게 요청할 데이터 가공
                     protected Map<String,String> getParams() throws AuthFailureError {
+                        Map<String, String> user = new HashMap<String, String>();
+                        user.put("id", userId);
+                        user.put("name", userName);
+                        user.put("newId", userNewId);
+                        user.put("email", userEmail);
+                        user.put("newPasswd", userNewPasswd);
+
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("userId", userId);
-                        params.put("userName", userName);
-                        params.put("userNewId", userNewId);
-                        params.put("userEmail", userEmail);
-                        params.put("userNewPasswd", userNewPasswd);
+                        params.put("user", user);
                         return params;
                     }
                 };
