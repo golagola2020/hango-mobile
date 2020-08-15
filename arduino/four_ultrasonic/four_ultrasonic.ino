@@ -19,6 +19,7 @@ int count[4][6] = {0};//초음파 센서에 감지되는걸 카운트해 기록�
 String final_check = {"non"};//센싱된 손의 영역 확정
 int i = 0; // 정확도를 위해 돌려보는 횟수 (총 10회 정도 돌려본 뒤 선택한 버튼 확정).
 String state = {"zero"};
+String serialNumber : "20200814042555141"
 
 void accuracy(float distance, int i) { //손의 위치를 카운트 하는 함수
   if (distance <= 52 && distance >= 0) {

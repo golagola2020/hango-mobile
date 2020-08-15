@@ -1,23 +1,58 @@
 import serial
+import json
+
+
 
 def main():
     arduinoPort="/dev/ttyACM0" #when port is changed,then you must be change too.
     port = serial.Serial(arduinoPort,9600)
     port.flushInput()
 
+    drink_mid = 'non'
+    hand_mid= 'non'
+    dup = 'zero'
+    i = 0
     while port.readable:
         input = port.readline()
         arr = input.split()
 
-        print(arr)
+        #print(arr)
+
+        dict_result = { 'hand' : hand_mid[2:-1], 'drink' : drink_mid[2:-1] ,'duplicate' : dup[2:-1] }
+        
+
+        json_vending_result = json.dumps(dict_result) 
+        #print(type(hand_mid))
+        
+
+        if i == 3:
+            #print(dict_result)
+            print(json_vending_result)
+            i = 0
+        i += 1
+        #print(i)
+
+        if str(type(arr[0])) == "<class 'bytes'>":
+            arr[0] = str(arr[0])
+        if str(type(arr[1])) == "<class 'bytes'>":
+            arr[1] = str(arr[1])
+                    
 
         if len(arr) == 3:
             head = arr[0]
             mid = arr[1]
             tail = int(arr[2])
+            if tail is 1:
+                hand_head = arr[0]
+                hand_mid = arr[1]
+            if tail is 2:
+                drink_head = arr[0]
+                drink_mid = arr[1]
+
         if len(arr) == 2:
             dup = arr[0]
-            tail = int(arr[1])
+            dup_tail = arr[1]
 
+        
 if __name__ == "__main__":
     main()
