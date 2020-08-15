@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         final String url = "http://192.168.0.31:80/mobile/vending/read";
 
+
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
-                        vendingAdapter.notifyDataSetChanged();
+                        //vendingAdapter.notifyDataSetChanged();
 
 
                     }
