@@ -1,7 +1,9 @@
 package com.example.loginactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -28,12 +30,17 @@ public class DrinkMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink_main);
 
         //mainActivity에서 받아온 자판기 정보로 수정예정
-        String vendingName = null;
-        String vendingDescription = null;
-        int vendingFullSize = 0;
-        final String vendingSerialNumber = null;
+        Intent intent = getIntent();
+        String vendingName = "이름 : "+intent.getStringExtra("name");;
+        String vendingDescription = "설명 : " + intent.getStringExtra("description");;
+        String vendingFullSize = "칸 수 : " + intent.getStringExtra("fullSize");
+        final String vendingSerialNumber = "등록번호 : " + intent.getStringExtra("serialNumber");;
+        Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
+        //gridview Adapter 생성 및 연결
+        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
+        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
         //음료정보 파싱싱
        RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
@@ -44,8 +51,11 @@ public class DrinkMainActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
                     JSONArray jsonArray = object.getJSONArray("drinks");
-                    GridView drinkGridView = findViewById(R.id.drink_gridView);
-                    DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
+                    //add_drink_item 생성(음료 추가버튼)
+
+                    Log.d("TAG","결과 : " + success);
+
                     if(success){
                         //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
@@ -87,7 +97,7 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     }
 
-    public void printVendingInfo(String name,String description, int fullsize,String serialNumber){
+    public void printVendingInfo(String name,String description, String fullsize,String serialNumber){
         TextView vendingName = (TextView) findViewById(R.id.drinkPageVendingName);
         TextView vendingDescription = (TextView) findViewById(R.id.drinkPageVendingDescription);
         TextView vendingFullsize = (TextView) findViewById(R.id.drinkPageVendingFullsize);
