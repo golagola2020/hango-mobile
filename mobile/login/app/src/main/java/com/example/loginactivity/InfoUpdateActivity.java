@@ -3,6 +3,7 @@ package com.example.loginactivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -115,35 +117,51 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 final String userEmail = et_user_email.getText().toString();
                 final String userNewPasswd = et_user_new_passwd.getText().toString();
 
+                JSONObject user = new JSONObject();
+                try {
+                    user.put("id", userId);
+                    user.put("name", userName);
+                    user.put("newId", userNewId);
+                    user.put("email", userEmail);
+                    user.put("newEmail", userNewPasswd);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                JSONObject object = new JSONObject();
+
+                try {
+                    object.put("user", user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("TAG", "결과 : " + object);
+
                 // Volly를 사용하여 요청 큐 인스턴스 생성
                 RequestQueue queue = Volley.newRequestQueue((InfoUpdateActivity.this));
+
                 // 요청 URL 생성
-                final String url = "http://192.168.123.106:80/mobile/user/update";
+                final String URL = "http://192.168.123.106:80/mobile/user/update";
 
-                // 요청 정보 구현
-                StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
+
                     @Override
-                    // 성공적으로 응답이 올 경우
-                    public void onResponse(String response) {
-                        try{
-                            // 응답 데이터를 JSON 파싱
-                            JSONObject object = new JSONObject(response);
-
+                    public void onResponse(JSONObject response) {
+                        try {
                             // 사용하고자 하는 데이터 파싱
-                            boolean success = object.getBoolean("success");
+                            boolean success = response.getBoolean("success");
 
                             // 서버의 데이터 처리 성공 여부 검사
-                            if(success){
+                            if (success) {
                                 // 로그인 화면으로 이동
                                 Intent intent = new Intent(InfoUpdateActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "정보가 변경되었습니다. 다시 로그인을 시도하여 주십시오.", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "서버에서 데이터 처리에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             }
-
-                        } catch (JSONException e){
+                        } catch (JSONException e) {
                             // 서버 응답 데이터의 JSON 파싱 중 에러 발생시 실행
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), "JSON 파싱 중 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show();
@@ -155,24 +173,9 @@ public class InfoUpdateActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "회원 탈퇴를 요청하실 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
-                }){
-                    // 서버에게 요청할 데이터 가공
-                    protected Map<String,String> getParams() throws AuthFailureError {
-                        Map<String, String> user = new HashMap<String, String>();
-                        user.put("id", userId);
-                        user.put("name", userName);
-                        user.put("newId", userNewId);
-                        user.put("email", userEmail);
-                        user.put("newPasswd", userNewPasswd);
+                });
 
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("user", user);
-                        return params;
-                    }
-                };
-
-                // 서버에게 데이터 처리 요청
-                queue.add(strReq);
+                queue.add(objectRequest);
             }
         });
 
