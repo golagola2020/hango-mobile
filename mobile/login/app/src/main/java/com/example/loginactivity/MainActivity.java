@@ -16,7 +16,9 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+
 import android.widget.ImageButton;
+
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -46,14 +48,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // xml 객체 파싱
+
+
         TextView idText = (TextView)findViewById(R.id.NameText);
+
+
         ImageButton btn_user_info = (ImageButton)findViewById(R.id.btn_user_info);
 
         // 로그인 화면에서 유저 이름 받아오기
+
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
         printUserName(UserId);
+
 
         // 유저 정보 화면(InfoActivity)로 이동
         btn_user_info.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +74,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         //자판기 정보
         final ArrayList<VendingData> VData = new ArrayList<>();
         final JSONArray vendingArray = new JSONArray();
 
+
         //ListView, Adapter 생성 및 연결
         vendingListView = (ListView) findViewById(R.id.MainListView);
+        final VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
 
         //자판기 데이터 파싱하기
         RequestQueue queue = Volley.newRequestQueue((this));
-        final String url = "http://192.168.123.106:80/mobile/vending/read";
+
+        final String url = "http://192.168.0.31:80/mobile/vending/read";
+
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -88,18 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject vending = jsonArray.getJSONObject(i);
-                            VendingData vdata = new VendingData();
-                            vdata.VendingName = vending.getString("name");
-                            vdata.VendingDescription = vending.getString("description");
-                            vdata.VendingSerialNumber = vending.getString("serialNumber");
-
-                            VData.add(vdata);
+                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullsize"));
                         }
                         //자판기 보유수 출력
-                        printVendingCount(VData);
+                        printVendingCount();
 
                         //listview 목록 출력
-                        VendingListAdapter vendingAdapter = new VendingListAdapter(VData);
                         vendingListView.setAdapter(vendingAdapter);
                         vendingAdapter.notifyDataSetChanged();
 
@@ -129,10 +135,28 @@ public class MainActivity extends AppCompatActivity {
         queue.add(strReq);
 
 
+        //각 자판기 list클릭시 이벤트
+        vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                VendingData vdata = (VendingData) vendingAdapter.getItem(position);
+                Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
+                intent.putExtra("name",vdata.getVendingName());
+                intent.putExtra("description",vdata.getVendingDescription());
+                intent.putExtra("fullsize",vdata.getVendingFullsize());
+                intent.putExtra("serialNumber",vdata.getVendingSerialNumber());
+                startActivity(intent);
+            }
+
+        });
+
+
     }
-    private void printVendingCount(ArrayList<VendingData> VData){
+
+    //자판기 수 출력
+    private void printVendingCount(){
         TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);
-        final VendingListAdapter vendingListAdapter = new VendingListAdapter(VData);
+        final VendingListAdapter vendingListAdapter = new VendingListAdapter(MainActivity.this);
         int _vendingCount = vendingListAdapter.getCount();
         String _vendingCountText = "보유중인 자판기 수 는 " + _vendingCount + " 대입니다.";
         SpannableStringBuilder s_vendingCountText = new SpannableStringBuilder(_vendingCountText);
@@ -140,22 +164,19 @@ public class MainActivity extends AppCompatActivity {
         vendingCountText.setText(_vendingCountText);
     }
 
-
+    //계정 이름 출력
     private void printUserName(String UserId){
         TextView idText = (TextView) findViewById(R.id.NameText);
         String _UserId = UserId + "님";
         SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-//        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#ff7f00")), 0, UserId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, UserId.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         idText.setText(s_User_Id);
 
 
     }
-    public void intentVendingUpdate(String SerialNumber){
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.putExtra("SerialNumber", SerialNumber);
-        startActivity(intent);
-    }
+
 
     public void VendingDeleteRequest(final ArrayList<VendingData> VData, final String SerialNumber){
         RequestQueue queue = Volley.newRequestQueue((this));
@@ -167,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
                     if(success){
-                        VendingListAdapter vendingAdapter = new VendingListAdapter(VData);
+                        VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
                         vendingListView.setAdapter(vendingAdapter);
                         vendingAdapter.notifyDataSetChanged();
                     }
