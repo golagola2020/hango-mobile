@@ -80,7 +80,7 @@ public class DrinkListAdapter extends BaseAdapter {
                     TextView nameText = (TextView) convertView.findViewById(R.id.nameText) ;
                     TextView priceText = (TextView) convertView.findViewById(R.id.priceText);
 
-                    positionText.setText(drinkItem.getDrinkPosition());
+                    positionText.setText("위치"+drinkItem.getDrinkPosition());
                     nameText.setText(drinkItem.getDrinkName());
                     priceText.setText(drinkItem.getDrinkPrice());
                     break;

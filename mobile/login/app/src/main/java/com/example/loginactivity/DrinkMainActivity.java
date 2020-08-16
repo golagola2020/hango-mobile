@@ -51,13 +51,14 @@ public class DrinkMainActivity extends AppCompatActivity {
                 try{
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
-                    JSONArray jsonArray = object.getJSONArray("drinks");
+
 
                     //add_drink_item 생성(음료 추가버튼)
 
                     Log.d("TAG","결과 : " + success);
 
                     if(success){
+                        JSONArray jsonArray = object.getJSONArray("drinks");
                         //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject drink = jsonArray.getJSONObject(i);
@@ -75,6 +76,8 @@ public class DrinkMainActivity extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
+                        drinkAdater.addDrinkItem();
+                        drinkGridView.setAdapter(drinkAdater);
                     }
 
                 } catch (JSONException e){

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F1F1"
+    android:orientation="vertical"
+    tools:context=".AddDrinkActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#d3d3d3"
+        android:text="음료 추가"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="45sp"
+        android:fontFamily="@font/barungothicbold"/>
+    <View
+        android:background="#949494"
+        android:layout_width="match_parent"
+        android:layout_height="5px"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop = "20dp"
+        android:text = "이름"
+        android:textColor="#3f3f3f"
+        android:fontFamily="@font/barungothicbold"
+        android:textSize = "30sp"/>
+    <EditText
+        android:id="@+id/tv_drink_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="음료수의 이름을 입력해주세요"
+        android:padding="15dp"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:background="@drawable/textbox_radius"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop = "20dp"
+        android:text = "위치"
+        android:textColor="#3f3f3f"
+        android:fontFamily="@font/barungothicbold"
+        android:textSize = "30sp"/>
+    <EditText
+        android:id="@+id/tv_drink_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="음료수의 위치를 입력해주세요"
+        android:padding="15dp"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:background="@drawable/textbox_radius"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop = "20dp"
+        android:text = "가격"
+        android:textColor="#3f3f3f"
+        android:fontFamily="@font/barungothicbold"
+        android:textSize = "30sp"/>
+    <EditText
+        android:id="@+id/tv_drink_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="음료수의 가격을 입력해주세요"
+        android:padding="15dp"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        android:background="@drawable/textbox_radius"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+        <Button
+            android:id="@+id/btn_Regi_vending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop = "40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/btn_radius"
+            android:fontFamily="@font/barungothicbold"
+            android:text="추가"
+            android:textColor="#3f3f3f"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</LinearLayout>
