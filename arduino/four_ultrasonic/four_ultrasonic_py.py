@@ -27,7 +27,7 @@ def main():
             i = 0
         i += 1
 
-        if str(type(arr[0])) == "<class 'bytes'>":
+        if str(type(arr[0])) == "<class 'bytes'>": 
             arr[0] = str(arr[0])
         if str(type(arr[1])) == "<class 'bytes'>":
             arr[1] = str(arr[1])
