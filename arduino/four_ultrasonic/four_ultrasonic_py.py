@@ -17,23 +17,17 @@ def main():
         input = port.readline()
         arr = input.split()
 
-        #print(arr)
-
-        dict_result = { 'hand' : hand_mid[2:-1], 'drink' : drink_mid[2:-1] ,'duplicate' : dup[2:-1], 'serialNumber' :20200814042555141 }
+        dict_result = {'serialNumber' :20200814042555141, 'sensing' :{ 'hand' : hand_mid[2:-1], 'drink' : drink_mid[2:-1] ,'duplicate' : dup[2:-1]  }}
         
-
         json_vending_result = json.dumps(dict_result) 
-        #print(type(hand_mid))
         
 
         if i == 3:
-            #print(dict_result)
             print(json_vending_result)
             i = 0
         i += 1
-        #print(i)
 
-        if str(type(arr[0])) == "<class 'bytes'>":
+        if str(type(arr[0])) == "<class 'bytes'>": 
             arr[0] = str(arr[0])
         if str(type(arr[1])) == "<class 'bytes'>":
             arr[1] = str(arr[1])

@@ -1,3 +1,8 @@
+/* 
+ *  hango vending!
+ */
+
+
 const int trigPin1 = 2; //손의 위치 센싱
 const int echoPin1 =  3;
 
@@ -19,7 +24,7 @@ int count[4][6] = {0};//초음파 센서에 감지되는걸 카운트해 기록�
 String final_check = {"non"};//센싱된 손의 영역 확정
 int i = 0; // 정확도를 위해 돌려보는 횟수 (총 10회 정도 돌려본 뒤 선택한 버튼 확정).
 String state = {"zero"};
-//String serialNumber : "20200814042555141"
+
 
 void accuracy(float distance, int i) { //손의 위치를 카운트 하는 함수
   if (distance <= 52 && distance >= 0) {
@@ -122,25 +127,6 @@ void loop() {
   accuracy(distance3, 2); //음료수 판매 센싱
   accuracy(distance4, 3);
 
-/*
-  //위치출력
-  Serial.println(distance1);
-  Serial.println(distance2);
-  Serial.println(distance3);
-  Serial.println(distance4);
-  Serial.println("");
-  Serial.println("");
-  */
-/*
-  for (int a = 0; a < 4; a++) {
-    for (int b = 0; b < 6; b++) {
-      Serial.print(count[a][b]); //위치별로 손과 음료수가 센서에 감지된 횟수를 보기 위한 for문
-    }
-    Serial.println("");
-  }
-  //Serial.print("i=");
-  //Serial.println(i);
-*/
   i += 1;
 
   sensing_drink(6); //chosen sale에 값을 넣음. 음료 판매 측정
@@ -156,13 +142,7 @@ void loop() {
           count[a][b] = 0; //다음 음료 선택을 위해 초기화.
         }
       }
-/*
-      for (int c = 0; c < 2; c++) {
-        Serial.print("chosen_number:");
-        Serial.print(chosen_number[c]); //어떤 음료가 선택 되었는지 확인
-        Serial.println("");
-      }
-*/
+
       multi_chosen_check(2); //2 : chosen number의 크기, 음료가 복수선택이 되었는지 보여주는 함수(오류체크)
     
       Serial.print("Final_hand: ");
