@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrinkMainActivity extends AppCompatActivity {
+    private String SerialNumber;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
@@ -68,7 +69,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                         }
 
                         //add_drink_item 생성(음료 추가버튼)
-                        drinkAdater.addDrinkItem();
+                        drinkAdater.addDrinkItem(_vendingSerialNumber);
                         //gridview 목록 출력
                         drinkGridView.setAdapter(drinkAdater);
 
@@ -76,7 +77,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
-                        drinkAdater.addDrinkItem();
+                        drinkAdater.addDrinkItem(_vendingSerialNumber);
                         drinkGridView.setAdapter(drinkAdater);
                     }
 
@@ -112,6 +113,13 @@ public class DrinkMainActivity extends AppCompatActivity {
         vendingDescription.setText(description);
         vendingFullsize.setText(fullsize);
         vendingSerialNumber.setText(serialNumber);
+    }
+    public void setSerialNumber(String SerialNumber){
+        this.SerialNumber = SerialNumber;
+    }
+
+    public String getSerialNumber(){
+        return SerialNumber;
     }
 
 }

@@ -82,7 +82,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom">
         <Button
-            android:id="@+id/btn_Regi_vending"
+            android:id="@+id/btn_regi_drink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop = "40dp"
