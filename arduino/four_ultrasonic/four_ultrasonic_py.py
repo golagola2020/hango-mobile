@@ -23,7 +23,7 @@ def main() :
         if cnt == 3 :
             print(json_vending_result)
             cnt = 0
-        else cnt += 1
+        else : cnt += 1
 
         arr_len = len(arr)
         for i in range(arr_len) :
