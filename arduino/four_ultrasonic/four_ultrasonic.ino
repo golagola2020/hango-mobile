@@ -1,11 +1,6 @@
-/*
-
-    hango vending!
-
-*/
-
-
-
+/* 
+ *  hango vending!
+ */
 
 
 const int trigPin1 = 2; //손의 위치 센싱
@@ -49,9 +44,6 @@ String final_check = {"non"};//센싱된 손의 영역 확정
 int i = 0; // 정확도를 위해 돌려보는 횟수 (총 10회 정도 돌려본 뒤 선택한 버튼 확정).
 
 String state = {"zero"};
-
-
-
 
 
 void accuracy(float distance, int i) { //손의 위치를 카운트 하는 함수
@@ -255,7 +247,6 @@ void loop() {
   accuracy(distance4, 3);
 
 
-
   i += 1;
 
 
@@ -285,7 +276,6 @@ void loop() {
         }
 
       }
-
 
 
       multi_chosen_check(2); //2 : chosen number의 크기, 음료가 복수선택이 되었는지 보여주는 함수(오류체크)

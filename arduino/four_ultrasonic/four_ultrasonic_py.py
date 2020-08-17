@@ -67,11 +67,7 @@ def main():
  
 
         if i == 3:
-
             #print(json_vending_result)
-
-    
-
 ###*****************************************************************###                    
 
             x = requests.post(url, data = dict_result)
@@ -79,14 +75,10 @@ def main():
             print(x.text)
 
 ###*****************************************************************###
-
-            
-
             i = 0
 
         i += 1
 
- 
 
         if str(type(arr[0])) == "<class 'bytes'>":
 
