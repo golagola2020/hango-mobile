@@ -1,10 +1,14 @@
 package com.example.loginactivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -17,6 +21,8 @@ public class DrinkListAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_ADD_DRINK = 1;
     private static final int ITEM_VIEW_TYPE_MAX = 2;
 
+    private String serialNumber;
+
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
     public void addDrinkItem(int position, String name , String price){
@@ -27,7 +33,8 @@ public class DrinkListAdapter extends BaseAdapter {
         item.setDrinkPrice(price);
         drinkItems.add(item);
     }
-    public void addDrinkItem(){
+    public void addDrinkItem(String serialNumber){
+        this.serialNumber = serialNumber;
         DrinkItem item =new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_ADD_DRINK);
         drinkItems.add(item);
@@ -80,13 +87,25 @@ public class DrinkListAdapter extends BaseAdapter {
                     TextView nameText = (TextView) convertView.findViewById(R.id.nameText) ;
                     TextView priceText = (TextView) convertView.findViewById(R.id.priceText);
 
-                    positionText.setText(drinkItem.getDrinkPosition());
+                    positionText.setText("위치"+drinkItem.getDrinkPosition());
                     nameText.setText(drinkItem.getDrinkName());
                     priceText.setText(drinkItem.getDrinkPrice());
                     break;
                 case ITEM_VIEW_TYPE_ADD_DRINK:
                     convertView = inflater.inflate(R.layout.add_drink_item,
                             parent, false);
+                    ImageView btn_add_drink = (ImageView) convertView.findViewById(R.id.btn_add_drink);
+
+                    btn_add_drink.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(context,AddDrinkActivity.class);
+
+                            intent.putExtra("VendingSerialNumber",serialNumber);
+                            v.getContext().startActivity(intent);
+                        }
+                    });
 
                     break;
             }

@@ -1,7 +1,9 @@
 package com.example.loginactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -23,19 +25,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrinkMainActivity extends AppCompatActivity {
+    private String SerialNumber;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
         //mainActivity에서 받아온 자판기 정보로 수정예정
-        String vendingName = null;
-        String vendingDescription = null;
-        int vendingFullSize = 0;
-        final String vendingSerialNumber = null;
+        Intent intent = getIntent();
+        String vendingName = "이름 : "+intent.getStringExtra("name");;
+        String vendingDescription = "설명 : " + intent.getStringExtra("description");;
+        String vendingFullSize = "칸 수 : " + intent.getStringExtra("fullSize");
+        final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
+        final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
+        Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
+        //gridview Adapter 생성 및 연결
+        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
+        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
         //음료정보 파싱싱
-       RequestQueue queue = Volley.newRequestQueue((this));
+        RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -43,19 +52,24 @@ public class DrinkMainActivity extends AppCompatActivity {
                 try{
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
-                    JSONArray jsonArray = object.getJSONArray("drinks");
-                    GridView drinkGridView = findViewById(R.id.drink_gridView);
-                    DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
+
+                    //add_drink_item 생성(음료 추가버튼)
+
+                    Log.d("TAG","결과 : " + success);
+
                     if(success){
+                        JSONArray jsonArray = object.getJSONArray("drinks");
                         //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject drink = jsonArray.getJSONObject(i);
                             //음료 수많큼 gridview에 drink_item 생성
                             drinkAdater.addDrinkItem(drink.getInt("position"),drink.getString("name"),drink.getString("price"));
+                            Log.d("TAG",i+"번쨰 어댑터 값 :  " + drink.getInt("position")+" : " + drink.getString("name")+" : " + drink.getString("price"));
                         }
 
                         //add_drink_item 생성(음료 추가버튼)
-                        drinkAdater.addDrinkItem();
+                        drinkAdater.addDrinkItem(_vendingSerialNumber);
                         //gridview 목록 출력
                         drinkGridView.setAdapter(drinkAdater);
 
@@ -63,6 +77,8 @@ public class DrinkMainActivity extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
+                        drinkAdater.addDrinkItem(_vendingSerialNumber);
+                        drinkGridView.setAdapter(drinkAdater);
                     }
 
                 } catch (JSONException e){
@@ -77,7 +93,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         }){
             protected Map<String,String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("serialNumber", vendingSerialNumber);
+                params.put("serialNumber", _vendingSerialNumber);
                 return params;
             }
         };
@@ -87,7 +103,7 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     }
 
-    public void printVendingInfo(String name,String description, int fullsize,String serialNumber){
+    public void printVendingInfo(String name,String description, String fullsize,String serialNumber){
         TextView vendingName = (TextView) findViewById(R.id.drinkPageVendingName);
         TextView vendingDescription = (TextView) findViewById(R.id.drinkPageVendingDescription);
         TextView vendingFullsize = (TextView) findViewById(R.id.drinkPageVendingFullsize);
@@ -97,6 +113,13 @@ public class DrinkMainActivity extends AppCompatActivity {
         vendingDescription.setText(description);
         vendingFullsize.setText(fullsize);
         vendingSerialNumber.setText(serialNumber);
+    }
+    public void setSerialNumber(String SerialNumber){
+        this.SerialNumber = SerialNumber;
+    }
+
+    public String getSerialNumber(){
+        return SerialNumber;
     }
 
 }
