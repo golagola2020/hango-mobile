@@ -93,7 +93,7 @@
             android:background="@drawable/main_radius"
             android:drawableLeft="@drawable/ic_search"
             android:gravity="center_vertical"
-            android:text="자판기를 검색하세요"
+            android:hint="자판기를 검색하세요"
             android:textColor="#d3d3d3"
             android:textSize="18sp" />
 
