@@ -65,14 +65,24 @@ public class VendingListAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
+        final VendingData vdata = VData.get(position);
+
+        ViewHolder holder;
+
         if(convertView == null) {
 
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listview_item, parent, false);
 
-            final VendingData vdata = VData.get(position);
+            holder = new ViewHolder();
 
-            TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
+            holder.VendingNameText = (TextView) convertView.findViewById(R.id.vending_list_name);
+            holder.VendingDescriptionText = (TextView) convertView.findViewById(R.id.vending_list_description);
+
+            holder.VendingUpdateImage = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
+            holder.VendingDeletImage = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
+            convertView.setTag(holder);
+            /*TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
             TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_description);
 
             TextVendingName.setText((position + 1) + ". " + vdata.getVendingName());
@@ -98,11 +108,40 @@ public class VendingListAdapter extends BaseAdapter {
                     MainActivity main = new MainActivity();
                     main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
                 }
-            });
+            });*/
         }
+        else{
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        holder.VendingNameText.setText((position+1) + ". " + VData.get(position).getVendingName());
+        holder.VendingDescriptionText.setText(VData.get(position).getVendingDescription());
+        holder.VendingUpdateImage.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,UpdateVendingActivity.class);
+                intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
+                v.getContext().startActivity(intent);
+            }
+        });
+        holder.VendingDeletImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("TAG", position + " : delete");
+                MainActivity main = new MainActivity();
+                main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
+            }
+        });
+
         return convertView;
     }
-
+    public class ViewHolder{
+            TextView VendingNameText;
+            TextView VendingDescriptionText;
+            ImageView VendingUpdateImage;
+            ImageView VendingDeletImage;
+    }
 
 
 
