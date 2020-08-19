@@ -1,11 +1,18 @@
 package com.example.loginactivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -45,7 +53,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         final DrinkListAdapter drinkAdater = new DrinkListAdapter();
         //음료정보 파싱싱
         RequestQueue queue = Volley.newRequestQueue((this));
-        final String url = "http://192.168.0.31:80/mobile/drink/read";
+        final String url = "http://192.168.200.104:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -100,6 +108,126 @@ public class DrinkMainActivity extends AppCompatActivity {
 
         queue.add(drinkRequest);
 
+
+        //음료정보 각 Item 클릭 리스너
+        drinkGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                // 팝업 메시지 객체 생성
+                AlertDialog.Builder ad = new AlertDialog.Builder(DrinkMainActivity.this);
+                ad.setTitle("음료 수정");
+
+                // 여러개의 입력 창을 다이얼로그에 띄우기 위한 레이아웃 생성
+                LinearLayout layout = new LinearLayout(DrinkMainActivity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                // 입력창 생성
+                final EditText et_drink_name = new EditText(DrinkMainActivity.this);
+                final EditText et_drink_price = new EditText(DrinkMainActivity.this);
+                final EditText et_drink_max_count = new EditText(DrinkMainActivity.this);
+                et_drink_name.setHint("음료 이름");
+                et_drink_price.setHint("음료 가격");
+                et_drink_max_count.setHint("음료를 최대로 채울 수 있는 개수");
+
+                // 레이아웃에 EditText 추가
+                layout.addView(et_drink_name);
+                layout.addView(et_drink_price);
+                layout.addView(et_drink_max_count);
+
+                // 다이얼로그에 뷰 세트
+                ad.setView(layout);
+
+                // 수정 버튼 클릭시 실행
+                ad.setPositiveButton("수정", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialogInterface, int i) {
+
+                        // 입력창에 입력 값 불러오기
+                        final String drinkName = et_drink_name.getText().toString();
+                        final String drinkPrice = et_drink_price.getText().toString();
+                        final String drinkMaxCount = et_drink_max_count.getText().toString();
+
+                        // drink JSON 객체 생성
+                        JSONObject drink = new JSONObject();
+                        // 내부 데이터 삽입
+                        try {
+                            drink.put("position", Integer.toString(position+1));
+                            drink.put("name", drinkName);
+                            drink.put("price", drinkPrice);
+                            drink.put("maxCount", drinkMaxCount);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        // 서버에게 요청할 JSON 객체 생성
+                        JSONObject object = new JSONObject();
+                        // 최종 데이터 삽입
+                        try {
+                            object.put("serialNumber", _vendingSerialNumber);
+                            object.put("drink", drink);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        // 요청 데이터 출력
+                        Log.d("TAG", "결과 : " + object);
+
+                        // Volly를 사용하여 요청 큐 인스턴스 생성
+                        RequestQueue queue = Volley.newRequestQueue(DrinkMainActivity.this);
+
+                        // 요청 URL 생성
+                        final String URL = "http://192.168.200.104:80/mobile/drink/update";
+
+                        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    // 사용하고자 하는 데이터 파싱
+                                    boolean success = response.getBoolean("success");
+
+                                    // 서버의 데이터 처리 성공 여부 검사
+                                    if (success) {
+                                        dialogInterface.dismiss(); // 팝업 메시지 닫기
+                                        Toast.makeText(getApplicationContext(), "음료수 정보가 수정되었습니다.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // 서버의 작업 실패 메세지 불러오기
+                                        String msg = response.getString("msg");
+                                        Log.e("msg", msg);
+                                        Toast.makeText(getApplicationContext(), "서버에서 데이터 처리에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    // 서버 응답 데이터의 JSON 파싱 중 에러 발생시 실행
+                                    e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), "JSON 파싱 중 에러가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            // 비정상 응답이 올경우 => 서버가 닫혀있거나, 해당 경로가 존재하지 않을 때 발생
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getApplicationContext(), "서버와의 연결이 끊어졌습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // 서버에게 데이터 요청
+                        queue.add(objectRequest);
+                    }
+                });
+
+                // 취소 버튼 클릭시 실행
+                ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss(); // 팝업 메시지 닫기
+                    }
+                });
+
+                // 팝업 메시지 띄우기
+                ad.show();
+            }
+        });
 
     }
 
