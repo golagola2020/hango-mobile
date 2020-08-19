@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 
@@ -15,8 +17,10 @@ import android.text.style.RelativeSizeSpan;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import android.widget.ListView;
@@ -72,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //자판기검색 editText
+        final EditText vendingSearch = (EditText) findViewById(R.id.et_search_vending);
 
         //자판기 정보
         final ArrayList<VendingData> VData = new ArrayList<>();
@@ -109,7 +114,29 @@ public class MainActivity extends AppCompatActivity {
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
                         //vendingAdapter.notifyDataSetChanged();
+                        vendingSearch.addTextChangedListener(new TextWatcher(){
 
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                String filterText = s.toString();
+                                if(filterText.length() > 0){
+                                    vendingListView.setFilterText(filterText);
+                                }
+                                else{
+                                    vendingListView.clearTextFilter();
+                                }
+                            }
+                        });
 
                     }
                     else{

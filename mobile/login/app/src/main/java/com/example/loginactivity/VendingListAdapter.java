@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -21,22 +23,24 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class VendingListAdapter extends BaseAdapter {
+public class VendingListAdapter extends BaseAdapter implements Filterable {
 
 
     LayoutInflater inflater = null;
     private ArrayList<VendingData> VData = new ArrayList<>();
+    private ArrayList<VendingData> filteredVData = VData;
     private Context context;
 
+    Filter VDataFilter;
 
     public VendingListAdapter(Context context){
         this.context = context;
     }
 
-    public void addItem(String VendingName,String VendingDescripcion,String VendingSerialNumber,int VendingFullsize){
+    public void addItem(String VendingName,String VendingDescripsion,String VendingSerialNumber,int VendingFullsize){
         VendingData vdata = new VendingData();
         vdata.setVendingName(VendingName);
-        vdata.setVendingDescription(VendingDescripcion);
+        vdata.setVendingDescription(VendingDescripsion);
         vdata.setVendingSerialNumber(VendingSerialNumber);
         vdata.setVendingFullsize(VendingFullsize);
         VData.add(vdata);
@@ -46,13 +50,13 @@ public class VendingListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return VData.size();
+        return filteredVData.size();
     }
 
     @Override
     public Object getItem(int position) {
 
-        return VData.get(position);
+        return filteredVData.get(position);
     }
 
     @Override
@@ -136,6 +140,15 @@ public class VendingListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    @Override
+    public Filter getFilter() {
+        if(VDataFilter == null){
+            VDataFilter = new ListFilter();
+        }
+        return VDataFilter;
+    }
+
     public class ViewHolder{
             TextView VendingNameText;
             TextView VendingDescriptionText;
@@ -143,6 +156,44 @@ public class VendingListAdapter extends BaseAdapter {
             ImageView VendingDeletImage;
     }
 
+    private class ListFilter extends Filter{
 
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults() ;
+
+            if (constraint == null || constraint.length() == 0) {
+                results.values = VData ;
+                results.count = VData.size() ;
+            } else {
+                ArrayList<VendingData> itemList = new ArrayList<VendingData>() ;
+
+                for (VendingData item : VData) {
+                    if (item.getVendingName().toUpperCase().contains(constraint.toString().toUpperCase()) ||
+                            item.getVendingDescription().toUpperCase().contains(constraint.toString().toUpperCase()))
+                    {
+                        itemList.add(item) ;
+                    }
+                }
+
+                results.values = itemList ;
+                results.count = itemList.size() ;
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            // update listview by filtered data list.
+            filteredVData = (ArrayList<VendingData>) results.values ;
+
+            // notify
+            if (results.count > 0) {
+                notifyDataSetChanged() ;
+            } else {
+                notifyDataSetInvalidated() ;
+            }
+        }
+    }
 
 }

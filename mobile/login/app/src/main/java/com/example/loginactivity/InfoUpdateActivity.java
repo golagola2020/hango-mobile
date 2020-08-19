@@ -53,7 +53,7 @@ public class InfoUpdateActivity extends AppCompatActivity {
         // Volly를 사용하여 요청 큐 인스턴스 생성
         RequestQueue queue = Volley.newRequestQueue((InfoUpdateActivity.this));
         // 요청 URL 생성
-        final String url = "http://192.168.123.106:80/mobile/user/read";
+        final String url = "http://192.168.0.31:80/mobile/user/read";
 
         // 요청 정보 구현
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -142,7 +142,7 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue((InfoUpdateActivity.this));
 
                 // 요청 URL 생성
-                final String URL = "http://192.168.123.106:80/mobile/user/update";
+                final String URL = "http://192.168.0.31:80/mobile/user/update";
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
 
