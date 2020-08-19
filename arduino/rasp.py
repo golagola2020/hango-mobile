@@ -28,6 +28,9 @@ def main():
     )
     port.flushInput()
 
+    # 음료수 정보 요청
+    requestDrinks()
+
     # 무한 반복
     while True:
         
@@ -86,11 +89,9 @@ def requestDrinks() :
     drink = {
         'serial_number' : SERIAL_NUMBER, #if you pull server, then serialNumber -> serial_number
     }
-                            
-    print('sensings : ', sensings)
 
     # 서버 요청
-    response = requests.post(URL + '/rasp/drink/update', data = drink)
+    response = requests.post(URL + '/rasp/drink/read', data = drink)
     # 응답 JSON 데이터 변환
     response = json.loads(response.text)
 
