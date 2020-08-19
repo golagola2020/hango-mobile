@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,7 +114,9 @@ public class DrinkMainActivity extends AppCompatActivity {
         drinkGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final DrinkItem drinkItem = (DrinkItem) drinkAdater.getItem(position);
+
                 // 팝업 메시지 객체 생성
                 AlertDialog.Builder ad = new AlertDialog.Builder(DrinkMainActivity.this);
                 ad.setTitle("음료 수정");
@@ -150,9 +153,10 @@ public class DrinkMainActivity extends AppCompatActivity {
 
                         // drink JSON 객체 생성
                         JSONObject drink = new JSONObject();
+
                         // 내부 데이터 삽입
                         try {
-                            drink.put("position", Integer.toString(position+1));
+                            drink.put("position", drinkItem.getDrinkPosition());
                             drink.put("name", drinkName);
                             drink.put("price", drinkPrice);
                             drink.put("maxCount", drinkMaxCount);
