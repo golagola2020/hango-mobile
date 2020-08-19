@@ -1,4 +1,5 @@
 # 모듈포함
+import os
 import serial
 import json
 import requests
@@ -111,6 +112,9 @@ def requestDrinksUpdate() :
     response = requests.post(URL + '/rasp/drink/update', data = drink)
     # 응답 JSON 데이터 변환
     response = json.loads(response.text)
+
+def speak(option, message) :
+    os.system("espeak {} '{}'".format(option, message))
 
 # 파일이 직접 실행됐다면 (모듈로써 사용된게 아니라면) 실행
 if __name__ == "__main__":
