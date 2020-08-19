@@ -53,7 +53,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         final DrinkListAdapter drinkAdater = new DrinkListAdapter();
         //음료정보 파싱싱
         RequestQueue queue = Volley.newRequestQueue((this));
-        final String url = "http://192.168.200.104:80/mobile/drink/read";
+        final String url = "http://192.168.0.31:80/mobile/drink/read";
         StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -177,7 +177,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                         RequestQueue queue = Volley.newRequestQueue(DrinkMainActivity.this);
 
                         // 요청 URL 생성
-                        final String URL = "http://192.168.200.104:80/mobile/drink/update";
+                        final String URL = "http://192.168.0.31:80/mobile/drink/update";
 
                         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
 
