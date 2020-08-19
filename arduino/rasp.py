@@ -53,8 +53,10 @@ def main():
 
                 # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
                 if basic_keys.difference(received_keys) == set():
-                    # 판매된 음료수 정보 차감 요청
-                    requestDrinksUpdate()
+                    # 판매된 음료수가 있을 경우에 실행
+                    if sensings["sold_position"] != "non" :
+                        # 판매된 음료수 정보 차감 요청
+                        requestDrinksUpdate()
                     
 
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
