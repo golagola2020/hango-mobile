@@ -13,11 +13,16 @@ SERIAL_NUMBER = '20200814042555141'
 URL = 'http://localhost:80'
 
 # 전역 변수 선언
+sensings = {} # 센싱된 데이터가 키와 값으로 저장될 딕셔너리 
 received_keys = set() # 아두이노에게 전달 받을 변수명 집합
 basic_keys = {'sensed_position', 'sold_position', 'state'} # 라즈베리파이가 가공할 변수명 집합
 
-sensings = {} # 센싱된 데이터가 키와 값으로 저장될 딕셔너리 
-request_sign = 1 # 요청 신호 => 해당 신호가 3이 되면 서버에 데이터 요청
+# 서버에서 전달받은 음료 정보가 저장될 전역 변수
+drinks = {
+    'position' : [],
+    'name' : [],
+    'price' : [],
+}
     
 # 메인 함수
 def main():
@@ -113,7 +118,39 @@ def requestDrinksUpdate() :
     # 응답 JSON 데이터 변환
     response = json.loads(response.text)
 
-def speak(option, message) :
+''' speak()
+    @ option : 음성 옵션
+    @ message : 스피커 출력 메세지
+    @ status : 현재 자판기의 상태
+        (1) basic : 센싱되고 있지 않은 기본 상태
+        (2) position : 손이 음료를 향해 위치한 상태
+        (3) sold : 음료수가 팔린 상태
+    @ idx : 음료의 포지션 인덱스
+'''
+# 스피커 출력 함수
+def speak(option, message, status, idx) :
+    # 자판기 상태 검사
+    if status == "basic" :
+        # 센싱되고 있지 않은 기본 상태
+
+        # 자판기의 모든 음료 정보를 하나의 문자열로 병합
+        names = ""
+        for i, name in enumerate(drinks["name"]) :
+            names += str(i+1) + '번 : ' + name + ' : '
+            
+        message = "안녕하세요, 말하는 음료수 자판기입니다. 지금부터, 음료수 위치와, 이름, 가격을 말씀드리겠습니다. " + names
+        
+    elif status == "position" :
+        # 손이 음료를 향해 위치한 상태
+        message = drinks["name"][idx] + '는 : ' + drinks["price"][idx] + '원, 입니다.'
+    elif status == "sold" :
+        # 음료수가 팔린 상태
+        message = drinks["name"][idx] + '를, 선택하셨습니다. : 맛있게 드시고 : 즐거운 하루 되십시오.'
+    else :
+        # 그 외
+        pass
+
+    # 스피커 출력
     os.system("espeak {} '{}'".format(option, message))
 
 # 파일이 직접 실행됐다면 (모듈로써 사용된게 아니라면) 실행
