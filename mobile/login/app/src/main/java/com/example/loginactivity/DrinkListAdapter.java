@@ -25,12 +25,13 @@ public class DrinkListAdapter extends BaseAdapter {
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
-    public void addDrinkItem(String position, String name , String price){
+    public void addDrinkItem(String position, String name , String price, int maxCount){
         DrinkItem item = new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_DRINK_INFO);
         item.setDrinkPosition(position);
         item.setDrinkName(name);
         item.setDrinkPrice(price);
+        item.setMaxCount(maxCount);
         drinkItems.add(item);
     }
     public void addDrinkItem(String serialNumber){
