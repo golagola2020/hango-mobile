@@ -1,13 +1,13 @@
 package com.example.loginactivity;
 
 public class DrinkItem {
-    private int drinkPosition;
+    private String drinkPosition;
     private String drinkName;
     private String drinkPrice;
 
     private int type;
 
-    public int getDrinkPosition() {
+    public String getDrinkPosition() {
         return this.drinkPosition;
     }
 
@@ -21,7 +21,7 @@ public class DrinkItem {
 
     public int getType(){return this.type;}
 
-    public void setDrinkPosition(int drinkPosition) {
+    public void setDrinkPosition(String drinkPosition) {
         this.drinkPosition = drinkPosition;
     }
 

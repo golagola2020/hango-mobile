@@ -25,7 +25,7 @@ public class DrinkListAdapter extends BaseAdapter {
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
-    public void addDrinkItem(int position, String name , String price){
+    public void addDrinkItem(String position, String name , String price){
         DrinkItem item = new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_DRINK_INFO);
         item.setDrinkPosition(position);
@@ -72,24 +72,33 @@ public class DrinkListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
         int viewType = getItemViewType(position) ;
+        DrinkItem drinkItem = drinkItems.get(position);
+
+        ViewHolder holder;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
             // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-            DrinkItem drinkItem = drinkItems.get(position);
+            holder = new ViewHolder();
 
             switch (viewType) {
                 case ITEM_VIEW_TYPE_DRINK_INFO:
                     convertView = inflater.inflate(R.layout.drink_item,
                             parent, false);
-                    TextView positionText = (TextView) convertView.findViewById(R.id.positionText) ;
+
+                    holder.nameText = (TextView) convertView.findViewById(R.id.nameText) ;
+                    holder.positionText = (TextView) convertView.findViewById(R.id.positionText) ;
+                    holder.priceText = (TextView) convertView.findViewById(R.id.priceText);
+
+                    convertView.setTag(holder);
+                    /*TextView positionText = (TextView) convertView.findViewById(R.id.positionText) ;
                     TextView nameText = (TextView) convertView.findViewById(R.id.nameText) ;
                     TextView priceText = (TextView) convertView.findViewById(R.id.priceText);
 
                     positionText.setText("위치"+drinkItem.getDrinkPosition());
                     nameText.setText(drinkItem.getDrinkName());
-                    priceText.setText(drinkItem.getDrinkPrice());
+                    priceText.setText(drinkItem.getDrinkPrice());*/
                     break;
                 case ITEM_VIEW_TYPE_ADD_DRINK:
                     convertView = inflater.inflate(R.layout.add_drink_item,
@@ -109,9 +118,21 @@ public class DrinkListAdapter extends BaseAdapter {
 
                     break;
             }
+        }else{
+            holder = (ViewHolder) convertView.getTag();
+        }
+        if(viewType == ITEM_VIEW_TYPE_DRINK_INFO){
+            holder.nameText.setText(drinkItems.get(position).getDrinkName());
+            holder.positionText.setText(drinkItems.get(position).getDrinkPosition());
+            holder.priceText.setText(drinkItems.get(position).getDrinkPrice());
         }
 
         return convertView;
+    }
+    public class ViewHolder{
+        TextView positionText;
+        TextView nameText;
+        TextView priceText;
     }
 
 }
