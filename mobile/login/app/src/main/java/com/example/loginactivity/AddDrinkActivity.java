@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class AddDrinkActivity extends AppCompatActivity {
     private Button btn_regi_drink;
-    private EditText tv_drink_name,tv_drink_position,tv_drink_price;
+    private EditText tv_drink_name,tv_drink_position,tv_drink_price,tv_drink_max_count;
 
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -37,7 +37,8 @@ public class AddDrinkActivity extends AppCompatActivity {
         tv_drink_name = findViewById(R.id.tv_drink_name);
         tv_drink_position = findViewById(R.id.tv_drink_position);
         tv_drink_price = findViewById(R.id.tv_drink_price);
-
+        tv_drink_max_count = findViewById(R.id.tv_max_count);
+        
         final RequestQueue queue = Volley.newRequestQueue((this));
 
         btn_regi_drink.setOnClickListener(new View.OnClickListener() {
@@ -47,12 +48,15 @@ public class AddDrinkActivity extends AppCompatActivity {
                 int drinkPosition = Integer.parseInt(_drinkPosition);
                 String _drinkPrice = tv_drink_price.getText().toString();
                 int drinkPrice = Integer.parseInt(_drinkPrice);
+                String _drinkMaxCount = tv_drink_max_count.getText().toString();
+                int drinkMaxCount = Integer.parseInt(_drinkMaxCount);
 
                 JSONObject drink_info = new JSONObject();
                 try {
                     drink_info.put("name",drinkName);
                     drink_info.put("position",drinkPosition);
                     drink_info.put("price",drinkPrice);
+                    drink_info.put("count",drinkMaxCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

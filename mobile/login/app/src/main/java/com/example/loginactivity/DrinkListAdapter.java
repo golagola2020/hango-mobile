@@ -2,6 +2,8 @@ package com.example.loginactivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +94,10 @@ public class DrinkListAdapter extends BaseAdapter {
                     holder.positionText = (TextView) convertView.findViewById(R.id.positionText) ;
                     holder.priceText = (TextView) convertView.findViewById(R.id.priceText);
 
+                    //ImageView ivDrinkAmountCircle = (ImageView) convertView.findViewById(R.id.iv_drink_amount_circle);
+                    //GradientDrawable GradientDrawable = (GradientDrawable) ivDrinkAmountCircle.getBackground();
+                    //GradientDrawable.setColor(Color.BLUE);
+
                     convertView.setTag(holder);
                     /*TextView positionText = (TextView) convertView.findViewById(R.id.positionText) ;
                     TextView nameText = (TextView) convertView.findViewById(R.id.nameText) ;
@@ -126,6 +132,8 @@ public class DrinkListAdapter extends BaseAdapter {
             holder.nameText.setText(drinkItems.get(position).getDrinkName());
             holder.positionText.setText(drinkItems.get(position).getDrinkPosition());
             holder.priceText.setText(drinkItems.get(position).getDrinkPrice());
+
+
         }
 
         return convertView;
