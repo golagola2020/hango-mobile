@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +41,16 @@ public class DrinkMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
-        //mainActivity에서 받아온 자판기 정보로 수정예정
+        //음료 정보 가이드 라인 팝업창
+        ImageView guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
+        guide.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(DrinkMainActivity.this,GuideDrinkMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
         String vendingName = "이름 : "+intent.getStringExtra("name");;
         String vendingDescription = "설명 : " + intent.getStringExtra("description");;

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:id ="@+id/guide_layout"
+    tools:context=".GuideDrinkMainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="77dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:padding="6dp"
+        android:background="@drawable/btn_radius" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop = "10sp"
+            android:text ="음료 수량별 아이콘"
+            android:textColor="#000000"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <TextView
+            android:id="@+id/drinkPageVendingDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop = "10sp"
+            android:drawableLeft="@drawable/drink_amount_circle"
+            android:drawableTint="#0000FF"
+            android:text = "  충분 (100 ~ 70 %)"
+            android:textColor="#000000"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"  />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop = "10sp"
+            android:drawableLeft="@drawable/drink_amount_circle"
+            android:drawableTint="#00FF00"
+            android:text = "  여유 (70 ~ 40 %)"
+            android:textColor="#000000"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop = "10sp"
+            android:drawableLeft="@drawable/drink_amount_circle"
+            android:drawableTint="#FF0000"
+            android:text = "  충분 (40 ~ 10 %)"
+            android:textColor="#000000"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text = "[음료를 채워넣을 때, 음료의 최대 개수를 미충족하면 오류가 발생할 수 있습니다]"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="50dp"/>
+</LinearLayout>
