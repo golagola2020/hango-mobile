@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
-        printUserName(UserId);
+
 
 
         // 유저 정보 화면(InfoActivity)로 이동
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
                     JSONArray jsonArray = object.getJSONArray("vendings");
+                    String userName = object.getString("userName");
                     if(success){
 
                         for(int i =0;i<jsonArray.length();i++){
@@ -110,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //자판기 보유수 출력
                         printVendingCount();
+
+                        //유저 이름 출력
+                        printUserName(userName);
 
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
