@@ -15,7 +15,7 @@ URL = 'http://localhost:80'
 # 전역 변수 선언
 sensings = {} # 센싱된 데이터가 키와 값으로 저장될 딕셔너리 
 received_keys = set() # 아두이노에게 전달 받을 변수명 집합
-basic_keys = {'sensed_position', 'sold_position', 'state'} # 라즈베리파이가 가공할 변수명 집합
+basic_keys = {'success', 'sensed_position', 'sold_position', 'state'} # 라즈베리파이가 가공할 변수명 집합
 
 # 서버에서 전달받은 음료 정보가 저장될 전역 변수
 drinks = {
@@ -39,43 +39,56 @@ def main():
 
     # 무한 반복
     while True:
-        
-        # 아두이노에서 센싱된 데이터가 있으면 실행 
-        if port.readable() :
-            # 센싱 데이터 한 줄 단위로 수신
-            receive = port.readline()
-            # 이용 가능한 데이터인지 검사
-            receive = is_available(receive)
+        # 센싱 데이터 한 줄 단위로 수신
+        receive = port.readline()
+        # 이용 가능한 데이터인지 검사
+        receive = is_available(receive)
 
-            # 이용 가능한 데이터라면 실행 
-            if receive :
-                # 수신한 변수명 저장 
-                received_keys.add(receive[0])
-                
-                print('receive :', receive)
+        # 이용 가능한 데이터라면 실행 
+        if receive : #TRUE라면
+            # 수신한 변수명 저장 
+            received_keys.add(receive[0])
 
-                # 변수명과 값의 형태로 저장
-                sensings[ receive[0] ] = receive[1]
+            # 아두이노에서 받은 데이터를 변수명과 값의 형태로 저장, 딕셔너리 형태
+            sensings[ receive[0] ] = receive[1]
 
-                # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
-                if basic_keys.difference(received_keys) == set():
+            # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
+            if basic_keys.difference(received_keys) == set(): ##무슨 의미?? 차이가 없다는뜻?
+                # 아두이노에서 센싱된 데이터가 있으면 실행 
+                if sensings["success"] == '1' :
+                    # 출력
+                    print("센싱 데이터 수신 성공")
+                    
                     # 판매된 음료수가 있을 경우에 실행
                     if sensings["sold_position"] != "non" :
+                        print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
                         # 판매된 음료수 정보 차감 요청
                         requestDrinksUpdate()
-                    
+                        
+                        print("스피커 출력을 실행합니다.")
+                        speak("-v ko+f3 -s 160 -p 95", "sold", drinks["position"][int(sensings["sold_position"][:-2])-1])
+                                 
+                    # 손이 음료 버튼에 위치했을 경우에 실행
+                    if sensings["sensed_position"] != "non" :
+                        print("물체가 감지되어 스피커 출력을 실행합니다.")
+                        speak("-v ko+f3 -s 160 -p 95", "position", drinks["position"][int(sensings["sensed_position"][:-2])-1])
 
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                     received_keys.clear()
-            else :
-                print("수신 가능한 센싱 데이터가 아닙니다.")
+                        
+            # 아두이노에서 False만 보냈을 경우 
+            elif received_keys == {"success"} :
+                # 아두이노에서 센싱된 데이터가 없으면 실행
+                if sensings["success"] == '0' :
+                    print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
 
-        # 아두이노에서 센싱된 데이터가 없으면 실행 
+                    # 음료수 정보 요청
+                    requestDrinks()
+                    
+                    print("스피커 출력을 실행합니다. :인사말 ")
+                    #speak("-v ko+f3 -s 160 -p 95", "basic", None)
         else :
-            print("센싱 데이터가 없습니다.")
-
-            # 음료수 정보 요청
-            requestDrinks()
+            print("수신 가능한 센싱 데이터가 아닙니다.")
             
                 
 # 아두이노에게 수신한 데이터가 사용가능한 데이터인지 검사하는 함수 
@@ -103,13 +116,30 @@ def requestDrinks() :
     # 응답 JSON 데이터 변환
     response = json.loads(response.text)
 
+    # 서버에서 정상 응답이 온 경우
+    if response["success"] == True :
+        # 전역 변수 초기화
+        del drinks["position"][:]
+        del drinks["name"][:]
+        del drinks["price"][:]
+
+        # 서버 데이터 삽입
+        for drink in response["drinks"] :
+            drinks["position"].append(drink["position"])
+            drinks["name"].append(drink["name"])
+            drinks["price"].append(drink["price"])
+        
+    else :
+        # 서버 에러 메세지 출력
+        print(response["msg"])
+
 # 판매된 음료수 정보 차감 요청 함수
 def requestDrinksUpdate() :
     # 서버에게 요청할 데이터 생성
     drink = {
-        'serial_number' : SERIAL_NUMBER, #if you pull server, then serialNumber -> serial_number
-        'sold_position' : 1 # sensings["sensed_position"] #drink -> sold_position
-    }
+        'serial_number' : SERIAL_NUMBER,  
+        'sold_position' : 1
+        }
                             
     print('sensings : ', sensings)
 
@@ -119,30 +149,30 @@ def requestDrinksUpdate() :
     response = json.loads(response.text)
 
 ''' speak()
-    @ option : 음성 옵션
-    @ message : 스피커 출력 메세지
+    @ option : 음성 옵션  "-v ko+f3 -s 160 -p 95"
     @ status : 현재 자판기의 상태
         (1) basic : 센싱되고 있지 않은 기본 상태
         (2) position : 손이 음료를 향해 위치한 상태
         (3) sold : 음료수가 팔린 상태
-    @ idx : 음료의 포지션 인덱스
+    @ idx : 음료의 포지션 인덱스 'position : ?'    
 '''
 # 스피커 출력 함수
-def speak(option, message, status, idx) :
+def speak(option, status, idx) :
+    message = ""
     # 자판기 상태 검사
     if status == "basic" :
         # 센싱되고 있지 않은 기본 상태
 
         # 자판기의 모든 음료 정보를 하나의 문자열로 병합
         names = ""
-        for i, name in enumerate(drinks["name"]) :
+        for i, name in enumerate(drinks["name"]) : #[(0,'1234'),(1,'test2')...]
             names += str(i+1) + '번 : ' + name + ' : '
             
         message = "안녕하세요, 말하는 음료수 자판기입니다. 지금부터, 음료수 위치와, 이름, 가격을 말씀드리겠습니다. " + names
         
     elif status == "position" :
         # 손이 음료를 향해 위치한 상태
-        message = drinks["name"][idx] + '는 : ' + drinks["price"][idx] + '원, 입니다.'
+        message = drinks["name"][idx] + '는 : ' + str(drinks["price"][idx]) + '원, 입니다.'
     elif status == "sold" :
         # 음료수가 팔린 상태
         message = drinks["name"][idx] + '를, 선택하셨습니다. : 맛있게 드시고 : 즐거운 하루 되십시오.'
