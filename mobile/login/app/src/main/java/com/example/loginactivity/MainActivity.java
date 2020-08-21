@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
-        printUserName(UserId);
+
 
 
         // 유저 정보 화면(InfoActivity)로 이동
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     boolean success = object.getBoolean("success");
                     JSONArray jsonArray = object.getJSONArray("vendings");
+                    String userName = object.getString("userName");
                     if(success){
 
                         for(int i =0;i<jsonArray.length();i++){
@@ -109,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
                             vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
                         }
                         //자판기 보유수 출력
-                        printVendingCount();
+                        printVendingCount(vendingAdapter.getCount());
+
+                        //유저 이름 출력
+                        printUserName(userName);
 
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
@@ -185,11 +189,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //자판기 수 출력
-    private void printVendingCount(){
+    private void printVendingCount(int vendingCount){
         TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);
-        final VendingListAdapter vendingListAdapter = new VendingListAdapter(MainActivity.this);
-        int _vendingCount = vendingListAdapter.getCount();
-        String _vendingCountText = "보유중인 자판기 수 는 " + _vendingCount + " 대입니다.";
+
+        String _vendingCountText = "보유중인 자판기 수 는 " + vendingCount + " 대입니다.";
         SpannableStringBuilder s_vendingCountText = new SpannableStringBuilder(_vendingCountText);
         s_vendingCountText.setSpan(new ForegroundColorSpan(Color.parseColor("#d3d3d3")), 0, _vendingCountText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         vendingCountText.setText(_vendingCountText);
