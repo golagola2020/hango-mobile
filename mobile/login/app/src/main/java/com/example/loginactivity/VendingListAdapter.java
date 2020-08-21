@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.nfc.Tag;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,20 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class VendingListAdapter extends BaseAdapter implements Filterable {
@@ -133,8 +147,40 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View v) {
                 Log.i("TAG", position + " : delete");
-                MainActivity main = new MainActivity();
-                main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
+                RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+                final String url = "http://192.168.0.31:80/mobile/vending/delete";
+                StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            boolean success = object.getBoolean("success");
+                            if(success){
+                                Log.d("TAG","성공");
+                            }
+                            else{
+                                Log.d("TAG","실패");
+                            }
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    protected Map<String,String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("serialNumber", vdata.getVendingSerialNumber());
+                        Log.d("TAG","삭제 요청 시리얼" + vdata.getVendingSerialNumber() );
+                        return params;
+                    }
+                };
+
+                queue.add(strReq);
             }
         });
 
