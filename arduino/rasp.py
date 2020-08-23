@@ -10,7 +10,7 @@ PORT = '/dev/ttyACM0'
 SERIAL_NUMBER = '20200814042555141'
 
 # 데이터 요청 Domain 선언
-URL = 'http://localhost:80'
+URL = 'http://192.168.43.29:80'
 
 # 전역 변수 선언
 sensings = {} # 센싱된 데이터가 키와 값으로 저장될 딕셔너리 
@@ -45,33 +45,41 @@ def main():
         receive = is_available(receive)
 
         # 이용 가능한 데이터라면 실행 
-        if receive : #TRUE라면
+        if receive :
             # 수신한 변수명 저장 
             received_keys.add(receive[0])
 
             # 아두이노에서 받은 데이터를 변수명과 값의 형태로 저장, 딕셔너리 형태
-            sensings[ receive[0] ] = receive[1]
+            sensings[ receive[0] ] = int(receive[1])
 
             # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
-            if basic_keys.difference(received_keys) == set(): ##무슨 의미?? 차이가 없다는뜻?
+            if basic_keys.difference(received_keys) == set() :
+                '''
+                print("sold_position :", sensings["sold_position"])
+                print("sensed_position :", sensings["sensed_position"])
+                print("drinks_position :", drinks["position"])
+                print("drinks_name :", drinks["name"])
+                print("drinks_price :", drinks["price"])
+                '''
+                
                 # 아두이노에서 센싱된 데이터가 있으면 실행 
-                if sensings["success"] == '1' :
+                if sensings["success"] :
                     # 출력
                     print("센싱 데이터 수신 성공")
                     
                     # 판매된 음료수가 있을 경우에 실행
-                    if sensings["sold_position"] != "non" :
+                    if sensings["sold_position"] != -1 :
                         print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
                         # 판매된 음료수 정보 차감 요청
                         requestDrinksUpdate()
                         
                         print("스피커 출력을 실행합니다.")
-                        speak("-v ko+f3 -s 160 -p 95", "sold", drinks["position"][int(sensings["sold_position"][:-2])-1])
+                        speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
                                  
                     # 손이 음료 버튼에 위치했을 경우에 실행
-                    if sensings["sensed_position"] != "non" :
+                    if sensings["sensed_position"] != -1 :
                         print("물체가 감지되어 스피커 출력을 실행합니다.")
-                        speak("-v ko+f3 -s 160 -p 95", "position", drinks["position"][int(sensings["sensed_position"][:-2])-1])
+                        speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
 
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                     received_keys.clear()
@@ -79,14 +87,14 @@ def main():
             # 아두이노에서 False만 보냈을 경우 
             elif received_keys == {"success"} :
                 # 아두이노에서 센싱된 데이터가 없으면 실행
-                if sensings["success"] == '0' :
+                if not sensings["success"] :
                     print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
 
                     # 음료수 정보 요청
                     requestDrinks()
                     
                     print("스피커 출력을 실행합니다. :인사말 ")
-                    #speak("-v ko+f3 -s 160 -p 95", "basic", None)
+                    #speak("-v ko+f3 -s 160 -p 95", "basic")
         else :
             print("수신 가능한 센싱 데이터가 아닙니다.")
             
@@ -95,9 +103,9 @@ def main():
 def is_available(receive) :
     # 바이트형을 기본 문자열형으로 디코딩
     receive = list(map(lambda rcv : rcv.decode(), receive.split()))
-
+    
     # 수신한 변수명이 라즈베리파이에서 가공하고자하는 변수명들 중에 존재하는지 검사
-    if receive[0] in basic_keys :
+    if receive != [] and receive[0] in basic_keys :
         # 존재한다면 수신 데이터 반환 
         return receive
     
@@ -112,6 +120,7 @@ def requestDrinks() :
     }
 
     # 서버 요청
+
     response = requests.post(URL + '/rasp/drink/read', data = drink)
     # 응답 JSON 데이터 변환
     response = json.loads(response.text)
@@ -132,6 +141,7 @@ def requestDrinks() :
     else :
         # 서버 에러 메세지 출력
         print(response["msg"])
+
 
 # 판매된 음료수 정보 차감 요청 함수
 def requestDrinksUpdate() :
@@ -157,7 +167,7 @@ def requestDrinksUpdate() :
     @ idx : 음료의 포지션 인덱스 'position : ?'    
 '''
 # 스피커 출력 함수
-def speak(option, status, idx) :
+def speak(option, status, idx=None) :
     message = ""
     # 자판기 상태 검사
     if status == "basic" :
@@ -171,8 +181,8 @@ def speak(option, status, idx) :
         message = "안녕하세요, 말하는 음료수 자판기입니다. 지금부터, 음료수 위치와, 이름, 가격을 말씀드리겠습니다. " + names
         
     elif status == "position" :
-        # 손이 음료를 향해 위치한 상태
-        message = drinks["name"][idx] + '는 : ' + str(drinks["price"][idx]) + '원, 입니다.'
+        # 손이 음료를 향해 위치한 상태  drinks["position"][idx] + '번: ' +
+        message = '선택하신' + drinks["name"][idx] + '는 : ' + str(drinks["price"][idx]) + '원, 입니다.'
     elif status == "sold" :
         # 음료수가 팔린 상태
         message = drinks["name"][idx] + '를, 선택하셨습니다. : 맛있게 드시고 : 즐거운 하루 되십시오.'
