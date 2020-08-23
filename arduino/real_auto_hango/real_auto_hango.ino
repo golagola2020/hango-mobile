@@ -4,7 +4,7 @@
 
 // 최대값 [상수] 정의
 #define MAX_LINE 2        // 자판기 전체 라인 수
-#define MAX_POSITION 10   // 자판기 전체 칸 수
+#define MAX_POSITION 8   // 자판기 전체 칸 수
 #define PIN_COUNT 4       // 핀 개수
 #define ROOP_CNT 5        // i의 최대값을 결정. (정확도를 위해 손 측정시 몇번의 루프를 돌것인지 결정)
 
@@ -16,11 +16,11 @@ const int echoPin[PIN_COUNT] = {3, 6, 9, 11}; //음료수 개수
 // 지속시간 및 거리 선언
 long duration[PIN_COUNT], distance[PIN_COUNT];
 
-String drinks_numbers[MAX_LINE][(MAX_POSITION/MAX_LINE) + 1];    //0은 손감지 x 상태, 음료수 판매감지 x 상태
-String sensed_position[MAX_LINE];   //사용자가 선택한 음료 번호 저장할 곳
-String sold_position = "non";                             //선택되어 판매되는 음료수
-String final_sensed_position = "non";                     //센싱된 손의 영역 확정
-String state = "zero";
+int drinks_numbers[MAX_LINE][(MAX_POSITION/MAX_LINE) + 1];    //0은 손감지 x 상태, 음료수 판매감지 x 상태
+int sensed_position[MAX_LINE];   //사용자가 선택한 음료 번호 저장할 곳
+int sold_position = -1;                             //선택되어 판매되는 음료수
+int final_sensed_position = -1;                     //센싱된 손의 영역 확정
+int state = 0;
 
 int sensed_cnt[PIN_COUNT][(MAX_POSITION/MAX_LINE) + 1] = {0, };   //초음파 센서에 감지되는걸 카운트해 기록하는 곳.
 int i = 0;  // 정확도를 위해 돌려보는 횟수
@@ -35,12 +35,12 @@ void setInitVariable() {
   for (int i = 0; i < MAX_LINE; i++) {
     for (int j = 0; j < (MAX_POSITION/MAX_LINE) + 1; j++) {
       if (j == 0) {
-        drinks_numbers[i][j] = "non";     
+        drinks_numbers[i][j] = -1;     
       } else {
-        drinks_numbers[i][j] = String(cnt) + "st";
+        drinks_numbers[i][j] = cnt;
         cnt++;
       }
-    }
+    }  
   }
 }
 
@@ -54,11 +54,11 @@ void hand_count(float distance, int i, int cell) {
  *  i : 몇번째 라인인지 결정.
  *  cell : 한 라인에 음료수가 몇개 들어가는지. (칸)
  */
- if (0 <= distance && distance < (cell*10)+3)
+ if (10 <= distance && distance < (cell*10)+10)
     for (int k = 0; k < cell ; k++ ){
-       if ( ((cell*10)+3 - 10*(k+1)) <= distance && distance < ((cell*10)+3 - 10*k ) ) sensed_cnt[i][k]++; 
+       if ( ((cell*10)+10 - 10*(k+1)) <= distance && distance < ((cell*10)+10 - 10*k ) ) sensed_cnt[i][k]++; 
     }
-  if (distance > (cell*10)+3)
+  if (distance >= (cell*10)+10)
       sensed_cnt[i][0]++;
 }   
 
@@ -82,18 +82,28 @@ void most_hand_detect(int drink) {
 // 음료수가 복수 체크되었는지 오류체킹
 void multi_chosen_check(int line) { //MAXLINE
   int not_0 = 0;
+  int min = drinks_numbers[MAX_LINE-1][(MAX_POSITION/MAX_LINE)] ;
+  //Serial.print(min);
   for (int i = 0; i < line; i++) {
-    if (sensed_position[i] != "non") not_0 += 1;
+    if (sensed_position[i] != -1) not_0 += 1;
   }
 
   if (not_0 == 0) {
-    state = "zero";
+    state = 0;
   } else if (not_0 == 1) {
-    state = "one";
+    state = 1;
     for (int i = 0; i < line; i++) 
-      if (sensed_position[i] != "non") final_sensed_position = sensed_position[i];
+      if (sensed_position[i] != -1) final_sensed_position = sensed_position[i];
   }
-     else state = "multiple";
+     else for (int i = 0; i < line; i++){
+      state = 1;
+      if (sensed_position[i] != -1){
+        if (min > sensed_position[i]) 
+          min = sensed_position[i];       
+      }
+      final_sensed_position = min;
+     }
+      
 }
 
 
@@ -129,9 +139,12 @@ void loop() {
 
     //여기서 손 센싱 회수를 더함.
     hand_count(distance[i], i, (MAX_POSITION/MAX_LINE) + 1); 
-  }
-  
 
+    //Serial.println(distance[i]);
+  }
+  //Serial.println(" ");
+  
+/*
     for(int a=0;a<PIN_COUNT;a++){
     for(int b=0;b<(MAX_POSITION/MAX_LINE) + 1;b++){
       Serial.print(sensed_cnt[a][b]);
@@ -139,13 +152,13 @@ void loop() {
     }
     Serial.println(" ");
     }
-  
+*/
 
   i += 1;
 
   sensing_drink((MAX_POSITION/MAX_LINE) + 1); //chosen sale에 값을 넣음. 음료 판매 측정
   
-  if (final_sensed_position != "non"){
+  if (final_sensed_position != -1){
       Serial.print("Sold_drink:");
       Serial.println(sold_position); //선택되어 판매되는 음료수
   }
@@ -160,7 +173,7 @@ void loop() {
 
       multi_chosen_check(MAX_LINE); //2 : chosen number의 크기, 음료가 복수선택이 되었는지 보여주는 함수(오류체크)
 
-      if (final_sensed_position != "non" || sold_position != "non" || state != "zero"){   
+      if (final_sensed_position != -1 || sold_position != -1|| state != 0){   
         Serial.print("success ");
         Serial.println(true);
 
@@ -181,10 +194,10 @@ void loop() {
     }
   }
   for (int c = 0; c < MAX_LINE; c++) {
-    sensed_position[c] = "non"; //다음 음료 선택을 위해 초기화.
+    sensed_position[c] = -1; //다음 음료 선택을 위해 초기화.
   }
-  final_sensed_position = "non";
-  sold_position = "non";
-  state = "zero";
-  delay(500);
+  final_sensed_position = -1;
+  sold_position = -1;
+  state = 0;
+  delay(250);
 }
