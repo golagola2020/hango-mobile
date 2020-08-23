@@ -1,9 +1,7 @@
 # 모듈포함
-import os
-import sys
-import json
-import requests
-import time
+import os, sys, signal, time
+import requests, json
+from multiprocessing import Queue
 
 # 초기 세팅
 SERIAL_NUMBER = '20200814042555141'
@@ -34,72 +32,108 @@ test = [
 ] 
 
 test2 = [["success", "0"]]
-    
+
 # 메인 함수
 def main():
     # 음료수 정보 요청
     requestDrinks()
+    q = Queue()
+    q_status = False
 
     # 무한 반복
-    while True:
-        for t in test :
-            for data in t :
-                receive = testReceive(data)
+    # while True:
+    for t in test :
+        for data in t :
+            receive = testReceive(data)
 
-                # 이용 가능한 데이터라면 실행 
-                if receive :
-                    # 수신한 변수명 저장 
-                    received_keys.add(receive[0])
+            # 이용 가능한 데이터라면 실행 
+            if receive :
+                # 수신한 변수명 저장 
+                received_keys.add(receive[0])
 
-                    # 아두이노에서 받은 데이터를 변수명과 값의 형태로 저장, 딕셔너리 형태
-                    sensings[ receive[0] ] = int(receive[1])
-                    print(sensings)
+                # 아두이노에서 받은 데이터를 변수명과 값의 형태로 저장, 딕셔너리 형태
+                sensings[ receive[0] ] = int(receive[1])
+                print(sensings)
 
-                    # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
-                    if basic_keys.difference(received_keys) == set() :
-                        # 아두이노에서 센싱된 데이터가 있으면 실행 
-                        if sensings["success"] :
-                            # 출력
-                            print("센싱 데이터 수신 성공")
+                # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
+                if basic_keys.difference(received_keys) == set() :
+                    # 아두이노에서 센싱된 데이터가 있으면 실행 
+                    if sensings["success"] :
+                        # 출력
+                        print("센싱 데이터 수신 성공")
+                        
+                        # 판매된 음료수가 있을 경우에 실행
+                        if sensings["sold_position"] != -1 :
+                            print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
+                            # 판매된 음료수 정보 차감 요청
+                            requestDrinksUpdate()
                             
-                            # 판매된 음료수가 있을 경우에 실행
-                            if sensings["sold_position"] != -1 :
-                                print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
-                                # 판매된 음료수 정보 차감 요청
-                                requestDrinksUpdate()
-                                
-                                pid = os.fork()
-                                if pid == 0 :
-                                    print(os.getpid())
-                                    print("자식프로세스가 스피커 출력을 실행합니다.")
-                                    speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
+                            # 큐에 저장된 데이터 불러오기 (저장된 데이터가 없는데 불러와서 아직은 에러가 남)
+                            if q_status :
+                                q_receive = q.get()
+                                print(q_receive)
+                                # 저장된 데이터(pid)가 있으면 실행
+                                if q_receive :
+                                    q_status = True
+                                    # 기존에 실행 중이던 espeak 종료
+                                    os.kill(q_receive, signal.SIGKILL)
+                                else :
+                                    q_status = False
+
+                            # 프로세스 생성
+                            pid = os.fork()
+                            if pid == 0 :
+                                # 프로세스 아이디 큐에 저장
+                                q.put(os.getpid())
+                                q_status = True
+                                print("자식프로세스가 스피커 출력을 실행합니다.")
+                                speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
+                                time.sleep(2)
                                     
-                                        
-                            # 손이 음료 버튼에 위치했을 경우에 실행
-                            elif sensings["sensed_position"] != -1 :
-                                pid = os.fork()
-                                if pid == 0 :
-                                    print(os.getpid())
-                                    print("물체가 감지되어 스피커 출력을 실행합니다.")
-                                    speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
-                                    
-                            
-                            # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
-                            received_keys.clear()
-                                
-                    # 아두이노에서 False만 보냈을 경우 
-                    elif received_keys == {"success"} :
-                        # 아두이노에서 센싱된 데이터가 없으면 실행
-                        if not sensings["success"] :
-                            print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
+                        # 손이 음료 버튼에 위치했을 경우에 실행
+                        elif sensings["sensed_position"] != -1 :
+                            # 큐에 저장된 데이터 불러오기 (저장된 데이터가 없는데 불러와서 아직은 에러가 남)
+                            if q_status :
+                                q_receive = q.get()
+                                print(q_receive)
+                                # 저장된 데이터(pid)가 있으면 실행
+                                if q_receive :
+                                    q_status = True
+                                    # 기존에 실행 중이던 espeak 종료
+                                    os.kill(q_receive, signal.SIGKILL)
+                                else :
+                                    q_status = False
 
-                            # 음료수 정보 요청
-                            requestDrinks()
+                            # 프로세스 생성
+                            pid = os.fork()
+                            if pid == 0 :
+                                # 프로세스 아이디 큐에 저장
+                                q.put(os.getpid())
+                                q_status = True
+                                print("물체가 감지되어 스피커 출력을 실행합니다.")
+                                speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
+                                time.sleep(2)
+
+                                # p = Process(target=speak, args=("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1))
+                                # p.start()
+                                # p.join()
+                                
+                        # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
+                        received_keys.clear()
                             
-                            print("스피커 출력을 실행합니다. :인사말 ")
-                            #speak("-v ko+f3 -s 160 -p 95", "basic")
-                else :
-                    print("수신 가능한 센싱 데이터가 아닙니다.")
+                # 아두이노에서 False만 보냈을 경우 
+                elif received_keys == {"success"} :
+                    # 아두이노에서 센싱된 데이터가 없으면 실행
+                    if not sensings["success"] :
+                        print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
+
+                        # 음료수 정보 요청
+                        requestDrinks()
+                        
+                        print("스피커 출력을 실행합니다. :인사말 ")
+                        #speak("-v ko+f3 -s 160 -p 95", "basic")
+            else :
+                print("수신 가능한 센싱 데이터가 아닙니다.")
 
 def testReceive(data) :
     if data[0] in basic_keys :
