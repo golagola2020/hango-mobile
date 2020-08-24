@@ -1,7 +1,6 @@
 # 모듈포함
 import os, sys, signal, time
 import requests, json
-from multiprocessing import Queue
 
 # 초기 세팅
 SERIAL_NUMBER = '20200814042555141'
@@ -37,8 +36,7 @@ test2 = [["success", "0"]]
 def main():
     # 음료수 정보 요청
     requestDrinks()
-    q = Queue()
-    q_status = False
+    pid = 0
 
     # 무한 반복
     # while True:
@@ -68,55 +66,36 @@ def main():
                             # 판매된 음료수 정보 차감 요청
                             requestDrinksUpdate()
                             
-                            # 큐에 저장된 데이터 불러오기 (저장된 데이터가 없는데 불러와서 아직은 에러가 남)
-                            if q_status :
-                                q_receive = q.get()
-                                print(q_receive)
-                                # 저장된 데이터(pid)가 있으면 실행
-                                if q_receive :
-                                    q_status = True
-                                    # 기존에 실행 중이던 espeak 종료
-                                    os.kill(q_receive, signal.SIGKILL)
-                                else :
-                                    q_status = False
+                            # 실행중인 espeak 프로세스 종료
+                            speak_exit(pid)
 
                             # 프로세스 생성
                             pid = os.fork()
                             if pid == 0 :
-                                # 프로세스 아이디 큐에 저장
-                                q.put(os.getpid())
-                                q_status = True
-                                print("자식프로세스가 스피커 출력을 실행합니다.")
+                                # 자식프로세스 실행 구문
+                                print("스피커 출력을 실행합니다.")
                                 speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
-                                time.sleep(2)
+                                # 스피커 출력 후 프로세스 종료
+                                sys.exit(0)
+
+                            time.sleep(2)
+                            
                                     
                         # 손이 음료 버튼에 위치했을 경우에 실행
                         elif sensings["sensed_position"] != -1 :
-                            # 큐에 저장된 데이터 불러오기 (저장된 데이터가 없는데 불러와서 아직은 에러가 남)
-                            if q_status :
-                                q_receive = q.get()
-                                print(q_receive)
-                                # 저장된 데이터(pid)가 있으면 실행
-                                if q_receive :
-                                    q_status = True
-                                    # 기존에 실행 중이던 espeak 종료
-                                    os.kill(q_receive, signal.SIGKILL)
-                                else :
-                                    q_status = False
+                            # 실행중인 espeak 프로세스 종료
+                            speak_exit(pid)
 
                             # 프로세스 생성
                             pid = os.fork()
                             if pid == 0 :
-                                # 프로세스 아이디 큐에 저장
-                                q.put(os.getpid())
-                                q_status = True
+                                # 자식프로세스 실행 구문
                                 print("물체가 감지되어 스피커 출력을 실행합니다.")
                                 speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
-                                time.sleep(2)
+                                # 스피커 출력 후 프로세스 종료
+                                sys.exit(0)
 
-                                # p = Process(target=speak, args=("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1))
-                                # p.start()
-                                # p.join()
+                            time.sleep(2)
                                 
                         # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                         received_keys.clear()
@@ -134,6 +113,15 @@ def main():
                         #speak("-v ko+f3 -s 160 -p 95", "basic")
             else :
                 print("수신 가능한 센싱 데이터가 아닙니다.")
+
+def speak_exit(pid) :
+    if pid :
+        # 자식프로세스 출력 후 종료
+        print(pid, "espeak 프로세스를 종료합니다.")
+        # os.kill(q_receive, signal.SIGTERM)
+        # os.system("taskkill /F /pid {}".format(q_receive))
+        # os.system("kill -9 {}".format(pid))
+        os.system("killall -9 espeak")
 
 def testReceive(data) :
     if data[0] in basic_keys :
