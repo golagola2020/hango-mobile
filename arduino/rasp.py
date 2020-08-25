@@ -1,16 +1,14 @@
 # 모듈포함
-import os
+import os, sys
 import serial
-import json
-import requests
-import pprint
+import requests, json
 
 # 초기 세팅
 PORT = '/dev/ttyACM0'
 SERIAL_NUMBER = '20200814042555141'
 
 # 데이터 요청 Domain 선언
-URL = 'http://192.168.43.29:80'
+URL = 'http://localhost:80'
 
 # 전역 변수 선언
 sensings = {} # 센싱된 데이터가 키와 값으로 저장될 딕셔너리 
@@ -26,6 +24,8 @@ drinks = {
     
 # 메인 함수
 def main():
+    pid = 0
+    pre_process = ''
 
     # 아두이노와 시리얼 통신할 인스턴스 생성 
     port = serial.Serial(
@@ -54,13 +54,6 @@ def main():
 
             # 라즈베리파이가 가공할 데이터를 모두 수신 했다면 실행 
             if basic_keys.difference(received_keys) == set() :
-                '''
-                print("sold_position :", sensings["sold_position"])
-                print("sensed_position :", sensings["sensed_position"])
-                print("drinks_position :", drinks["position"])
-                print("drinks_name :", drinks["name"])
-                print("drinks_price :", drinks["price"])
-                '''
                 
                 # 아두이노에서 센싱된 데이터가 있으면 실행 
                 if sensings["success"] :
@@ -69,35 +62,81 @@ def main():
                     
                     # 판매된 음료수가 있을 경우에 실행
                     if sensings["sold_position"] != -1 :
-                        print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
-                        # 판매된 음료수 정보 차감 요청
-                        requestDrinksUpdate()
-                        
-                        print("스피커 출력을 실행합니다.")
-                        speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
-                                 
-                    # 손이 음료 버튼에 위치했을 경우에 실행
-                    if sensings["sensed_position"] != -1 :
-                        print("물체가 감지되어 스피커 출력을 실행합니다.")
-                        speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
+                        print("pre_process:", pre_process)
+                        if pre_process != sensings["sold_position"] :
+                            pre_process = sensings["sold_position"]
 
+                            # 실행중인 espeak 프로세스 종료
+                            speak_exit(pid)
+
+                            # 판매된 음료수 정보 차감 요청
+                            print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
+                            requestDrinksUpdate()
+
+                            # 프로세스 생성
+                            pid = os.fork()
+                            
+                            if pid == 0 :                                                        
+                                # 자식프로세스 실행 구문
+                                print("스피커 출력을 실행합니다.")
+                                speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
+                                # 스피커 출력 후 프로세스 종료
+                                sys.exit(0)
+                            os.waitpid(pid, 0)
+                            
+                    # 손이 음료 버튼에 위치했을 경우에 실행
+                    elif sensings["sensed_position"] != -1 :
+                        print("pre_process:", pre_process)
+                        if pre_process != sensings["sensed_position"] :
+                            pre_process = sensings["sensed_position"]
+
+                            # 실행중인 espeak 프로세스 종료
+                            speak_exit(pid)
+
+                            # 프로세스 생성
+                            pid = os.fork()
+                            if pid == 0 :
+                                # 자식프로세스 실행 구문
+                                print("물체가 감지되어 스피커 출력을 실행합니다.")
+                                speak("-v ko+f3 -s 160 -p 95", "position", sensings["sensed_position"]-1)
+                                # 스피커 출력 후 프로세스 종료
+                                sys.exit(0)
+                            os.waitpid(pid, 0)
+                            
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                     received_keys.clear()
                         
             # 아두이노에서 False만 보냈을 경우 
             elif received_keys == {"success"} :
                 # 아두이노에서 센싱된 데이터가 없으면 실행
-                if not sensings["success"] :
-                    print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
+                if sensings["success"] == False :
+                    print("pre_process:", pre_process)
+                    if pre_process != sensings["success"] :
+                        pre_process = False
 
-                    # 음료수 정보 요청
-                    requestDrinks()
-                    
-                    print("스피커 출력을 실행합니다. :인사말 ")
-                    #speak("-v ko+f3 -s 160 -p 95", "basic")
+                        # 실행중인 espeak 프로세스 종료
+                        speak_exit(pid)
+
+                        # 음료수 정보 요청
+                        print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다.")
+                        requestDrinks()
+
+                        # 프로세스 생성
+                        pid = os.fork()
+                        if pid == 0 :
+                            # 자식프로세스 실행 구문
+                            print("스피커 출력을 실행합니다. :인사말 ")
+                            speak("-v ko+f3 -s 160 -p 95", "basic")
+                            # 스피커 출력 후 프로세스 종료
+                            sys.exit(0)
         else :
             print("수신 가능한 센싱 데이터가 아닙니다.")
-            
+
+def speak_exit(pid) :
+    if pid :
+        # 자식프로세스 출력 후 종료
+        print(pid, "espeak 프로세스를 종료합니다.")
+        os.system("killall -9 espeak")
                 
 # 아두이노에게 수신한 데이터가 사용가능한 데이터인지 검사하는 함수 
 def is_available(receive) :
