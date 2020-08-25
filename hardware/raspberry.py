@@ -96,7 +96,7 @@ def main():
                             print("물체가 감지되어 스피커 출력을 실행합니다.")
 
                             # 해당 음료가 품절일 경우 실행
-                            if drinks["count"][sensings["sensed_position"]] <= 0 :
+                            if drinks["count"][sensings["sensed_position"]-1] <= 0 :
                                 # 스피커 출력
                                 speak(SPEAK_OPTION, "sold_out", sensings["sensed_position"]-1)
                             else :
