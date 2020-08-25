@@ -77,7 +77,7 @@ def main():
                                 speak("-v ko+f3 -s 160 -p 95", "sold", sensings["sold_position"]-1)
                                 # 스피커 출력 후 프로세스 종료
                                 sys.exit(0)
-
+                            
                             time.sleep(2)
                             
                                     
