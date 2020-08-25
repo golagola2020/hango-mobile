@@ -1,7 +1,7 @@
 # 모듈포함
-import os, sys
-import serial
-import requests, json
+import os, sys                  # 시스템 모듈
+import serial                   # 직렬 통신 모듈
+import requests, json           # HTTP 통신 및 JSON 모듈
 
 # 초기 세팅
 PORT = '/dev/ttyACM0'
@@ -22,6 +22,7 @@ drinks = {
     'position' : [],
     'name' : [],
     'price' : [],
+    'count' : []
 }
     
 # 메인 함수
@@ -92,9 +93,15 @@ def main():
                             # 실행중인 espeak 프로세스 종료
                             speak_exit(pid)
 
-                            # 스피커 출력
                             print("물체가 감지되어 스피커 출력을 실행합니다.")
-                            speak(SPEAK_OPTION), "position", sensings["sensed_position"]-1)
+
+                            # 해당 음료가 품절일 경우 실행
+                            if drinks["count"][sensings["sensed_position"]] <= 0 :
+                                # 스피커 출력
+                                speak(SPEAK_OPTION, "sold_out", sensings["sensed_position"]-1)
+                            else :
+                                # 스피커 출력
+                                speak(SPEAK_OPTION), "position", sensings["sensed_position"]-1)
                             
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                     received_keys.clear()
@@ -137,6 +144,7 @@ def speak_exit(pid) :
 def is_available(receive) :
     '''
         아두이노로부터 수신한 데이터가 사용가능한 데이터인지 검사
+
         @ receive : 아두이노와 시리얼 통신을 통해 받은 수신 데이터
     '''
 
@@ -178,16 +186,18 @@ def request_drinks() :
         del drinks["position"][:]
         del drinks["name"][:]
         del drinks["price"][:]
+        del drinksp["count"][:]
 
         # 서버 데이터 삽입
         for drink in response["drinks"] :
             drinks["position"].append(drink["position"])
             drinks["name"].append(drink["name"])
             drinks["price"].append(drink["price"])
+            drinks["count"].append(drink["count"])
         
     else :
         # 서버 에러 메세지 출력
-        print(response["msg"])
+        print("서버에서 음료 정보 조회 중 에러가 발생하였습니다.\n서버 에러 메세지 : " + response["msg"])
 
 
 # 판매된 음료수 정보 차감 요청 함수
@@ -225,12 +235,13 @@ def speak(option, status, idx=None) :
         스피커 출력 함수
         espeak 출력을 별도의 프로세스로 분할하여 동작시킨다.
 
-        @ option : 음성 옵션  "-v ko+f3 -s 160 -p 95"
+        @ option : 음성 옵션  ( ex : '-v ko+f3 -s 160 -p 95' )
         @ status : 현재 자판기의 상태
             (1) basic : 센싱되고 있지 않은 기본 상태
             (2) position : 손이 음료를 향해 위치한 상태
             (3) sold : 음료수가 팔린 상태
-        @ idx : 음료의 포지션 배열 인덱스 ( 예 : drinks["( VALUE )"][idx] )
+            (4) sold_out : 음료수 품절 상태
+        @ idx : 음료의 포지션 배열 인덱스 ( ex : drinks["( VALUE )"][idx] )
     '''
 
     message = ""
@@ -257,7 +268,9 @@ def speak(option, status, idx=None) :
         elif status == "sold" :
             ''' 음료수가 팔린 상태 '''
             message = drinks["name"][idx] + '를, 선택하셨습니다. : 맛있게 드시고 : 즐거운 하루 되십시오.'
-
+        elif status == "sold_out" :
+            ''' 음료수 품절 상태 '''
+            message = drinks["name"][idx] + '는 : 품, 절, 입니다.'
         # 스피커 출력
         os.system("espeak {} '{}'".format(option, message))
         
