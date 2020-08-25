@@ -1,9 +1,0 @@
-/*
-    for(int a=0;a<PIN_COUNT;a++){
-    for(int b=0;b<(MAX_POSITION/MAX_LINE) + 1;b++){
-      Serial.print(sensed_cnt[a][b]);
-      Serial.print(" ");
-    }
-    Serial.println(" ");
-    }
-*/
