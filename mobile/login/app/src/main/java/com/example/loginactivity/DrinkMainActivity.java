@@ -84,7 +84,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject drink = jsonArray.getJSONObject(i);
                             //음료 수많큼 gridview에 drink_item 생성
-                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("count"));
+                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
                             Log.d("TAG",i+"번쨰 어댑터 값 :  " + drink.getInt("position")+" : " + drink.getString("name")+" : " + drink.getString("price") + " : " + drink.getString("count"));
                         }
 

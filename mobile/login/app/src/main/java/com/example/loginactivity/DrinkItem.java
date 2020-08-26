@@ -5,7 +5,7 @@ public class DrinkItem {
     private String drinkName;
     private String drinkPrice;
     private int maxCount;
-    private int remainCount;
+    private int count;
 
     private int type;
 
@@ -23,7 +23,7 @@ public class DrinkItem {
 
     public int getMaxCount(){return this.maxCount;}
 
-    public int getRemainCount(){return this.remainCount;}
+    public int getCount(){return this.count;}
 
     public int getType(){return this.type;}
 
@@ -41,7 +41,7 @@ public class DrinkItem {
 
     public void setMaxCount(int maxCount){this.maxCount =maxCount;}
 
-    public void setRemainCount(int remainCount){this.remainCount = remainCount;}
+    public void setCount(int count){this.count = count;}
 
     public void setType(int type){this.type = type;}
 }

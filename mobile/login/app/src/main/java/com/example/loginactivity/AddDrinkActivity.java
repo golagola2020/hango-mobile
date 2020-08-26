@@ -32,7 +32,7 @@ public class AddDrinkActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String serialNumber = intent.getStringExtra("VendingSerialNumber");
         final int position = intent.getIntExtra("position",1);
-
+        Log.d("TAG","넘어온 포지션 값 : "+position);
         btn_regi_drink = findViewById(R.id.btn_regi_drink);
 
         tv_drink_name = findViewById(R.id.tv_drink_name);
@@ -54,7 +54,7 @@ public class AddDrinkActivity extends AppCompatActivity {
                     drink_info.put("position",position);
                     drink_info.put("name",drinkName);
                     drink_info.put("price",drinkPrice);
-                    drink_info.put("count",drinkMaxCount);
+                    drink_info.put("maxCount",drinkMaxCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
