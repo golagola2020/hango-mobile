@@ -70,6 +70,10 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         return userId;
     }
 
+    public void itemClear(){
+        VData.clear();
+    }
+
     @Override
     public int getCount() {
         return filteredVData.size();
@@ -121,10 +125,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 Intent intent = new Intent(context,UpdateVendingActivity.class);
                 intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
-                intent.putExtra("userId",getUserId());
                 v.getContext().startActivity(intent);
-                ((Activity)context).finish();
-                Log.d("TAG","끝나고 난뒤");
             }
         });
         holder.VendingDeletImage.setOnClickListener(new View.OnClickListener() {

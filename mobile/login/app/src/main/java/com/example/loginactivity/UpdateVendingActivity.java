@@ -44,7 +44,6 @@ public class UpdateVendingActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         final String VendingSerialNumber = intent.getStringExtra("VendingSerialNumber"); //intent로 받아온 userID
-        final String userId = intent.getStringExtra("userId");
         final RequestQueue queue = Volley.newRequestQueue((this));
 
         btn_add_vending.setOnClickListener(new View.OnClickListener() {
@@ -81,13 +80,7 @@ public class UpdateVendingActivity extends AppCompatActivity {
                             boolean success = response.getBoolean("success");
                             Log.d("TAG", "결과 : " + success);
                             if (success) {
-                                Intent intent1 = new Intent(UpdateVendingActivity.this,MainActivity.class);
-                                intent1.putExtra("userId",userId);
                                 finish();
-                                startActivity(intent1);
-
-
-
                             } else {
                                 Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
                             }

@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    public VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,97 +77,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         //자판기검색 editText
         final EditText vendingSearch = (EditText) findViewById(R.id.et_search_vending);
 
-        //자판기 정보
-        final ArrayList<VendingData> VData = new ArrayList<>();
-        final JSONArray vendingArray = new JSONArray();
 
         //ListView, Adapter 생성 및 연결
         final ListView vendingListView = (ListView) findViewById(R.id.MainListView);
-        final VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
 
         vendingAdapter.setUserId(UserId);
 
-        //자판기 데이터 파싱하기
-        RequestQueue queue = Volley.newRequestQueue((this));
-
-        final String url = "http://192.168.0.31:80/mobile/vending/read";
 
 
-        StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+        //listview 목록 출력
+        vendingListView.setAdapter(vendingAdapter);
+
+        //자판기 검색 기능
+        vendingSearch.addTextChangedListener(new TextWatcher(){
+
             @Override
-            public void onResponse(String response) {
-                try{
-                    JSONObject object = new JSONObject(response);
-                    boolean success = object.getBoolean("success");
-                    JSONArray jsonArray = object.getJSONArray("vendings");
-                    String userName = object.getString("userName");
-                    if(success){
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                        for(int i =0;i<jsonArray.length();i++){
-                            JSONObject vending = jsonArray.getJSONObject(i);
-                            Log.d("TAG","출력 : " +vending);
-                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
+            }
 
-                        }
-                        //자판기 보유수 출력
-                        printVendingCount(vendingAdapter.getCount());
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                        //유저 이름 출력
-                        printUserName(userName);
-                        //listview 목록 출력
-                        vendingListView.setAdapter(vendingAdapter);
-                        //vendingAdapter.notifyDataSetChanged();
-                        vendingSearch.addTextChangedListener(new TextWatcher(){
+            }
 
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                String filterText = s.toString();
-                                if(filterText.length() > 0){
-                                    vendingListView.setFilterText(filterText);
-                                }
-                                else{
-                                    vendingListView.clearTextFilter();
-                                }
-                            }
-                        });
-
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e){
-                    e.printStackTrace();
+            @Override
+            public void afterTextChanged(Editable s) {
+                String filterText = s.toString();
+                if(filterText.length() > 0){
+                    vendingListView.setFilterText(filterText);
+                }
+                else{
+                    vendingListView.clearTextFilter();
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        });
 
-            }
-        }){
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userId", UserId);
-                return params;
-            }
-        };
 
-        queue.add(strReq);
-
+        vendingDataParser(vendingAdapter);
 
         //각 자판기 list클릭시 이벤트
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -188,8 +143,63 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void test(){
 
+
+
+    public void vendingDataParser(final VendingListAdapter vendingAdapter){
+        //자판기 데이터 파싱하기
+        vendingAdapter.itemClear();
+        RequestQueue queue = Volley.newRequestQueue((this));
+
+        final String url = "http://192.168.0.31:80/mobile/vending/read";
+
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject object = new JSONObject(response);
+                    boolean success = object.getBoolean("success");
+                    JSONArray jsonArray = object.getJSONArray("vendings");
+                    String userName = object.getString("userName");
+                    if(success){
+
+                        for(int i =0;i<jsonArray.length();i++){
+                            JSONObject vending = jsonArray.getJSONObject(i);
+                            Log.d("TAG","출력 : " +vending);
+                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
+
+                        }
+
+                        //유저 이름 출력
+                        printUserName(userName);
+
+                        //자판기 보유수 출력
+                        printVendingCount(vendingAdapter.getCount());
+
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            protected Map<String,String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", vendingAdapter.getUserId());
+                return params;
+            }
+        };
+
+        queue.add(strReq);
     }
     //자판기 수 출력
     private void printVendingCount(int vendingCount){
@@ -253,5 +263,10 @@ public class MainActivity extends AppCompatActivity {
 
         queue.add(strReq);
     }
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        vendingDataParser(vendingAdapter);
+        Toast.makeText(this, "onRestart 호출 됨",Toast.LENGTH_LONG).show();
+    }
 }
