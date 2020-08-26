@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
 
-
+        Log.d("TAG","받아온 id 값: " + UserId);
 
         // 유저 정보 화면(InfoActivity)로 이동
         btn_user_info.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<VendingData> VData = new ArrayList<>();
         final JSONArray vendingArray = new JSONArray();
 
-
         //ListView, Adapter 생성 및 연결
         final ListView vendingListView = (ListView) findViewById(R.id.MainListView);
         final VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
+
+        vendingAdapter.setUserId(UserId);
 
         //자판기 데이터 파싱하기
         RequestQueue queue = Volley.newRequestQueue((this));
@@ -114,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
                         //유저 이름 출력
                         printUserName(userName);
-
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
                         //vendingAdapter.notifyDataSetChanged();
@@ -187,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void test(){
 
+    }
     //자판기 수 출력
     private void printVendingCount(int vendingCount){
         TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);

@@ -2,6 +2,7 @@ package com.example.loginactivity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -39,9 +40,10 @@ import java.util.Map;
 
 public class VendingListAdapter extends BaseAdapter implements Filterable {
 
+    String userId;
 
     LayoutInflater inflater = null;
-    private ArrayList<VendingData> VData = new ArrayList<>();
+    public ArrayList<VendingData> VData = new ArrayList<>();
     private ArrayList<VendingData> filteredVData = VData;
     private Context context;
 
@@ -60,7 +62,13 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         VData.add(vdata);
     }
 
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
+    public String getUserId(){
+        return userId;
+    }
 
     @Override
     public int getCount() {
@@ -86,7 +94,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         final VendingData vdata = VData.get(position);
 
         ViewHolder holder;
-
         if(convertView == null) {
 
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -100,33 +107,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             holder.VendingUpdateImage = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
             holder.VendingDeletImage = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
             convertView.setTag(holder);
-            /*TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
-            TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_description);
 
-            TextVendingName.setText((position + 1) + ". " + vdata.getVendingName());
-            TextVendingDiscription.setText(vdata.getVendingDescription());
-            ImageView btnVendingUpdate = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
-            ImageView btnVendingDelete = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
-
-            //자판기 listview 수정버튼 기능
-            btnVendingUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context,UpdateVendingActivity.class);
-                    intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
-                    v.getContext().startActivity(intent);
-                }
-            });
-
-            //자판기 listview 삭제버튼기능
-            btnVendingDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i("TAG", position + " : delete");
-                    MainActivity main = new MainActivity();
-                    main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
-                }
-            });*/
         }
         else{
             holder = (ViewHolder) convertView.getTag();
@@ -140,7 +121,10 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 Intent intent = new Intent(context,UpdateVendingActivity.class);
                 intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
+                intent.putExtra("userId",getUserId());
                 v.getContext().startActivity(intent);
+                ((Activity)context).finish();
+                Log.d("TAG","끝나고 난뒤");
             }
         });
         holder.VendingDeletImage.setOnClickListener(new View.OnClickListener() {
