@@ -2,9 +2,11 @@ package com.example.loginactivity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.nfc.Tag;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +22,28 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class VendingListAdapter extends BaseAdapter implements Filterable {
 
+    String userId;
 
     LayoutInflater inflater = null;
-    private ArrayList<VendingData> VData = new ArrayList<>();
+    public ArrayList<VendingData> VData = new ArrayList<>();
     private ArrayList<VendingData> filteredVData = VData;
     private Context context;
 
@@ -46,7 +62,13 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         VData.add(vdata);
     }
 
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
+    public String getUserId(){
+        return userId;
+    }
 
     @Override
     public int getCount() {
@@ -72,7 +94,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         final VendingData vdata = VData.get(position);
 
         ViewHolder holder;
-
         if(convertView == null) {
 
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -86,33 +107,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             holder.VendingUpdateImage = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
             holder.VendingDeletImage = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
             convertView.setTag(holder);
-            /*TextView TextVendingName = (TextView) convertView.findViewById(R.id.vending_list_name);
-            TextView TextVendingDiscription = (TextView) convertView.findViewById(R.id.vending_list_description);
 
-            TextVendingName.setText((position + 1) + ". " + vdata.getVendingName());
-            TextVendingDiscription.setText(vdata.getVendingDescription());
-            ImageView btnVendingUpdate = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
-            ImageView btnVendingDelete = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
-
-            //자판기 listview 수정버튼 기능
-            btnVendingUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context,UpdateVendingActivity.class);
-                    intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
-                    v.getContext().startActivity(intent);
-                }
-            });
-
-            //자판기 listview 삭제버튼기능
-            btnVendingDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i("TAG", position + " : delete");
-                    MainActivity main = new MainActivity();
-                    main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
-                }
-            });*/
         }
         else{
             holder = (ViewHolder) convertView.getTag();
@@ -126,16 +121,50 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 Intent intent = new Intent(context,UpdateVendingActivity.class);
                 intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
-
+                intent.putExtra("userId",getUserId());
                 v.getContext().startActivity(intent);
+                ((Activity)context).finish();
+                Log.d("TAG","끝나고 난뒤");
             }
         });
         holder.VendingDeletImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("TAG", position + " : delete");
-                MainActivity main = new MainActivity();
-                main.VendingDeleteRequest(VData, vdata.getVendingSerialNumber());
+                RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+                final String url = "http://192.168.0.31:80/mobile/vending/delete";
+                StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            boolean success = object.getBoolean("success");
+                            if(success){
+                                Log.d("TAG","성공");
+                            }
+                            else{
+                                Log.d("TAG","실패");
+                            }
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    protected Map<String,String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("serialNumber", vdata.getVendingSerialNumber());
+                        Log.d("TAG","삭제 요청 시리얼" + vdata.getVendingSerialNumber() );
+                        return params;
+                    }
+                };
+
+                queue.add(strReq);
             }
         });
 
