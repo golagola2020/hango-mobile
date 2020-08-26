@@ -1,5 +1,6 @@
 package com.example.loginactivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,20 +42,16 @@ public class UpdateVendingActivity extends AppCompatActivity {
         vending_fullsize = findViewById(R.id.Vending_size);
         btn_add_vending = findViewById(R.id.btn_Regi_vending);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         final String VendingSerialNumber = intent.getStringExtra("VendingSerialNumber"); //intent로 받아온 userID
-
+        final String userId = intent.getStringExtra("userId");
         final RequestQueue queue = Volley.newRequestQueue((this));
 
         btn_add_vending.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String vendingName = vending_name.getText().toString();
-                String vendingDescription = vending_description.getText().toString();
+                final String vendingName = vending_name.getText().toString();
+                final String vendingDescription = vending_description.getText().toString();
                 String vendingFullSize = vending_fullsize.getText().toString();
-                /*final Map<String, String> vending_parameters = new HashMap<String, String>();
-                vending_parameters.put("name", vendingName);
-                vending_parameters.put("description", vendingDescription);
-                vending_parameters.put("fullSize", vendingFullSize);*/
                 JSONObject vending_parameters = new JSONObject();
                 try {
                     vending_parameters.put("name",vendingName);
@@ -83,8 +81,12 @@ public class UpdateVendingActivity extends AppCompatActivity {
                             boolean success = response.getBoolean("success");
                             Log.d("TAG", "결과 : " + success);
                             if (success) {
-                                Log.d("TAG", "성공");
+                                Intent intent1 = new Intent(UpdateVendingActivity.this,MainActivity.class);
+                                intent1.putExtra("userId",userId);
                                 finish();
+                                startActivity(intent1);
+
+
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
