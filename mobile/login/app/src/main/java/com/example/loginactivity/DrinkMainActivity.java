@@ -36,14 +36,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrinkMainActivity extends AppCompatActivity {
+
     private String SerialNumber;
+    private DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
         //gridview Adapter 생성 및 연결
         final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
-        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
 
         //음료 정보 가이드 라인 팝업창
         ImageView guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
@@ -64,11 +66,9 @@ public class DrinkMainActivity extends AppCompatActivity {
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
         String _vendingName =intent.getStringExtra("name");
-        drinkAdater.setName(_vendingName);
         String vendingName = "이름 : " + _vendingName;
 
         String _vendingDescription =intent.getStringExtra("description");
-        drinkAdater.setDescription(_vendingDescription);
         String vendingDescription = "설명 : " + _vendingDescription;
 
         int _vendingFullSize = intent.getIntExtra("fullSize",1);
@@ -76,71 +76,13 @@ public class DrinkMainActivity extends AppCompatActivity {
         String vendingFullSize = "칸 수 : " + _vendingFullSize;
 
         final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
+        drinkAdater.setSerialNumber(_vendingSerialNumber);
         final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
 
         Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
-
-        drinkAdater.setFullSize(_vendingFullSize);
-
-        //음료정보 파싱싱
-        RequestQueue queue = Volley.newRequestQueue((this));
-        final String url = "http://192.168.0.31:80/mobile/drink/read";
-        StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    JSONObject object = new JSONObject(response);
-                    boolean success = object.getBoolean("success");
-
-
-                    //add_drink_item 생성(음료 추가버튼)
-
-                    Log.d("TAG","결과 : " + success);
-
-                    if(success){
-                        JSONArray jsonArray = object.getJSONArray("drinks");
-                        //음료 정보 json 파싱
-                        for(int i =0;i<jsonArray.length();i++){
-                            JSONObject drink = jsonArray.getJSONObject(i);
-                            //음료 수많큼 gridview에 drink_item 생성
-                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
-                            Log.d("TAG",i+"번쨰 어댑터 값 :  " + drink.getInt("position")+" : " + drink.getString("name")+" : " + drink.getString("price") + " : " + drink.getString("count"));
-                        }
-
-                        //add_drink_item 생성(음료 추가버튼)
-                        drinkAdater.addDrinkItem(_vendingSerialNumber);
-                        //gridview 목록 출력
-                        drinkGridView.setAdapter(drinkAdater);
-
-
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
-                        drinkAdater.addDrinkItem(_vendingSerialNumber);
-                        drinkGridView.setAdapter(drinkAdater);
-                    }
-
-                } catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("serialNumber", _vendingSerialNumber);
-                return params;
-            }
-        };
-
-        queue.add(drinkRequest);
-
+        drinkDataParser(drinkAdater,drinkGridView);
 
         //음료정보 각 Item 클릭 리스너
         drinkGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -267,6 +209,67 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     }
 
+    public void drinkDataParser(final DrinkListAdapter drinkAdater, final GridView drinkGridView){
+        //음료정보 파싱싱\
+
+        drinkAdater.itemClear();
+
+        RequestQueue queue = Volley.newRequestQueue((this));
+        final String url = "http://192.168.0.31:80/mobile/drink/read";
+        StringRequest drinkRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject object = new JSONObject(response);
+                    boolean success = object.getBoolean("success");
+
+
+                    //add_drink_item 생성(음료 추가버튼)
+
+                    Log.d("TAG","결과 : " + success);
+
+                    if(success){
+                        JSONArray jsonArray = object.getJSONArray("drinks");
+                        //음료 정보 json 파싱
+                        for(int i =0;i<jsonArray.length();i++){
+                            JSONObject drink = jsonArray.getJSONObject(i);
+                            Log.d("TAG", "받은 음료 데이터 : " +jsonArray);
+                            //음료 수많큼 gridview에 drink_item 생성
+                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
+                        }
+
+                        //add_drink_item 생성(음료 추가버튼)
+                        drinkAdater.addDrinkItem(drinkAdater.getSerialNumber());
+                        drinkGridView.setAdapter(drinkAdater);
+                        //gridview 목록 출력
+
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
+                        drinkAdater.addDrinkItem(drinkAdater.getSerialNumber());
+                        drinkGridView.setAdapter(drinkAdater);
+                    }
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            protected Map<String,String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("serialNumber", drinkAdater.getSerialNumber());
+                return params;
+            }
+        };
+
+        queue.add(drinkRequest);
+    }
+
     public void printVendingInfo(String name,String description, String fullsize,String serialNumber){
         TextView vendingName = (TextView) findViewById(R.id.drinkPageVendingName);
         TextView vendingDescription = (TextView) findViewById(R.id.drinkPageVendingDescription);
@@ -278,12 +281,12 @@ public class DrinkMainActivity extends AppCompatActivity {
         vendingFullsize.setText(fullsize);
         vendingSerialNumber.setText(serialNumber);
     }
-    public void setSerialNumber(String SerialNumber){
-        this.SerialNumber = SerialNumber;
-    }
 
-    public String getSerialNumber(){
-        return SerialNumber;
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
+        drinkDataParser(drinkAdater,drinkGridView);
+        Toast.makeText(this, "onRestart 호출 됨",Toast.LENGTH_LONG).show();
     }
-
 }
