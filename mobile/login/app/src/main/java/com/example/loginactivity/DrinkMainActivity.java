@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     private String SerialNumber;
     private DrinkListAdapter drinkAdater = new DrinkListAdapter();
+    private JSONObject requestInfo = new JSONObject();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,9 @@ public class DrinkMainActivity extends AppCompatActivity {
         ImageView refresh = (ImageView)findViewById(R.id.iv_drink_refresh);
         refresh.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-
+                Intent intent = new Intent(DrinkMainActivity.this,DrinkRefreshAcceptActivity.class);
+                intent.putExtra("requestInfo",requestInfo.toString());
+                startActivity(intent);
             }
         });
 
@@ -229,6 +233,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                     Log.d("TAG","결과 : " + success);
 
                     if(success){
+                        JSONArray drinksMaxCountInfo = new JSONArray();
                         JSONArray jsonArray = object.getJSONArray("drinks");
                         //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
@@ -236,6 +241,22 @@ public class DrinkMainActivity extends AppCompatActivity {
                             Log.d("TAG", "받은 음료 데이터 : " +jsonArray);
                             //음료 수많큼 gridview에 drink_item 생성
                             drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
+                            JSONObject maxCountInfo = new JSONObject();
+                            try {
+                                maxCountInfo.put("position",Integer.parseInt(drink.getString("position")));
+                                maxCountInfo.put("maxCount",drink.getInt("maxCount"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            drinksMaxCountInfo.put(maxCountInfo);
+
+
+                        }
+                        try {
+                            requestInfo.put("serialNumber",drinkAdater.getSerialNumber());
+                            requestInfo.put("drinks",drinksMaxCountInfo);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
                         //add_drink_item 생성(음료 추가버튼)
