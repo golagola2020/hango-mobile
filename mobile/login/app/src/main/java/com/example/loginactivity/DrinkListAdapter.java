@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -24,6 +25,7 @@ public class DrinkListAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_MAX = 2;
 
     private String serialNumber;
+    private int fullSize;
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
@@ -42,6 +44,14 @@ public class DrinkListAdapter extends BaseAdapter {
         DrinkItem item =new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_ADD_DRINK);
         drinkItems.add(item);
+    }
+
+    public void setFullSize(int fullSize){
+        this.fullSize = fullSize;
+    }
+
+    public int getFullSize(){
+        return fullSize;
     }
 
     @Override
@@ -108,11 +118,16 @@ public class DrinkListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
 
-                            Intent intent = new Intent(context,AddDrinkActivity.class);
-                            intent.putExtra("position",position+1);
-                            Log.d("TAG","포지션 값 : " + position+1);
-                            intent.putExtra("VendingSerialNumber",serialNumber);
-                            v.getContext().startActivity(intent);
+                            if(getFullSize()<=position){
+                                Toast.makeText(context, "자판기 최대 칸수 이상의 음료는 만들 수 없습니다", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Intent intent = new Intent(context, AddDrinkActivity.class);
+                                intent.putExtra("position", position + 1);
+                                Log.d("TAG", "포지션 값 : " + position + 1);
+                                intent.putExtra("VendingSerialNumber", serialNumber);
+                                v.getContext().startActivity(intent);
+                            }
                         }
                     });
 
