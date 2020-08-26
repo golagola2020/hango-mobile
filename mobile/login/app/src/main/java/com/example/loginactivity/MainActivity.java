@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject vending = jsonArray.getJSONObject(i);
                             Log.d("TAG","출력 : " +vending);
                             vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
+
                         }
                         //자판기 보유수 출력
                         printVendingCount(vendingAdapter.getCount());
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
                 intent.putExtra("name",vdata.getVendingName());
                 intent.putExtra("description",vdata.getVendingDescription());
-                String fullsize = Integer.toString(vdata.getVendingFullsize());
+                int fullsize = vdata.getVendingFullsize();
                 intent.putExtra("fullSize",fullsize);
                 intent.putExtra("serialNumber",vdata.getVendingSerialNumber());
                 Log.d("TAG","listview 클릭 : "+ vdata.getVendingName() + " : "+ vdata.getVendingDescription() + " : "+ vdata.getVendingFullsize() + " : "+ vdata.getVendingSerialNumber());

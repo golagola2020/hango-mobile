@@ -41,6 +41,10 @@ public class DrinkMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
+        //gridview Adapter 생성 및 연결
+        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
+        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
         //음료 정보 가이드 라인 팝업창
         ImageView guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
         guide.setOnClickListener(new View.OnClickListener(){
@@ -52,17 +56,27 @@ public class DrinkMainActivity extends AppCompatActivity {
 
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
-        String vendingName = "이름 : "+intent.getStringExtra("name");;
-        String vendingDescription = "설명 : " + intent.getStringExtra("description");;
-        String vendingFullSize = "칸 수 : " + intent.getStringExtra("fullSize");
+        String _vendingName =intent.getStringExtra("name");
+        drinkAdater.setName(_vendingName);
+        String vendingName = "이름 : " + _vendingName;
+
+        String _vendingDescription =intent.getStringExtra("description");
+        drinkAdater.setDescription(_vendingDescription);
+        String vendingDescription = "설명 : " + _vendingDescription;
+
+        int _vendingFullSize = intent.getIntExtra("fullSize",1);
+        drinkAdater.setFullSize(_vendingFullSize);
+        String vendingFullSize = "칸 수 : " + _vendingFullSize;
+
         final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
         final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
+
         Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
-        //gridview Adapter 생성 및 연결
-        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
-        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
+        drinkAdater.setFullSize(_vendingFullSize);
+
         //음료정보 파싱싱
         RequestQueue queue = Volley.newRequestQueue((this));
         final String url = "http://192.168.0.31:80/mobile/drink/read";
@@ -84,7 +98,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                         for(int i =0;i<jsonArray.length();i++){
                             JSONObject drink = jsonArray.getJSONObject(i);
                             //음료 수많큼 gridview에 drink_item 생성
-                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("count"));
+                            drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
                             Log.d("TAG",i+"번쨰 어댑터 값 :  " + drink.getInt("position")+" : " + drink.getString("name")+" : " + drink.getString("price") + " : " + drink.getString("count"));
                         }
 

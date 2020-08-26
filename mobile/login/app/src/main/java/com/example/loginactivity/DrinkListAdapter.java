@@ -1,5 +1,6 @@
 package com.example.loginactivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -23,16 +25,20 @@ public class DrinkListAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_ADD_DRINK = 1;
     private static final int ITEM_VIEW_TYPE_MAX = 2;
 
+    private String name;
+    private String description;
+    private int fullSize;
     private String serialNumber;
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
-    public void addDrinkItem(String position, String name , String price, int maxCount){
+    public void addDrinkItem(String position, String name , String price, int maxCount,int count){
         DrinkItem item = new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_DRINK_INFO);
         item.setDrinkPosition(position);
         item.setDrinkName(name);
         item.setDrinkPrice(price);
+        item.setCount(count);
         item.setMaxCount(maxCount);
         drinkItems.add(item);
     }
@@ -41,6 +47,30 @@ public class DrinkListAdapter extends BaseAdapter {
         DrinkItem item =new DrinkItem();
         item.setType(ITEM_VIEW_TYPE_ADD_DRINK);
         drinkItems.add(item);
+    }
+
+    public void setFullSize(int fullSize){
+        this.fullSize = fullSize;
+    }
+
+    public int getFullSize(){
+        return fullSize;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getDescription(){
+        return  description;
     }
 
     @Override
@@ -72,7 +102,7 @@ public class DrinkListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
         int viewType = getItemViewType(position) ;
         DrinkItem drinkItem = drinkItems.get(position);
@@ -93,19 +123,10 @@ public class DrinkListAdapter extends BaseAdapter {
                     holder.nameText = (TextView) convertView.findViewById(R.id.nameText) ;
                     holder.positionText = (TextView) convertView.findViewById(R.id.positionText) ;
                     holder.priceText = (TextView) convertView.findViewById(R.id.priceText);
-
-                    //ImageView ivDrinkAmountCircle = (ImageView) convertView.findViewById(R.id.iv_drink_amount_circle);
-                    //GradientDrawable GradientDrawable = (GradientDrawable) ivDrinkAmountCircle.getBackground();
-                    //GradientDrawable.setColor(Color.BLUE);
+                    holder.ivDrinkAmountCircle = (ImageView)convertView.findViewById(R.id.iv_drink_amount_circle);
 
                     convertView.setTag(holder);
-                    /*TextView positionText = (TextView) convertView.findViewById(R.id.positionText) ;
-                    TextView nameText = (TextView) convertView.findViewById(R.id.nameText) ;
-                    TextView priceText = (TextView) convertView.findViewById(R.id.priceText);
 
-                    positionText.setText("위치"+drinkItem.getDrinkPosition());
-                    nameText.setText(drinkItem.getDrinkName());
-                    priceText.setText(drinkItem.getDrinkPrice());*/
                     break;
                 case ITEM_VIEW_TYPE_ADD_DRINK:
                     convertView = inflater.inflate(R.layout.add_drink_item,
@@ -116,10 +137,19 @@ public class DrinkListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
 
-                            Intent intent = new Intent(context,AddDrinkActivity.class);
-
-                            intent.putExtra("VendingSerialNumber",serialNumber);
-                            v.getContext().startActivity(intent);
+                            if(getFullSize()<=position){
+                                Toast.makeText(context, "자판기 최대 칸수 이상의 음료는 만들 수 없습니다", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Intent intent = new Intent(context, AddDrinkActivity.class);
+                                intent.putExtra("position", position + 1);
+                                intent.putExtra("name", getName());
+                                intent.putExtra("description",getDescription());
+                                intent.putExtra("fullSize",getFullSize());
+                                intent.putExtra("serialNumber", serialNumber);
+                                v.getContext().startActivity(intent);
+                                ((Activity)context).finish();
+                            }
                         }
                     });
 
@@ -133,6 +163,21 @@ public class DrinkListAdapter extends BaseAdapter {
             holder.positionText.setText(drinkItems.get(position).getDrinkPosition());
             holder.priceText.setText(drinkItems.get(position).getDrinkPrice());
 
+            Log.d("TAG","음료 남은량 : "+((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount()));
+
+            if(((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 >=70) {
+                GradientDrawable GradientDrawable = (GradientDrawable) holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable.setColor(Color.BLUE);
+            }
+            else if((((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 >=40) &&
+                    (((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 <70)){
+                GradientDrawable GradientDrawable = (GradientDrawable)holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable.setColor(Color.GREEN);
+            }
+            else if(((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 <40){
+                GradientDrawable GradientDrawable = (GradientDrawable)holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable.setColor(Color.RED);
+            }
 
         }
 
@@ -142,6 +187,7 @@ public class DrinkListAdapter extends BaseAdapter {
         TextView positionText;
         TextView nameText;
         TextView priceText;
+        ImageView ivDrinkAmountCircle;
     }
 
 }

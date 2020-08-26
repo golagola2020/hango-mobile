@@ -24,14 +24,26 @@ public class AddDrinkActivity extends AppCompatActivity {
     private Button btn_regi_drink;
     private EditText tv_drink_name,tv_drink_price,tv_drink_max_count;
 
+    private String name;
+    private String description;
+    private int fullSize;
+    private String serialNumber;
+    private int position;
+
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_add_drink);
 
         Intent intent = getIntent();
-        final String serialNumber = intent.getStringExtra("VendingSerialNumber");;
+        serialNumber = intent.getStringExtra("serialNumber");
+        position = intent.getIntExtra("position",1);
+        name = intent.getStringExtra("name");
+        description = intent.getStringExtra("description");
+        fullSize = intent.getIntExtra("fullSize",1);
 
+
+        Log.d("TAG","넘어온 포지션 값 : "+position);
         btn_regi_drink = findViewById(R.id.btn_regi_drink);
 
         tv_drink_name = findViewById(R.id.tv_drink_name);
@@ -47,15 +59,13 @@ public class AddDrinkActivity extends AppCompatActivity {
                 int drinkPrice = Integer.parseInt(_drinkPrice);
                 String _drinkMaxCount = tv_drink_max_count.getText().toString();
                 int drinkMaxCount = Integer.parseInt(_drinkMaxCount);
-                DrinkListAdapter adapter = new DrinkListAdapter();
-                int position = adapter.getCount()+1;
 
                 JSONObject drink_info = new JSONObject();
                 try {
                     drink_info.put("position",position);
                     drink_info.put("name",drinkName);
                     drink_info.put("price",drinkPrice);
-                    drink_info.put("count",drinkMaxCount);
+                    drink_info.put("maxCount",drinkMaxCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +91,13 @@ public class AddDrinkActivity extends AppCompatActivity {
                             Log.d("TAG", "결과 : " + success);
                             if (success) {
                                 Log.d("TAG", "성공");
+                                Intent intent1 = new Intent(AddDrinkActivity.this,DrinkMainActivity.class);
+                                intent1.putExtra("serialNumber",serialNumber);
+                                intent1.putExtra("name", name);
+                                intent1.putExtra("description",description);
+                                intent1.putExtra("fullSize",fullSize);
                                 finish();
+                                startActivity(intent1);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
