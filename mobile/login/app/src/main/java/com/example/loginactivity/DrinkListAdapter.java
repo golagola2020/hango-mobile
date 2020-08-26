@@ -72,7 +72,7 @@ public class DrinkListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
         int viewType = getItemViewType(position) ;
         DrinkItem drinkItem = drinkItems.get(position);
@@ -117,7 +117,7 @@ public class DrinkListAdapter extends BaseAdapter {
                         public void onClick(View v) {
 
                             Intent intent = new Intent(context,AddDrinkActivity.class);
-
+                            intent.putExtra("position",position);
                             intent.putExtra("VendingSerialNumber",serialNumber);
                             v.getContext().startActivity(intent);
                         }

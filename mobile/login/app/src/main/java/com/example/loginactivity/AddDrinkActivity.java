@@ -30,7 +30,8 @@ public class AddDrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_drink);
 
         Intent intent = getIntent();
-        final String serialNumber = intent.getStringExtra("VendingSerialNumber");;
+        final String serialNumber = intent.getStringExtra("VendingSerialNumber");
+        final int position = intent.getIntExtra("position",1);
 
         btn_regi_drink = findViewById(R.id.btn_regi_drink);
 
@@ -47,8 +48,6 @@ public class AddDrinkActivity extends AppCompatActivity {
                 int drinkPrice = Integer.parseInt(_drinkPrice);
                 String _drinkMaxCount = tv_drink_max_count.getText().toString();
                 int drinkMaxCount = Integer.parseInt(_drinkMaxCount);
-                DrinkListAdapter adapter = new DrinkListAdapter();
-                int position = adapter.getCount()+1;
 
                 JSONObject drink_info = new JSONObject();
                 try {
