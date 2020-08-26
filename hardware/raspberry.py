@@ -77,7 +77,7 @@ def main():
 
                             # 판매된 음료수 정보 차감 요청
                             print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
-                            requestDrinksUpdate()
+                            request_drinks_update()
 
                             # 스피커 출력
                             print("스피커 출력을 실행합니다.")
@@ -101,7 +101,7 @@ def main():
                                 speak(SPEAK_OPTION, "sold_out", sensings["sensed_position"]-1)
                             else :
                                 # 스피커 출력
-                                speak(SPEAK_OPTION), "position", sensings["sensed_position"]-1)
+                                speak(SPEAK_OPTION, "position", sensings["sensed_position"]-1)
                             
                     # 수신한 변수명 집합 비우기 => 다음 센싱 때에도 정상 수신하는지 검사하기 위함 
                     received_keys.clear()
@@ -186,7 +186,7 @@ def request_drinks() :
         del drinks["position"][:]
         del drinks["name"][:]
         del drinks["price"][:]
-        del drinksp["count"][:]
+        del drinks["count"][:]
 
         # 서버 데이터 삽입
         for drink in response["drinks"] :
@@ -201,7 +201,7 @@ def request_drinks() :
 
 
 # 판매된 음료수 정보 차감 요청 함수
-def requestDrinksUpdate() :
+def request_drinks_update() :
     '''
         서버에게 판매된 음료수 정보를 전달하는 함수
 
@@ -259,7 +259,7 @@ def speak(option, status, idx=None) :
             for i, name in enumerate(drinks["name"]) :
                 names += str(i+1) + '번 : ' + name + ' : '
                 
-            message = "안녕하세요, 말하는 음료수 자판기입니다. 지금부터, 음료수 위치와, 이름, 가격을 말씀드리겠습니다. " + names
+            message = "안녕하세요, 말하는 음료수 자판기입니다. 지금부터, 음료수 위치와, 이름을 말씀드리겠습니다. " + names
             
         elif status == "position" :
             ''' 손이 음료를 향해 위치한 상태  '''
