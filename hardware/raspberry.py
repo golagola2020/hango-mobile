@@ -24,13 +24,15 @@ drinks = {
     'price' : [],
     'count' : []
 }
+
+# 멀티프로세싱에 사용될 변수
+pid = 0                 # 프로세스 아이디
+sensing_data = ''       # 현재 감지 중인 데이터
     
 # 메인 함수
 def main():
-    # 멀티프로세싱에 사용될 변수
-    pid = 0                 # 프로세스 아이디
-    sensing_data = ''       # 현재 감지 중인 데이터
-
+    global pid
+    global sensing_data
     # 아두이노와 시리얼 통신할 인스턴스 생성 
     port = serial.Serial(
         port = PORT,
@@ -73,7 +75,7 @@ def main():
                             sensing_data = sensings["sold_position"]
 
                             # 실행중인 espeak 프로세스 종료
-                            speak_exit(pid)
+                            speak_exit()
 
                             # 판매된 음료수 정보 차감 요청
                             print("판매된 음료 차감 데이터를 요청하고 스피커 출력을 실행합니다.")
@@ -91,7 +93,7 @@ def main():
                             sensing_data = sensings["sensed_position"]
 
                             # 실행중인 espeak 프로세스 종료
-                            speak_exit(pid)
+                            speak_exit()
 
                             print("물체가 감지되어 스피커 출력을 실행합니다.")
 
@@ -114,7 +116,7 @@ def main():
                     sensing_data = sensings["success"]
 
                     # 실행중인 espeak 프로세스 종료
-                    speak_exit(pid)
+                    speak_exit()
 
                     # 음료수 정보 요청
                     print("센싱 데이터가 없습니다.\n서버로부터 음료 정보를 불러옵니다...")
@@ -127,13 +129,13 @@ def main():
             print("수신 가능한 센싱 데이터가 아닙니다.")
 
 # espeak 프로세스 종료 함수
-def speak_exit(pid) :
+def speak_exit() :
     '''
         실행중인 'espeak' 프로세스 종료
 
         @ pid : 프로세스 아이디
     '''
-
+    global pid
     # 할당된 프로세스가 있다면 실행
     if pid :
         # 자식프로세스 아이디 출력 후 종료
@@ -197,7 +199,7 @@ def request_drinks() :
         
     else :
         # 서버 에러 메세지 출력
-        print("서버에서 음료 정보 조회 중 에러가 발생하였습니다.\n서버 에러 메세지 : " + response["msg"])
+        print("서버에서 음료 정보 조회 중 에러가 발생하였습니다.\n서버 에러 메세지 : ", response["msg"])
 
 
 # 판매된 음료수 정보 차감 요청 함수
@@ -227,7 +229,7 @@ def request_drinks_update() :
     if response["success"] :
         print("판매된 음료수 정보가 정상 차감되었습니다.")
     else :
-        print("서버에서 판매 음료 정보 처리 중 에러가 발생하였습니다.\n서버 에러 메세지 : " + response["msg"])
+        print("서버에서 판매 음료 정보 처리 중 에러가 발생하였습니다.\n서버 에러 메세지 : ", response["msg"])
 
 # 스피커 출력 함수
 def speak(option, status, idx=None) :
@@ -243,7 +245,7 @@ def speak(option, status, idx=None) :
             (4) sold_out : 음료수 품절 상태
         @ idx : 음료의 포지션 배열 인덱스 ( ex : drinks["( VALUE )"][idx] )
     '''
-
+    global pid
     message = ""
 
     # 자식 프로세스 생성
