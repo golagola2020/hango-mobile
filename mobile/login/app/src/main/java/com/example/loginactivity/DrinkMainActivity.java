@@ -54,6 +54,13 @@ public class DrinkMainActivity extends AppCompatActivity {
             }
         });
 
+        ImageView refresh = (ImageView)findViewById(R.id.iv_drink_refresh);
+        refresh.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+
+            }
+        });
+
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
         String _vendingName =intent.getStringExtra("name");

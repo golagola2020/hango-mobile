@@ -8,18 +8,32 @@
     android:orientation="vertical"
     tools:context=".DrinkMainActivity">
 
-    <TextView
-        android:id="@+id/MainLogo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:text="음료 관리 현황"
-        android:textColor="#FFFFFF"
-        android:textAlignment="center"
-        android:textSize="45sp"
+        android:layout_height="wrap_content"
         android:background="#c6e6f5"
-        android:typeface="normal" />
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/MainLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+            android:text="음료 관리 현황"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"
+            android:textSize="45sp"
+            android:typeface="normal" />
 
+        <ImageView
+            android:id="@+id/iv_drink_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/drink_amount_circle" />
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
