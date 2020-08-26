@@ -126,6 +126,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 Intent intent = new Intent(context,UpdateVendingActivity.class);
                 intent.putExtra("VendingSerialNumber",vdata.getVendingSerialNumber());
+
                 v.getContext().startActivity(intent);
             }
         });

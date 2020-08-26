@@ -1,5 +1,6 @@
 package com.example.loginactivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,8 +25,10 @@ public class DrinkListAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_ADD_DRINK = 1;
     private static final int ITEM_VIEW_TYPE_MAX = 2;
 
-    private String serialNumber;
+    private String name;
+    private String description;
     private int fullSize;
+    private String serialNumber;
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
@@ -52,6 +55,22 @@ public class DrinkListAdapter extends BaseAdapter {
 
     public int getFullSize(){
         return fullSize;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getDescription(){
+        return  description;
     }
 
     @Override
@@ -124,9 +143,12 @@ public class DrinkListAdapter extends BaseAdapter {
                             else {
                                 Intent intent = new Intent(context, AddDrinkActivity.class);
                                 intent.putExtra("position", position + 1);
-                                Log.d("TAG", "포지션 값 : " + position + 1);
-                                intent.putExtra("VendingSerialNumber", serialNumber);
+                                intent.putExtra("name", getName());
+                                intent.putExtra("description",getDescription());
+                                intent.putExtra("fullSize",getFullSize());
+                                intent.putExtra("serialNumber", serialNumber);
                                 v.getContext().startActivity(intent);
+                                ((Activity)context).finish();
                             }
                         }
                     });

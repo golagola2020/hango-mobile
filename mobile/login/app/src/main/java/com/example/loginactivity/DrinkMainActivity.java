@@ -41,6 +41,10 @@ public class DrinkMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
+        //gridview Adapter 생성 및 연결
+        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
+        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
+
         //음료 정보 가이드 라인 팝업창
         ImageView guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
         guide.setOnClickListener(new View.OnClickListener(){
@@ -52,18 +56,24 @@ public class DrinkMainActivity extends AppCompatActivity {
 
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
-        String vendingName = "이름 : "+intent.getStringExtra("name");;
-        String vendingDescription = "설명 : " + intent.getStringExtra("description");;
+        String _vendingName =intent.getStringExtra("name");
+        drinkAdater.setName(_vendingName);
+        String vendingName = "이름 : " + _vendingName;
+
+        String _vendingDescription =intent.getStringExtra("description");
+        drinkAdater.setDescription(_vendingDescription);
+        String vendingDescription = "설명 : " + _vendingDescription;
+
         int _vendingFullSize = intent.getIntExtra("fullSize",1);
+        drinkAdater.setFullSize(_vendingFullSize);
         String vendingFullSize = "칸 수 : " + _vendingFullSize;
+
         final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
         final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
+
         Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
-        //gridview Adapter 생성 및 연결
-        final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
-        final DrinkListAdapter drinkAdater = new DrinkListAdapter();
 
         drinkAdater.setFullSize(_vendingFullSize);
 
