@@ -38,10 +38,6 @@ public class AddDrinkActivity extends AppCompatActivity {
         Intent intent = getIntent();
         serialNumber = intent.getStringExtra("serialNumber");
         position = intent.getIntExtra("position",1);
-        name = intent.getStringExtra("name");
-        description = intent.getStringExtra("description");
-        fullSize = intent.getIntExtra("fullSize",1);
-
 
         Log.d("TAG","넘어온 포지션 값 : "+position);
         btn_regi_drink = findViewById(R.id.btn_regi_drink);
@@ -91,13 +87,7 @@ public class AddDrinkActivity extends AppCompatActivity {
                             Log.d("TAG", "결과 : " + success);
                             if (success) {
                                 Log.d("TAG", "성공");
-                                Intent intent1 = new Intent(AddDrinkActivity.this,DrinkMainActivity.class);
-                                intent1.putExtra("serialNumber",serialNumber);
-                                intent1.putExtra("name", name);
-                                intent1.putExtra("description",description);
-                                intent1.putExtra("fullSize",fullSize);
                                 finish();
-                                startActivity(intent1);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();

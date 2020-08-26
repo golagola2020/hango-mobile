@@ -18,6 +18,11 @@
             android:theme="@style/Transparent">
 
         </activity>
+        <activity android:name=".DrinkRefreshAcceptActivity"
+            android:theme="@style/Transparent">
+
+        </activity>
+
         <activity android:name=".AddDrinkActivity"/>
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity">

@@ -25,8 +25,6 @@ public class DrinkListAdapter extends BaseAdapter {
     private static final int ITEM_VIEW_TYPE_ADD_DRINK = 1;
     private static final int ITEM_VIEW_TYPE_MAX = 2;
 
-    private String name;
-    private String description;
     private int fullSize;
     private String serialNumber;
 
@@ -57,22 +55,18 @@ public class DrinkListAdapter extends BaseAdapter {
         return fullSize;
     }
 
-    public void setName(String name){
-        this.name = name;
+
+    public void setSerialNumber(String serialNumber){
+        this.serialNumber = serialNumber;
     }
 
-    public String getName(){
-        return name;
+    public String getSerialNumber(){
+        return serialNumber;
     }
 
-    public void setDescription(String description){
-        this.description = description;
+    public void itemClear(){
+        drinkItems.clear();
     }
-
-    public String getDescription(){
-        return  description;
-    }
-
     @Override
     public int getViewTypeCount() {
         return ITEM_VIEW_TYPE_MAX ;
@@ -143,12 +137,8 @@ public class DrinkListAdapter extends BaseAdapter {
                             else {
                                 Intent intent = new Intent(context, AddDrinkActivity.class);
                                 intent.putExtra("position", position + 1);
-                                intent.putExtra("name", getName());
-                                intent.putExtra("description",getDescription());
-                                intent.putExtra("fullSize",getFullSize());
                                 intent.putExtra("serialNumber", serialNumber);
                                 v.getContext().startActivity(intent);
-                                ((Activity)context).finish();
                             }
                         }
                     });
