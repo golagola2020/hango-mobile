@@ -40,7 +40,7 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     private String SerialNumber;
     private DrinkListAdapter drinkAdater = new DrinkListAdapter();
-    private JSONObject requestInfo = new JSONObject();
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(DrinkMainActivity.this,DrinkRefreshAcceptActivity.class);
-                intent.putExtra("requestInfo",requestInfo.toString());
+                intent.putExtra("serialNumber",drinkAdater.getSerialNumber());
                 startActivity(intent);
             }
         });
@@ -86,14 +86,19 @@ public class DrinkMainActivity extends AppCompatActivity {
         Log.d("TAG","listview 클릭 : "+vendingName+ " : " +vendingDescription + " : " + vendingFullSize + " : " + vendingSerialNumber);
         printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
 
-        drinkDataParser(drinkAdater,drinkGridView);
 
         //음료정보 각 Item 클릭 리스너
         drinkGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final DrinkItem drinkItem = (DrinkItem) drinkAdater.getItem(position);
+                Intent intent1 = new Intent(DrinkMainActivity.this,UpdateDrinkActivity.class);
+                intent1.putExtra("position",position);
+                intent1.putExtra("serialNumber",_vendingSerialNumber);
+                startActivity(intent1);
+
+
+                /*final DrinkItem drinkItem = (DrinkItem) drinkAdater.getItem(position);
 
                 // 팝업 메시지 객체 생성
                 AlertDialog.Builder ad = new AlertDialog.Builder(DrinkMainActivity.this);
@@ -207,7 +212,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                 });
 
                 // 팝업 메시지 띄우기
-                ad.show();
+                ad.show();*/
             }
         });
 
@@ -233,7 +238,6 @@ public class DrinkMainActivity extends AppCompatActivity {
                     Log.d("TAG","결과 : " + success);
 
                     if(success){
-                        JSONArray drinksMaxCountInfo = new JSONArray();
                         JSONArray jsonArray = object.getJSONArray("drinks");
                         //음료 정보 json 파싱
                         for(int i =0;i<jsonArray.length();i++){
@@ -241,23 +245,9 @@ public class DrinkMainActivity extends AppCompatActivity {
                             Log.d("TAG", "받은 음료 데이터 : " +jsonArray);
                             //음료 수많큼 gridview에 drink_item 생성
                             drinkAdater.addDrinkItem(drink.getString("position"),drink.getString("name"),drink.getString("price"),drink.getInt("maxCount"),drink.getInt("count"));
-                            JSONObject maxCountInfo = new JSONObject();
-                            try {
-                                maxCountInfo.put("position",Integer.parseInt(drink.getString("position")));
-                                maxCountInfo.put("maxCount",drink.getInt("maxCount"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            drinksMaxCountInfo.put(maxCountInfo);
-
 
                         }
-                        try {
-                            requestInfo.put("serialNumber",drinkAdater.getSerialNumber());
-                            requestInfo.put("drinks",drinksMaxCountInfo);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
 
                         //add_drink_item 생성(음료 추가버튼)
                         drinkAdater.addDrinkItem(drinkAdater.getSerialNumber());
@@ -304,10 +294,10 @@ public class DrinkMainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected  void onResume(){
+        super.onResume();
         GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
         drinkDataParser(drinkAdater,drinkGridView);
-        Toast.makeText(this, "onRestart 호출 됨",Toast.LENGTH_LONG).show();
+        Log.d("TAG","DrinkMainActivity onResume 호출");
     }
 }

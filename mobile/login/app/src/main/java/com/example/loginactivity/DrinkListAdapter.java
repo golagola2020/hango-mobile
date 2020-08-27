@@ -151,7 +151,7 @@ public class DrinkListAdapter extends BaseAdapter {
         if(viewType == ITEM_VIEW_TYPE_DRINK_INFO){
             holder.nameText.setText(drinkItems.get(position).getDrinkName());
             holder.positionText.setText(drinkItems.get(position).getDrinkPosition());
-            holder.priceText.setText(drinkItems.get(position).getDrinkPrice());
+            holder.priceText.setText(drinkItems.get(position).getDrinkPrice()+"원");
 
             Log.d("TAG","음료 남은량 : "+((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount()));
 

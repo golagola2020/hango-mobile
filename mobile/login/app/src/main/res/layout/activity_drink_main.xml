@@ -4,24 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".DrinkMainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#c6e6f5"
+        android:background="#B0DCF8"
         android:orientation="horizontal">
+        <ImageView
+            android:id ="@+id/iv_arrow_back_drink_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_arrow_back"/>
         <TextView
             android:id="@+id/MainLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textStyle = "bold"
             android:text="음료 관리 현황"
             android:layout_centerHorizontal="true"
             android:textColor="#FFFFFF"
-            android:textSize="45sp"
+            android:layout_margin="5dp"
+            android:textSize="40sp"
             android:typeface="normal" />
 
         <ImageView
@@ -30,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/drink_amount_circle" />
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_refresh" />
 
     </RelativeLayout>
     <LinearLayout
@@ -85,12 +94,12 @@
                 android:layout_weight="1"/>
             <ImageView
                 android:id = "@+id/iv_drink_main_guide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/drink_amount_circle"/>
+
+                android:background="@drawable/ic_info"/>
         </LinearLayout>
     </LinearLayout>
 
