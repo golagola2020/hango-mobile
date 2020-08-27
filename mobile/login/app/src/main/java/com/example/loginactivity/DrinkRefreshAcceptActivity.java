@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,8 +30,11 @@ public class DrinkRefreshAcceptActivity extends AppCompatActivity {
         Button deny = (Button)findViewById(R.id.btn_refresh_deny);
 
         Intent intent = getIntent();
+        String serialNumber = intent.getStringExtra("serialNumber");
+        final JSONObject object = new JSONObject();
+
         try {
-            object = new JSONObject(intent.getStringExtra("requestInfo"));
+            object.put("serialNumber", serialNumber);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -55,6 +59,7 @@ public class DrinkRefreshAcceptActivity extends AppCompatActivity {
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
