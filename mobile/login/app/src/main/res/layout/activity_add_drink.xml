@@ -27,7 +27,6 @@
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:textSize="40sp"
-            android:margin="5dp"
             android:fontFamily="@font/barungothicbold"/>
     </RelativeLayout>
     <TextView

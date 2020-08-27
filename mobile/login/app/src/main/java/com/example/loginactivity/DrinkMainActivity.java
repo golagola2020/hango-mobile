@@ -286,14 +286,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         vendingFullsize.setText(fullsize);
         vendingSerialNumber.setText(serialNumber);
     }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
-        drinkDataParser(drinkAdater,drinkGridView);
-        Log.d("TAG","DrinkMainActivity onRestart 호출");
-    }
+    
     @Override
     protected  void onResume(){
         super.onResume();
