@@ -92,7 +92,13 @@ public class DrinkMainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final DrinkItem drinkItem = (DrinkItem) drinkAdater.getItem(position);
+                Intent intent1 = new Intent(DrinkMainActivity.this,UpdateDrinkActivity.class);
+                intent1.putExtra("position",position);
+                intent1.putExtra("serialNumber",_vendingSerialNumber);
+                startActivity(intent1);
+
+
+                /*final DrinkItem drinkItem = (DrinkItem) drinkAdater.getItem(position);
 
                 // 팝업 메시지 객체 생성
                 AlertDialog.Builder ad = new AlertDialog.Builder(DrinkMainActivity.this);
@@ -206,7 +212,7 @@ public class DrinkMainActivity extends AppCompatActivity {
                 });
 
                 // 팝업 메시지 띄우기
-                ad.show();
+                ad.show();*/
             }
         });
 
