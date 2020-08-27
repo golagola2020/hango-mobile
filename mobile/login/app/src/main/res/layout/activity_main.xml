@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".MainActivity"
     android:focusable="true"
@@ -24,14 +24,15 @@
             android:textSize="45sp"
             android:typeface="normal" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btn_user_info"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
-            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
 
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:background="@drawable/ic_menu" />
     </RelativeLayout>
 
     <View
@@ -61,23 +62,12 @@
             android:layout_marginRight="10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:text="환영합니다" />
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/VendingCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10sp"/>
-            <TextView
-                android:id="@+id/LogOut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="20dp"
-                android:text="로그아웃"
-                android:layout_gravity="right"/>
-        </GridLayout>
+        <TextView
+            android:id="@+id/VendingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

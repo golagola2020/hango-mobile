@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         TextView idText = (TextView)findViewById(R.id.NameText);
 
 
-        ImageButton btn_user_info = (ImageButton)findViewById(R.id.btn_user_info);
+        ImageView btn_user_info = (ImageView) findViewById(R.id.btn_user_info);
 
         // 로그인 화면에서 유저 이름 받아오기
 

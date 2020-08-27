@@ -4,22 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".UpdateVendingActivity">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#d3d3d3"
-        android:text="자판기 추가"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="45sp"
-        android:fontFamily="@font/barungothicbold"/>
-    <View
-        android:background="#949494"
-        android:layout_width="match_parent"
-        android:layout_height="5px"/>
+        android:layout_height="wrap_content"
+        android:background="#B0DCF8"
+        android:orientation="horizontal">
+        <ImageView
+            android:id ="@+id/iv_arrow_back_update_vending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_arrow_back"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="자판기 수정"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            android:fontFamily="@font/barungothicbold"/>
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +100,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/btn_radius"
         android:fontFamily="@font/barungothicbold"
-        android:text="추가"
+        android:text="수정"
         android:textColor="#3f3f3f"
         android:textSize="20sp" />
     </LinearLayout>
