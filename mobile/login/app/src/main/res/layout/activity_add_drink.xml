@@ -4,29 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".AddDrinkActivity">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#d3d3d3"
-        android:text="음료 추가"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="45sp"
-        android:fontFamily="@font/barungothicbold"/>
-    <View
-        android:background="#949494"
-        android:layout_width="match_parent"
-        android:layout_height="5px"/>
+        android:layout_height="wrap_content"
+        android:background="#B0DCF8"
+        android:orientation="horizontal">
+        <ImageView
+            android:id ="@+id/iv_arrow_back_add_drink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_arrow_back"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="음료 추가"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            android:margin="5dp"
+            android:fontFamily="@font/barungothicbold"/>
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop = "20dp"
         android:text = "이름"
-        android:textColor="#3f3f3f"
+        android:textColor="#333333"
         android:fontFamily="@font/barungothicbold"
         android:textSize = "30sp"/>
     <EditText
@@ -38,6 +48,7 @@
         android:padding="15dp"
         android:inputType="textPersonName"
         android:textSize="20sp"
+        android:textColor="#9E9E9E"
         android:background="@drawable/textbox_radius"/>
     <TextView
         android:layout_width="match_parent"
@@ -45,7 +56,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop = "20dp"
         android:text = "가격"
-        android:textColor="#3f3f3f"
+        android:textColor="#333333"
         android:fontFamily="@font/barungothicbold"
         android:textSize = "30sp"/>
     <EditText
@@ -57,14 +68,15 @@
         android:padding="15dp"
         android:inputType="textPersonName"
         android:textSize="20sp"
+        android:textColor="#9E9E9E"
         android:background="@drawable/textbox_radius"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop = "20dp"
-        android:text = "최대 수량"
-        android:textColor="#3f3f3f"
+        android:text = "최대 개수"
+        android:textColor="#333333"
         android:fontFamily="@font/barungothicbold"
         android:textSize = "30sp"/>
     <EditText
@@ -76,6 +88,7 @@
         android:padding="15dp"
         android:inputType="textPersonName"
         android:textSize="20sp"
+        android:textColor="#9E9E9E"
         android:background="@drawable/textbox_radius"/>
     <LinearLayout
         android:layout_width="match_parent"
