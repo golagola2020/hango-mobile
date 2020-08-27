@@ -286,7 +286,7 @@ public class DrinkMainActivity extends AppCompatActivity {
         vendingFullsize.setText(fullsize);
         vendingSerialNumber.setText(serialNumber);
     }
-    
+
     @Override
     protected  void onResume(){
         super.onResume();
