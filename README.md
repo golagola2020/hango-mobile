@@ -1,97 +1,102 @@
-# 행고 (행복한 고민)
-> hango-client : 행고 프로젝트의 클라이언트(아두이노 센싱, 안드로이드) 구현
+# hango-client (행고 클라이언트)
+> hango-client : 행고 프로젝트의 클라이언트(아두이노, 라즈베리파이, 안드로이드 스튜디오) 구현
+주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
+주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
 
-시각장애인도 먹고 싶은 자판기 음료를 고를 수 있게 행복한 고민을 하도록 해주는 '골라골라' 팀의 '행고' 프로젝트
 
-## 시작하기
-
-이 지침을 따르시면 로컬 컴퓨터에서 개발과 테스트를 위한 프로젝트 사본을 실행시킬 수 있습니다. 배포하기 항목을 확인하여 실제 시스템에 프로젝트를 배포하는 방법을 알아보세요.
-
-### 시작하기에 앞서
-
-프로젝트를 실행시키기 위한 도구 및 프로그렘을 나열하세요. 설치 방법도 같이 적어주셔도 됩니다.
-
+## 시작하기에 앞서 
+[hango-client](https://github.com/golagola2020/hango-client.git) 프로젝트를 실해시키기 위한 도구 및 프로그램 설치
+### 라즈베리 파이
+   1. [Arduino IDE](https://www.arduino.cc/en/main/software) 최신버전 설치
 ```
-예시도 제공하세요
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get --purge remove arduino #기존에 설치된 구버전 제거
+$ sudo apt-get autoremove
+$ sudo apt-get clean
+```
+   사용하는 라즈베리파이의 사양에 맞춰 Linux ARM 버전 설치 뒤 압축 해제 & 설치
+```
+$ wget https://www.arduino.cc/en/main/software   # Linux ARM 32 bits (명령어 실행되는지 확인)
+$ cd ~                    
+mkdir Programs
+cd ~/Downloads
+cp ./arduino-1.8.13-linuxarm.tar.xz ~/Programs              # 다운받는 버전에 따라 숫자 변경.
+cd ~/Programs
+tar xvf arduino-1.8.13-linuxarm.tar.xz
+cd arduino-1.8.13
+./install.sh
+```
+설치된 압축파일 제거
+``` 
+$ rm arduino-1.8.3-linuxarm.tar.xz
+```      
+
+  2. Python3 설치
+```  
+$ sudo apt-get update
+$ sudo apt-get install python3
+```
+  3. Node 설치 
+```
+$ uname -m    # arm 버전 확인
+   --> armv71
+```
+라즈베리파이의 arm 버전에 맞춰 LTS버전 설치.
+```
+$ wget https://nodejs.org/dist/v12.18.3/node-v12.18.3-linux-armv7l.tar.xz  
+$ tar -xvf node-v12.18.3-linux-armv7l.tar.xz
+$ sudo mv node-v12.18.3-linux-armv7l /opt/nodejs 
+$ $ sudo ln -s /opt/nodejs/bin/node /usr/bin/node
+$ sudo ln -s /opt/nodejs/bin/npm /usr/bin/npm
+$ sudo ln -s /opt/nodejs/bin/npx /usr/bin/npx
+$ node -v
+  -->v12.18.3
+```
+   라즈베리 파이에서 서버를 이용하기 위해서
+```
+$ git clone https://github.com/golagola2020/hango-server.git
+$ cd hango-server/server
+$ npm install
+$ vi .env   #'.env' 파일에 DB 환경 변수 등록.
+   # ENV
+   DB_DOMAIN="Your DB Host Domain"
+   DB_USER="Your DB User Name"
+   DB_PASSWORD="Your DB User Password"
+   DB_NAME="Your DB Name"
+$ sudo node server.js  #실행
 ```
 
-### 설치하기
-
-단계별 예제를 통하여 개발 환경을 구축하는 방법을 설명해 주세요.
-
-단계를 먼저 적어주세요
-
+## 배포(발행)
+https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :
 ```
-예시도 함께 재공해 주세요
+$ git checkout -b 'features to develop'
+$ git commit -m '[features to develop] message...'
+$ git push origin 'features to develop'
 ```
-반복하세요
+https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
+   1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+   2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
 
-```
-끝날때까지 적어주세요
-```
-
-마무리로 시스템에서 데이터를 추출하는 방법이나 데모를 실행하는 방법을 설명해 주세요.
-
-## 테스트 실행하기
-
-이 시스템을 위한 자동화된 테스트를 실행하는 방법을 적어주세요.
-
-### End-to-End 테스트
-
-이 단위 테스트가 테스트하는 항목을 설명하고 테스트를 하는 이유를 적어주세요.
-
-```
-예시도 재공하세요
-```
-
-### 코딩 스타일 테스트
-
-이 단위 테스트가 테스트하는 항목을 설명하고 테스트를 하는 이유를 적어주세요.
-
-```
-예시도 재공하세요
-```
-
-
-## 배포
-
-추가로 실제 시스템에 배포하는 방법을 노트해 두세요.
 
 ## 사용된 도구
-
-* [Node.js](https://nodejs.org/ko/about/) - 서버 프레임워크
-* [Express.js](https://expressjs.com/ko/) - 웹 프레임워크
-* [AWS EC2](https://aws.amazon.com/ko/ec2/) - 아마존 클라우드 서버
-* [AWS RDS](https://aws.amazon.com/ko/rds/) - 아마존 클라우드 관계형 데이터베이스
-* [MySQL](https://www.mysql.com/about/) - 관계형 데이터베이스 관리시스템
-* [MySQL Workbench](https://www.mysql.com/products/workbench/) - 관계형 데이터베이스 시각적 관리도구   
-...   
-* [Maven](https://maven.apache.org/) - 의존성 관리 프로그램
-* [ROME](https://rometools.github.io/rome/) - RSS 피드 생성기
+* 아두이노 UNO - 손과 음료 센싱
+* 라즈베리파이 3B+ - 센싱 데이터 관리 및 TTS 출력 
+ 
 
 ## 기여하기
 
 [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) 를 읽으신 후 기여를 해주십시오. 자세한 Pull Request 절차와 행동 규칙을 확인하실 수 있습니다.
 
-## 버전 관리
-
-[SemVer](http://semver.org/) (을)를 사용하여 버전을 관리합니다.   
-자세한 방법은 레포지토리의 [태그(tags)](https://github.com/golagola2020/hango-opensource/tags)를 확인해 주십시오.
-
 ## 개발자
 
-**안혜수** [shehdn](https://github.com/suehdn) : 아두이노와 초음파 센싱을 통한 사물(손) 인식 및 스피커 출력 로직 구현
+**안혜수** [shehdn](https://github.com/suehdn) : 아두이노와 라즈베리파이를 이용한 사물(손) 인식 및 스피커 출력 로직 구현
 **송기수** [thdrltn684](https://github.com/thdrlcks784) : 모바일을 통해 '행고' 관리자 어플리케이션 구현
+**박우림** [woorim960](https://github.com/woorim960) :
 
 [기여자 목록](https://github.com/golagola2020/hango-opensource/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
 
 ## 라이센스
 
 이 프로젝트는 MIT 허가서를 사용합니다 - [LICENSE.md](LICENSE.md) 파일에서 자세히 알아보세요.
-
-## 감사 인사
-
-* 본인의 코드가 사용된 분께 경의를 표합니다
-* 영감
-* 기타 등등...
 

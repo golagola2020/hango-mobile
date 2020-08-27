@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F1F1"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/MainLogo"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_margin="5dp"
+            android:text="Hango"
+            android:textColor="#ff7f00"
+            android:textSize="45sp"
+            android:typeface="normal" />
+
+        <ImageButton
+            android:id="@+id/btn_user_info"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+    </RelativeLayout>
+
+    <View
+        android:background="#B2B2B2"
+        android:layout_width="match_parent"
+        android:layout_height="6px"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="12dp"
+        android:padding="6dp"
+        android:background="@drawable/btn_radius" >
+
+        <TextView
+            android:id="@+id/NameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop = "10sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="환영합니다" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/VendingCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"/>
+            <TextView
+                android:id="@+id/LogOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:text="로그아웃"
+                android:layout_gravity="right"/>
+        </GridLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id ="@+id/et_search_vending"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/main_radius"
+            android:drawableLeft="@drawable/ic_search"
+            android:gravity="center_vertical"
+            android:hint="자판기를 검색하세요"
+            android:textColor="#d3d3d3"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/MainListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin ="6dp"
+        android:choiceMode="singleChoice"
+        android:textFilterEnabled="true"
+        android:background="@drawable/main_shadow">
+    </ListView>
+
+</LinearLayout>
