@@ -55,9 +55,9 @@ https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
 
 ## 개발자
 
-**안혜수** [shehdn](https://github.com/suehdn) : 아두이노와 센서를 이용한 사물 감지 후 사용가능한 형태로 가공하고, 이를 라즈베리파이에게 송신 및 수신
-**박우림** [woorim960](https://github.com/woorim960) : 라즈베리파이를 이용하여 수신한 센싱 데이터를 가공하고 스피커로 출력
-**송기수** [thdrltn684](https://github.com/thdrlcks784) : 안드로이드 'hango' 관리자 어플리케이션 구현
+**안혜수** [shehdn](https://github.com/suehdn) : 아두이노와 센서를 이용한 사물 감지 후 사용가능한 형태로 가공하고, 이를 라즈베리파이에게 송신 및 수신  
+**박우림** [woorim960](https://github.com/woorim960) : 라즈베리파이를 이용하여 수신한 센싱 데이터를 가공하고 스피커로 출력  
+**송기수** [thdrltn684](https://github.com/thdrlcks784) : 안드로이드 'hango' 관리자 어플리케이션 구현  
 
 [기여자 목록](https://github.com/golagola2020/hango-client/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
 
