@@ -12,15 +12,16 @@ import java.util.Map;
 public class SignupRequest extends StringRequest {
 
     // 서버 URL 설정
-    final static private String URL = "http://192.168.123.107:80/mobile/signup";
+    final static private String URL = "http://192.168.0.31:80/mobile/signup";
     private Map<String, String> map;
 
-    public SignupRequest(String userName, String userId, String userPasswd, Response.Listener<String> listener) {
+    public SignupRequest(String userName, String userId, String userEmail, String userPasswd, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userName", userName);
         map.put("userId", userId);
+        map.put("userEmail", userEmail);
         map.put("userPasswd", userPasswd);
     }
 

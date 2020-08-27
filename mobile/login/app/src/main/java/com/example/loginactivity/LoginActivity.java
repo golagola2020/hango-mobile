@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // xml의 id 불러오기
-        et_user_id = findViewById(R.id.et_user_id);
+        et_user_id = findViewById(R.id.et_user_name);
         et_user_passwd = findViewById(R.id.et_user_passwd);
         btn_login = findViewById(R.id.btn_login);
         btn_signup = findViewById(R.id.btn_signup);

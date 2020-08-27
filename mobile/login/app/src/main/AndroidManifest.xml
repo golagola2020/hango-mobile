@@ -9,7 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".InfoUpdateActivity"></activity>
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".UpdateVendingActivity" />
+        <activity android:name=".DrinkMainActivity" />
+        <activity android:name=".GuideDrinkMainActivity"
+            android:theme="@style/Transparent">
+
+        </activity>
+        <activity android:name=".DrinkRefreshAcceptActivity"
+            android:theme="@style/Transparent">
+
+        </activity>
+
+        <activity android:name=".AddDrinkActivity"/>
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
