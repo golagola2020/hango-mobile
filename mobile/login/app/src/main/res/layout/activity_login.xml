@@ -4,24 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F1F1"
+    android:background="#9bcbea"
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <TextView
-        android:id="@+id/logoText"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30sp"
-        android:background="#353535"
-        android:fontFamily="@font/aguafina_script"
-        android:paddingTop="50sp"
-        android:paddingBottom="50sp"
-        android:text="Hango"
-        android:textAlignment="center"
-        android:textColor="#ECE07C"
-        android:textSize="80sp"
-        android:typeface="normal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/ic_hango_logo_white"/>
 
     <EditText
         android:id="@+id/et_user_name"
@@ -29,12 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50sp"
         android:layout_marginRight="50sp"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed-light"
         android:hint="아이디"
-        android:inputType="textPersonName"
+        android:padding="15dp"
         android:textSize="20sp"
-        android:typeface="monospace" />
+        android:background="@drawable/textbox_radius"/>
 
     <EditText
         android:id="@+id/et_user_passwd"
@@ -44,12 +35,11 @@
         android:layout_marginTop="10sp"
         android:layout_marginRight="50sp"
         android:layout_marginBottom="20sp"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed-light"
+        android:padding="15dp"
         android:hint="비밀번호"
-        android:inputType="textPersonName|textPassword"
+        android:inputType="textPassword"
         android:textSize="20sp"
-        android:typeface="monospace" />
+        android:background="@drawable/textbox_radius"/>
 
     <Button
         android:id="@+id/btn_login"
@@ -58,10 +48,10 @@
         android:layout_marginLeft="50sp"
         android:layout_marginRight="50sp"
         android:background="@drawable/btn_radius"
-        android:backgroundTint="#353535"
-        android:fontFamily="sans-serif-condensed-light"
+        android:backgroundTint="#E0E0E0"
+        android:fontFamily="@font/barungothicbold"
         android:text="로그인"
-        android:textColor="#ECE07C"
+        android:textColor="#404040"
         android:textColorHighlight="#ECE07C"
         android:textSize="20sp"
         android:typeface="monospace" />
@@ -74,10 +64,10 @@
         android:layout_marginTop="10sp"
         android:layout_marginRight="50sp"
         android:background="@drawable/btn_radius"
-        android:backgroundTint="#353535"
-        android:fontFamily="sans-serif-condensed-light"
+        android:backgroundTint="#E0E0E0"
+        android:fontFamily="@font/barungothicbold"
         android:text="회원가입"
-        android:textColor="#ECE07C"
+        android:textColor="#404040"
         android:textColorHighlight="#ECE07C"
         android:textSize="20sp"
         android:typeface="monospace" />
