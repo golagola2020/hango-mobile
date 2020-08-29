@@ -14,10 +14,12 @@ $ sudo apt-get upgrade
 $ sudo apt-get install arduino
 ```
    3. [python3](https://www.python.org/downloads/) 설치
+   4. pip3 설치
 ```
 $ sudo apt-get install python3
+$ sudo apt-get install python3-pip
 ```
-   4. TTS 모듈 'espeak' 설치
+   5. TTS 모듈 'espeak' 설치
 ```
 $ sudo apt-get install espeak
 
@@ -25,7 +27,7 @@ $ sudo apt-get install espeak
 $ espeak "Hello World"
 $ espeak -v ko "테스트 성공"
 ```
-   5. HTTP 통신 모듈 'requests' 설치
+   6. HTTP 통신 모듈 'requests' 설치
 ```
 $ sudo pip3 install requests
 ```
