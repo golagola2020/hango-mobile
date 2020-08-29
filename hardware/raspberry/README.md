@@ -25,6 +25,10 @@ $ sudo apt-get install espeak
 $ espeak "Hello World"
 $ espeak -v ko "테스트 성공"
 ```
+   5. HTTP 통신 모듈 'requests' 설치
+```
+$ sudo pip3 install requests
+```
 
 ## 설치
 
