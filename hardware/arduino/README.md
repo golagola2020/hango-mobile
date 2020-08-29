@@ -15,7 +15,8 @@
    git clone을 통해 얻은 hango-client 파일에서 라즈베리파이에서 받아놓은 최신 버전의 Arduino IDE로 arduino.ino 파일을 실행시킵니다.
    
    
-** 초음파 센서의 위치에 대한 이해를 돕기 위해 아래의 사진을 첨부합니다. 
+** 초음파 센서의 위치에 대한 이해를 돕기 위해 아래의 사진을 첨부합니다.
+
 ![자판기예시](https://user-images.githubusercontent.com/67812466/91625163-0c81ca00-e9e0-11ea-9eb3-ca127ad3facd.PNG)
 
    
