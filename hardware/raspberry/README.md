@@ -67,7 +67,7 @@ PORT = 'your arduino port'
 ```
    2. 라즈베리파이 실행
 ```
-python3 main.py
+$ python3 main.py
 ```
 
 ## 배포(발행)
