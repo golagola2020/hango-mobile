@@ -1,92 +1,89 @@
 # hango-raspberry 
-> 행고 프로젝트에서 센싱 데이터 수집 및 처리, 스피커 출력을 맡은 라즈베리파이입니다.  
+> 주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
+주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
 
 ## 시작하기에 앞서 
-
-   라즈베리파이 환경 설정 
-
-   1. [Arduino IDE](https://www.arduino.cc/en/main/software) 최신버전 설치
+[hango-raspberry](https://github.com/golagola2020/hango-client/tree/master/hardware/raspberry) 프로젝트를 실행시키기 위한 도구 및 프로그램 설치
+   1. 라즈베리파이 업데이트 및 업그레이드
 ```
 $ sudo apt-get update
 $ sudo apt-get upgrade
-$ sudo apt-get --purge remove arduino #기존에 설치된 구버전 제거
-$ sudo apt-get autoremove
-$ sudo apt-get clean
 ```
-   사용하는 라즈베리파이의 사양에 맞춰 Linux ARM 버전 설치 뒤 압축 해제 & 설치
+   2. [arduino](https://www.arduino.cc/en/main/software) 설치
 ```
-$ wget https://www.arduino.cc/en/main/software   # Linux ARM 32 bits 
-$ cd ~                    
-mkdir Programs
-cd ~/Downloads
-cp ./arduino-1.8.13-linuxarm.tar.xz ~/Programs              # 다운받는 버전에 따라 숫자 변경
-cd ~/Programs
-tar xvf arduino-1.8.13-linuxarm.tar.xz
-cd arduino-1.8.13
-./install.sh
+$ sudo apt-get install arduino
 ```
-설치된 압축파일 제거
-``` 
-$ rm arduino-1.8.3-linuxarm.tar.xz
-```      
-
-   2. Python3 설치
-```  
-$ sudo apt-get update
+   3. [python3](https://www.python.org/downloads/) 설치
+```
 $ sudo apt-get install python3
 ```
-   3. espeak 설치 
+   4. TTS 모듈 'espeak' 설치
 ```
-$ sudo apt-get update
-$ sudo apt-get upgrade
 $ sudo apt-get install espeak
-```
-   설치가 잘 되었는지 출력 테스트
-```
-$ espeak -v ko "안녕"
-$ espeak "Hello"
+
+# 테스트
+$ espeak "Hello World"
+$ espeak -v ko "테스트 성공"
 ```
 
-   4. 서버와 연결하기 위한 준비
+## 설치
 
-   * Node 설치 
+https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :  
+   1. git fetch or pull or clone
 ```
-$ uname -m    # arm 버전 확인
-   --> armv71
+$ git clone https://github.com/golagola2020/hango-client.git
+$ cd hango-client/hardware/raspberry
 ```
-   라즈베리파이의 arm 버전에 맞춰 LTS버전 설치
-```
-$ wget https://nodejs.org/dist/v12.18.3/node-v12.18.3-linux-armv7l.tar.xz  
-$ tar -xvf node-v12.18.3-linux-armv7l.tar.xz
-$ sudo mv node-v12.18.3-linux-armv7l /opt/nodejs 
-$ $ sudo ln -s /opt/nodejs/bin/node /usr/bin/node
-$ sudo ln -s /opt/nodejs/bin/npm /usr/bin/npm
-$ sudo ln -s /opt/nodejs/bin/npx /usr/bin/npx
-$ node -v
-  -->v12.18.3
-```
-   서버를 이용하기 위해
-```
-$ git clone https://github.com/golagola2020/hango-server.git
-$ cd hango-server/server
-$ npm install
-$ vi .env   #'.env' 파일에 DB 환경 변수 등록
-   # ENV
-   DB_DOMAIN="Your DB Host Domain"
-   DB_USER="Your DB User Name"
-   DB_PASSWORD="Your DB User Password"
-   DB_NAME="Your DB Name"
-$ sudo node server.js  #실행
-```
-## 시작하기
-   터미널에서 
-```
-$ sudo node server.js
-```
-  서버가 정상동작하고 있다는 알림 확인 뒤 다른 터미널을 열어 파이썬 파일을 열어 실행시킵니다. 
-```
-$ pwd
-/hango-client/hardware
-$ python3 raspberry.py
-``` 
 
+https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :  
+   1. https://github.com/golagola2020/hango-client 에서 ```Fork```버튼 클릭하고,
+   2. 포크 저장소 계정(maybe 개인 계정) 선택
+   3. git fetch or pull or clone
+   4. 포크 설정 [Configuring a remote for a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork)
+   5. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+```
+$ git clone https://github.com:YOUR_GITHUB_ACCOUNT/hango-client.git
+$ cd hango-client/hardware/raspberry
+$ git remote add upstream https://github.com/golagola2020/hango-client.git
+$ git fetch upstream
+$ git checkout master
+$ git merge upstream/master
+```
+
+## 실행(로컬)
+> [hango-raspberry](https://github.com/golagola2020/hango-client/tree/master/hardware/raspberry)를 실행하기 위해서는 [hango-server](https://github.com/golagola2020/hango-server)가 먼저 실행 중인 상태여야 하며, [hango-arduino](https://github.com/golagola2020/hango-client/tree/docs/hardware/arduino)와 시리얼 통신이 진행 중 이어야 합니다.
+
+   1. main.py 수정
+```python3
+# 웹서버 연결을 위한 요청 URL 수정
+URL = 'your server url'
+
+# 아두이노 시리얼 통신을 위한 PORT 수정
+PORT = 'your arduino port'
+```
+   2. 라즈베리파이 실행
+```
+python3 main.py
+```
+
+## 배포(발행)
+https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :
+```
+$ git checkout -b 'features to develop'
+$ git commit -m '[features to develop] message...'
+$ git push origin 'features to develop'
+```
+https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
+   1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+   2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) 
+
+## 기여하기
+
+[CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) 를 읽으신 후 기여를 해주십시오. 자세한 Pull Request 절차와 행동 규칙을 확인하실 수 있습니다.
+
+## 개발자
+
+**박우림** [woorim960](https://github.com/woorim960)
+**안혜수** [shehdn](https://github.com/suehdn) 
+
+[기여자 목록](https://github.com/golagola2020/hango-client/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
