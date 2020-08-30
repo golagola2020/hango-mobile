@@ -36,6 +36,17 @@ public class DrinkMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
+        //뒤로가기 기능을 위한 ImageView
+        ImageView arrowBack = (ImageView)findViewById(R.id.iv_arrow_back_drink_main);
+
+        //뒤로가기 기능 구현
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         //gridview Adapter 생성 및 연결
         final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
 
