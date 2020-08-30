@@ -25,7 +25,9 @@
         android:hint="아이디"
         android:padding="15dp"
         android:textSize="20sp"
-        android:background="@drawable/textbox_radius"/>
+        android:background="@drawable/textbox_radius"
+        android:drawableLeft="@drawable/ic_id"
+        android:drawableTint="@color/transparent"/>
 
     <EditText
         android:id="@+id/et_user_passwd"
@@ -39,7 +41,9 @@
         android:hint="비밀번호"
         android:inputType="textPassword"
         android:textSize="20sp"
-        android:background="@drawable/textbox_radius"/>
+        android:background="@drawable/textbox_radius"
+        android:drawableLeft="@drawable/ic_password"
+        android:drawableTint="@color/transparent"/>
 
     <Button
         android:id="@+id/btn_login"
