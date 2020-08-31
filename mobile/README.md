@@ -18,7 +18,7 @@ hango-project의 자판기 관리자를 위한 자판기 관리 안드로이드 
    
 ## 환경변수 설정
 
-   ULR 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
+   환경변수 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
    environment package안에 Network Class 를 작성하고, URL 정보를 Setting 하고 Getter 접근합니다.
 
 ## 개발 환경
@@ -29,6 +29,17 @@ hango-project의 자판기 관리자를 위한 자판기 관리 안드로이드 
 
    * minSdkVersion : 23
    * targetSdkVersion : 29(API 29: Android 10.0(Q))
+   
+## Screenshots
+
+<img src="https://user-images.githubusercontent.com/64050689/91752339-3108bc80-ec01-11ea-83d5-02b348910a73.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752347-3534da00-ec01-11ea-8c1b-c091c436591b.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752351-36fe9d80-ec01-11ea-95df-d823f748b1b0.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752361-3960f780-ec01-11ea-9351-d86d432e3739.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752379-44b42300-ec01-11ea-829b-00db35f748f6.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752384-467de680-ec01-11ea-8efc-091cd813d723.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752391-4847aa00-ec01-11ea-8d44-9fb310ec1521.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/91752396-4978d700-ec01-11ea-862d-9eac5ed36ea5.PNG" width="180px" height="320px"></img>
 
 ## 기여하기
 
@@ -44,5 +55,4 @@ hango-project의 자판기 관리자를 위한 자판기 관리 안드로이드 
 ## 라이센스
 
 이 프로젝트는 MIT 허가서를 사용합니다 - [LICENSE.md](LICENSE.md) 파일에서 자세히 알아보세요.
-
 
