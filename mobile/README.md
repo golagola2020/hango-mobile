@@ -1,99 +1,34 @@
-# hango-server (행고 웹서버)
+# hango-mobile
 > 주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
 주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
 
-## 시작하기에 앞서
 
-[hango-server](https://github.com/golagola2020/hango-server) 프로젝트를 실행시키기 위한 도구 및 프로그램 설치  
-   1. [Node](https://nodejs.org/ko/download/) 설치
-   2. [MySQL](https://dev.mysql.com/downloads/installer/) 설치
-
+## 소개
+hango-project의 자판기 관리자를 위한 자판기 관리 안드로이드 application 입니다.
+   
+   1. 현재 보유 중인 자판기들을 보여 주고 본인의 자판기를 관리 할 수 있습니다.
+   2. 각 자판기의 음료 현황(이름, 가격, 남은 양 등)을 관리 할 수 있습니다. 
+   
 ## 설치
+   
+   이  저장소를 복제하고 Android Studio로 불러온다.
+   ```
+   git clone https://github.com/golagola2020/hango-client.git
+   ```
+   
+## 환경변수 설정
 
-https://github.com/golagola2020/hango-server 에 push 권한이 있다면 :  
-   1. git fetch or pull or clone
-```
-$ git clone https://github.com/golagola2020/hango-server.git
-$ cd hango-server
-```
+   ULR 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
+   environment package안에 Network Class 를 작성하고, URL 정보를 Setting 하고 Getter 접근합니다.
 
-https://github.com/golagola2020/hango-server 에 push 권한이 없다면 :  
-   1. https://github.com/golagola2020/hango-server 에서 ```Fork```버튼 클릭하고,
-   2. 포크 저장소 계정(maybe 개인 계정) 선택
-   3. git fetch or pull or clone
-   4. 포크 설정 [Configuring a remote for a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork)
-   5. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
-```
-$ git clone https://github.com:YOUR_GITHUB_ACCOUNT/hango-server.git
-$ cd hango-server
-$ git remote add upstream https://github.com/golagola2020/hango-server.git
-$ git fetch upstream
-$ git checkout master
-$ git merge upstream/master
-```
+## 개발 환경
 
-## 실행(로컬)
+   * Android Studio @4.0.1
+   
+## Application Version
 
-   1. 패키지 설치
-   2. '.env' 파일 생성 후 DB 환경 변수 등록
-   3. 실행
-```
-# 1. 패키지 설치
-$ npm install
-
-# 2. '.env' 파일 생성 후 DB 환경 변수 등록
-$ touch .env
-$ vi .env
-```
-이어서 '.env' 파일에 DB 환경 변수 등록.
-```
-# ENV
-DB_DOMAIN="Your DB Host Domain"
-DB_USER="Your DB User Name"
-DB_PASSWORD="Your DB User Password"
-DB_NAME="Your DB Name"
-```
-```
-# 3. 실행
-$ sudo node server.js
-```
-
-## 배포(발행)
-
-https://github.com/golagola2020/hango-server 에 push 권한이 있다면 :  
-```
-$ git ch -b 'features to develop'
-$ git commit -m '[features to develop] message...'
-$ git push origin 'features to develop'
-```
-
-https://github.com/golagola2020/hango-server 에 push 권한이 없다면 :  
-   1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
-   2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
-
-## 사용된 도구
-
-* [Node.js](https://nodejs.org/ko/about/) - 서버 프레임워크
-* [Express.js](https://expressjs.com/ko/) - 웹 프레임워크
-* [MySQL](https://www.mysql.com/about/) - 관계형 데이터베이스 관리시스템
-
-## 의존성
-
-```json
-"dependencies": {
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.3",
-    "express": "^4.17.1",
-    "mysql": "^2.18.1"
-}
-```
-* [body-parser](https://github.com/expressjs/body-parser#readme)
-* [dotenv](https://github.com/motdotla/dotenv#readme)
-* [ejs](https://github.com/mde/ejs)
-* [express](https://github.com/expressjs/express)
-* [mysql](https://github.com/mysql)
-
+   * minSdkVersion : 23
+   * targetSdkVersion : 29(API 29: Android 10.0(Q))
 
 ## 기여하기
 
@@ -101,7 +36,7 @@ https://github.com/golagola2020/hango-server 에 push 권한이 없다면 :
 
 ## 개발자
 
-  - **박우림** [woorim960](https://github.com/woorim960) : 라즈베리파이와 모바일간 통신을 위한 서버
+  - **송기수** [thdrlcks784](https://github.com/thdrlcks784) : 자판기 관리 Application 개발
 
 
 [기여자 목록](https://github.com/golagola2020/hango-server/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
