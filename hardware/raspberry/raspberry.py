@@ -7,8 +7,9 @@ import requests, json           # HTTP 통신 및 JSON 모듈
 PORT = '/dev/ttyACM0'
 SERIAL_NUMBER = '20200814042555141'
 
+
 # 데이터 요청 Domain 선언
-URL = 'http://localhost:80'
+URL = str(os.environ['hangoURL'])
 # 스피커 출력 옵션 선언
 SPEAK_OPTION = '-v ko+f3 -s 160 -p 95'
 
@@ -215,7 +216,7 @@ def request_drinks_update() :
     # 서버에게 요청할 데이터 생성
     drink = {
         'serial_number' : SERIAL_NUMBER,  
-        'sold_position' : 1
+        'sold_position' : sensings["sold_position"] 
         }
                             
     print('sensings : ', sensings)
