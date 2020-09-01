@@ -1,102 +1,40 @@
-# hango-client (행고 클라이언트)
-> hango-client : 행고 프로젝트의 클라이언트(아두이노, 라즈베리파이, 안드로이드 스튜디오) 구현
-주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
-주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
+# hango-arduino
+> 행고 자판기에서 센싱파트를 맡은 아두이노입니다.
 
+## 시작하기에 앞서
+   * 이용하고있는 환경에서 [Arduiono IDE](https://www.arduino.cc/en/main/software)가 설치되어있는지 확인해주세요.
+   * 아두이노에 초음파 센서 연결을 합니다.   
+      (fritzing 소프트웨어 이용) 아래의 회로도는 arduino.ino 파일을 실행시킬 아두이노의 회로도입니다. 
+![아두이노회로도(번호추가)](https://user-images.githubusercontent.com/67812466/91624116-7054c480-e9d9-11ea-92f0-77129b903d9e.jpg)
 
-## 시작하기에 앞서 
-[hango-client](https://github.com/golagola2020/hango-client.git) 프로젝트를 실해시키기 위한 도구 및 프로그램 설치
-### 라즈베리 파이
-   1. [Arduino IDE](https://www.arduino.cc/en/main/software) 최신버전 설치
+   
+   
+   초음파센서 4개 중 1번과 2번은 음료수를 선택하는 버튼과 같은 행에 존재하고, 3번과 4번은 음료수가 나오는 곳과 같은 행에 존재합니다. ([예시 사진](#참고)) 
+   
+   각 초음파 센서들의 trig핀은 순서대로 2,7,8,12에 연결하고 echo핀은 3,6,9,11에 연결합니다.
 ```
-$ sudo apt-get update
-$ sudo apt-get upgrade
-$ sudo apt-get --purge remove arduino #기존에 설치된 구버전 제거
-$ sudo apt-get autoremove
-$ sudo apt-get clean
+const int trigPin[PIN_COUNT] = {2, 7, 8, 12};
+const int echoPin[PIN_COUNT] = {3, 6, 9, 11};
 ```
-   사용하는 라즈베리파이의 사양에 맞춰 Linux ARM 버전 설치 뒤 압축 해제 & 설치
+    
+   현재 설정되어있는 자판기는 총 8 종류의 음료수를 판매하며 한 줄에 4종류를 판매하는 총 2개의 라인을 갖습니다. 
+   ROOP_COUNT는 현재 자판기에서 손을 인식할 때, 초음파 센서에 한번 인식 되는것이 아닌 여러번 인식해 그 횟수를 더합니다. 이때 가장 많이 센싱된 곳을 실제 측정된다고 보기 때문에 정확도가 높아집니다.  
 ```
-$ wget https://www.arduino.cc/en/main/software   # Linux ARM 32 bits (명령어 실행되는지 확인)
-$ cd ~                    
-mkdir Programs
-cd ~/Downloads
-cp ./arduino-1.8.13-linuxarm.tar.xz ~/Programs              # 다운받는 버전에 따라 숫자 변경.
-cd ~/Programs
-tar xvf arduino-1.8.13-linuxarm.tar.xz
-cd arduino-1.8.13
-./install.sh
+#define MAX_LINE 2          // 자판기 전체 라인 수
+#define MAX_POSITION 8      // 자판기 전체 칸 수
+#define PIN_COUNT 4         // 핀 개수
+#define ROOP_CNT 5          // 정확도를 위해 손 측정시 몇번의 루프를 돌것인지 결정(i의 최대값을 결정.)
+#define BOTH_SIDE_SPACE 10  // 자판기에서 버튼이 존재하지 않는 양옆 구간의 거리(cm)
+#define BUTTON_RANGE 10     // 버튼과 버튼 사이의 거리
 ```
-설치된 압축파일 제거
-``` 
-$ rm arduino-1.8.3-linuxarm.tar.xz
-```      
+   
+     
+## 시작하기
+   git clone을 통해 얻은 hango-client 파일에서 라즈베리파이에서 받아놓은 최신 버전의 Arduino IDE로 arduino.ino 파일을 실행시킵니다.
+   
+   
+### 참고 
+** 초음파 센서의 위치에 대한 이해를 돕기 위해 아래의 사진을 첨부합니다. 위의 회로도의 전선 색에 맞춰 변경하시기 바랍니다. 
+![자판기예시](https://user-images.githubusercontent.com/67812466/91648593-5207cb00-eaa4-11ea-8af1-d01680747228.PNG)
 
-  2. Python3 설치
-```  
-$ sudo apt-get update
-$ sudo apt-get install python3
-```
-  3. Node 설치 
-```
-$ uname -m    # arm 버전 확인
-   --> armv71
-```
-라즈베리파이의 arm 버전에 맞춰 LTS버전 설치.
-```
-$ wget https://nodejs.org/dist/v12.18.3/node-v12.18.3-linux-armv7l.tar.xz  
-$ tar -xvf node-v12.18.3-linux-armv7l.tar.xz
-$ sudo mv node-v12.18.3-linux-armv7l /opt/nodejs 
-$ $ sudo ln -s /opt/nodejs/bin/node /usr/bin/node
-$ sudo ln -s /opt/nodejs/bin/npm /usr/bin/npm
-$ sudo ln -s /opt/nodejs/bin/npx /usr/bin/npx
-$ node -v
-  -->v12.18.3
-```
-   라즈베리 파이에서 서버를 이용하기 위해서
-```
-$ git clone https://github.com/golagola2020/hango-server.git
-$ cd hango-server/server
-$ npm install
-$ vi .env   #'.env' 파일에 DB 환경 변수 등록.
-   # ENV
-   DB_DOMAIN="Your DB Host Domain"
-   DB_USER="Your DB User Name"
-   DB_PASSWORD="Your DB User Password"
-   DB_NAME="Your DB Name"
-$ sudo node server.js  #실행
-```
-
-## 배포(발행)
-https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :
-```
-$ git checkout -b 'features to develop'
-$ git commit -m '[features to develop] message...'
-$ git push origin 'features to develop'
-```
-https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
-   1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
-   2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
-
-
-## 사용된 도구
-* 아두이노 UNO - 손과 음료 센싱
-* 라즈베리파이 3B+ - 센싱 데이터 관리 및 TTS 출력 
- 
-
-## 기여하기
-
-[CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) 를 읽으신 후 기여를 해주십시오. 자세한 Pull Request 절차와 행동 규칙을 확인하실 수 있습니다.
-
-## 개발자
-
-**안혜수** [shehdn](https://github.com/suehdn) : 아두이노와 라즈베리파이를 이용한 사물(손) 인식 및 스피커 출력 로직 구현
-**송기수** [thdrltn684](https://github.com/thdrlcks784) : 모바일을 통해 '행고' 관리자 어플리케이션 구현
-**박우림** [woorim960](https://github.com/woorim960) :
-
-[기여자 목록](https://github.com/golagola2020/hango-opensource/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
-
-## 라이센스
-
-이 프로젝트는 MIT 허가서를 사용합니다 - [LICENSE.md](LICENSE.md) 파일에서 자세히 알아보세요.
-
+   
