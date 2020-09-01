@@ -18,8 +18,8 @@ hango-project의 자판기 관리자를 위한 자판기 관리 안드로이드 
    
 ## 환경변수 설정
 
-   환경변수 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
-   environment package안에 Network Class 를 작성하고, URL 정보를 Setting 하고 Getter 접근합니다.
+   * 환경변수 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
+   * environment package안에 Network Class 를 작성하고, URL 정보를 Setting 하고 Getter 접근합니다.
 
 ## 개발 환경
 
