@@ -2,6 +2,10 @@
 > 주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
 주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
 
+## 개발 환경
+
+   * Arduino IDE @1.8.13
+
 ## 시작하기에 앞서
    * 이용하고있는 환경에서 [Arduiono IDE](https://www.arduino.cc/en/main/software)가 설치되어있는지 확인해주세요.
    * 아두이노에 초음파 센서 연결을 합니다.   
