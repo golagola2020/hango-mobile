@@ -1,5 +1,6 @@
 # hango-arduino
-> 행고 자판기에서 센싱파트를 맡은 아두이노입니다.
+> 주의 : [GitHub Pages](https://pages.github.com/)에 대해서 충분히 숙지할 것.  
+주의 : [Collaborating with issues and pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests)을 정독할 것
 
 ## 시작하기에 앞서
    * 이용하고있는 환경에서 [Arduiono IDE](https://www.arduino.cc/en/main/software)가 설치되어있는지 확인해주세요.
@@ -32,9 +33,28 @@ const int echoPin[PIN_COUNT] = {3, 6, 9, 11};
 ## 시작하기
    git clone을 통해 얻은 hango-client 파일에서 라즈베리파이에서 받아놓은 최신 버전의 Arduino IDE로 arduino.ino 파일을 실행시킵니다.
    
-   
+
+## 배포(발행)
+https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :
+```
+$ git checkout -b 'features to develop'
+$ git commit -m '[features to develop] message...'
+$ git push origin 'features to develop'
+```
+https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
+   1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+   2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) 
+
+## 기여하기
+
+[CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) 를 읽으신 후 기여를 해주십시오. 자세한 Pull Request 절차와 행동 규칙을 확인하실 수 있습니다.
+
+## 개발자
+
+**안혜수** [shehdn](https://github.com/suehdn)   
+
+[기여자 목록](https://github.com/golagola2020/hango-client/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
+
 ### 참고 
 ** 초음파 센서의 위치에 대한 이해를 돕기 위해 아래의 사진을 첨부합니다. 위의 회로도의 전선 색에 맞춰 변경하시기 바랍니다. 
 ![자판기예시](https://user-images.githubusercontent.com/67812466/91648593-5207cb00-eaa4-11ea-8af1-d01680747228.PNG)
-
-   
