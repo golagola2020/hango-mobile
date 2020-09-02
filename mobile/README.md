@@ -46,7 +46,7 @@ $ git merge upstream/master
    
    ```java
    public class Network {
-      private String URL = "http://192.168.0.31:80";
+      private String URL = "http://127.0.0.1";
 
       public String getURL(){
          return URL;
@@ -74,6 +74,28 @@ $ git merge upstream/master
 <img src="https://user-images.githubusercontent.com/64050689/91752391-4847aa00-ec01-11ea-8d44-9fb310ec1521.PNG" width="180px" height="320px"></img>
 <img src="https://user-images.githubusercontent.com/64050689/91752396-4978d700-ec01-11ea-862d-9eac5ed36ea5.PNG" width="180px" height="320px"></img>
 
+## 의존성
+   * Volley
+   네트워크 연결에 ```Volley @1.1.1```를 사용
+   Volley 사용을 위해 Gradle에 아래의 의존성 문장 추가
+   ```
+   implementation 'com.android.volley:volley:1.1.1'
+   ```
+   
+   예시
+   ```java
+      dependencies {
+          implementation fileTree(dir: "libs", include: ["*.jar"])
+          implementation 'com.android.support:appcompat-v7:28.0.0'
+          implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+          implementation 'com.android.volley:volley:1.1.1' //Volley 사용을 위한 의존성 추가
+          testImplementation 'junit:junit:4.12'
+          androidTestImplementation 'com.android.support.test:runner:1.0.2'
+          androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+      }
+      ```
+      
 ## 기여하기
 
 [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) 를 읽으신 후 기여를 해주십시오. 자세한 Pull Request 절차와 행동 규칙을 확인하실 수 있습니다.
