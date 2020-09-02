@@ -147,8 +147,6 @@ public class DrinkMainActivity extends AppCompatActivity {
 
                     //응답 데이터가 존재하지 않을 경우 음료 추가Item 만을 생성
                     else{
-                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
-                        //
                         drinkAdater.addDrinkItem(drinkAdater.getSerialNumber());
                         drinkGridView.setAdapter(drinkAdater);
                     }

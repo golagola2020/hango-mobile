@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,6 +28,7 @@ public class AddDrinkActivity extends AppCompatActivity {
 
     private Button btn_regi_drink;
     private EditText tv_drink_name,tv_drink_price,tv_drink_max_count;
+    private ImageView iv_arrow_back_add_drink;
 
     private String serialNumber;
     private int position;
@@ -43,6 +45,16 @@ public class AddDrinkActivity extends AppCompatActivity {
         tv_drink_name = findViewById(R.id.et_drink_name);
         tv_drink_price = findViewById(R.id.et_drink_price);
         tv_drink_max_count = findViewById(R.id.et_max_count);
+
+        //뒤로가기 버튼
+        iv_arrow_back_add_drink = findViewById(R.id.iv_arrow_back_add_drink);
+
+        iv_arrow_back_add_drink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //DrinkMainActivity로부터 넘어온 intent
         Intent intent = getIntent();
