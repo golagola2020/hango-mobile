@@ -43,6 +43,16 @@ $ git merge upstream/master
 
    * 환경변수 설정을 위한 environment package를 ```/mobile/hango/app/src/main/java/com/hango``` 경로에 만듭니다.
    * environment package안에 Network Class 를 작성하고, URL 정보를 Setting 하고 Getter 접근합니다.
+   
+   ```java
+   public class Network {
+      private String URL = "http://192.168.0.31:80";
+
+      public String getURL(){
+         return URL;
+    }
+}
+   ```
 
 ## 개발 환경
 
