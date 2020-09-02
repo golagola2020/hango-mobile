@@ -61,7 +61,3 @@ https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
 
 [기여자 목록](https://github.com/golagola2020/hango-client/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
 
-## 라이센스
-
-이 프로젝트는 MIT 허가서를 사용합니다 - [LICENSE.md](LICENSE.md) 파일에서 자세히 알아보세요.
-
