@@ -62,7 +62,7 @@
             android:layout_marginTop = "10sp"
             android:drawableLeft="@drawable/drink_amount_circle"
             android:drawableTint="#FF0000"
-            android:text = "  충분 (40 ~ 10 %)"
+            android:text = "  부족 (40 ~ 10 %)"
             android:textColor="#000000"
 
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
