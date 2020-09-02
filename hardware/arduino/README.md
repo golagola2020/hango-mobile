@@ -11,7 +11,7 @@ https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :
    1. git fetch or pull or clone
 ```
 $ git clone https://github.com/golagola2020/hango-client.git
-$ cd hango-client/hardware/raspberry
+$ cd hango-client/hardware/arduino
 ```
 
 https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :  
@@ -22,7 +22,7 @@ https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
    5. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
 ```
 $ git clone https://github.com:YOUR_GITHUB_ACCOUNT/hango-client.git
-$ cd hango-client/hardware/raspberry
+$ cd hango-client/hardware/arduino
 $ git remote add upstream https://github.com/golagola2020/hango-client.git
 $ git fetch upstream
 $ git checkout master
@@ -31,8 +31,9 @@ $ git merge upstream/master
 
 ## 실행(로컬)
    1. 초음파 센서 연결
-      1. (fritzing 소프트웨어 이용) 아래의 회로도는 arduino.ino 파일을 실행시킬 아두이노의 회로도입니다. 
-      2. 초음파센서 4개 중 1번과 2번은 음료수를 선택하는 버튼과 같은 행에 존재하고, 3번과 4번은 음료수가 나오는 곳과 같은 행에 존재합니다. ([예시 사진](#참고)) 
+      * (fritzing 소프트웨어 이용) 아래의 회로도는 arduino.ino 파일을 실행시킬 아두이노의 회로도입니다. 
+      * 초음파센서 4개 중 1번과 2번은 음료수를 선택하는 버튼과 같은 행에 존재하고, 3번과 4번은 음료수가 나오는 곳과 같은 행에 존재합니다. ([예시 사진](#참고))  
+      
 ![아두이노회로도(번호추가)](https://user-images.githubusercontent.com/67812466/91624116-7054c480-e9d9-11ea-92f0-77129b903d9e.jpg)
 
    2. 입출력 핀 정의
