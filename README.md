@@ -48,6 +48,13 @@ $ git push origin 'features to develop'
 https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
    1. 포크 동기화 [Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
    2. Pull Request 보내기 [Creating a pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) 
+   
+## 데모
+#### 클라이언트 데모
+> https://youtu.be/D2CXURqW8qs
+#### 모바일 데모
+> https://youtu.be/K7cLH89WKPQ
+
 
 ## 기여하기
 
@@ -60,8 +67,4 @@ https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :
 **송기수** [thdrltn684](https://github.com/thdrlcks784) : 안드로이드 'hango' 관리자 어플리케이션 구현  
 
 [기여자 목록](https://github.com/golagola2020/hango-client/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
-
-## 라이센스
-
-이 프로젝트는 MIT 허가서를 사용합니다 - [LICENSE.md](LICENSE.md) 파일에서 자세히 알아보세요.
 
