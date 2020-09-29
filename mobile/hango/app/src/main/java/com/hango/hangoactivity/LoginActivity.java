@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -57,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         // 회원 정보 등록에 성공시 실행
                         if (success) {
-                            save(checkBox.isChecked(),userId,userPasswd);
                             Toast.makeText(getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("userId", userId);
@@ -95,7 +95,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             // 회원 정보 등록에 성공시 실행
                             if (success) {
-                                save(checkBox.isChecked(),userId,userPasswd);
+                                if(checkBox.isChecked() == true) {
+                                    save(checkBox.isChecked(), userId, userPasswd);
+                                }
                                 Toast.makeText(getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("userId", userId);
@@ -126,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void save(Boolean check,String userId,String userPasswd){
+    public void save(Boolean check,String userId,String userPasswd){
         SharedPreferences.Editor editor = appData.edit();
 
         editor.putBoolean("SAVE_LOGIN_DATA",check);
