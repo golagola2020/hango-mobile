@@ -36,7 +36,7 @@
         android:layout_marginLeft="50sp"
         android:layout_marginTop="10sp"
         android:layout_marginRight="50sp"
-        android:layout_marginBottom="20sp"
+
         android:padding="15dp"
         android:hint="비밀번호"
         android:inputType="textPassword"
@@ -44,7 +44,13 @@
         android:background="@drawable/textbox_radius"
         android:drawableLeft="@drawable/ic_password"
         android:drawableTint="@color/transparent"/>
+    <CheckBox
+        android:id = "@+id/cb_login_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "로그인 정보 저장"
 
+        android:layout_marginLeft="50sp"/>
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
