@@ -13,9 +13,11 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.ImageView;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 자판기 정보 ListView Adapter 생성
     private VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView btn_user_info = (ImageView) findViewById(R.id.btn_user_info);
+        Button btn_main_to_salesdata = (Button)findViewById(R.id.btn_main_to_salesdata);
 
         // 로그인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
@@ -58,6 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Adapter 에 userId 저장
         vendingAdapter.setUserId(UserId);
+
+        btn_main_to_salesdata.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                // 유저 정보 화면으로 userId 전달
+                Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
+                intent1.putExtra("userId", UserId);
+                intent1.putExtra("userName",userName);
+                startActivity(intent1);
+            }
+        });
 
         // 유저 정보 화면(InfoActivity)로 이동
         btn_user_info.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +181,12 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray vendingsArray = object.getJSONArray("vendings");
 
                     // userId에 해당하는 userName key("userName")
-                    String userName = object.getString("userName");
+                    userName = object.getString("userName");
                     if(success){
                         // vendings key에 들어있는 자판기 정보를 순차적으로 호출
                         for(int i =0;i<vendingsArray.length();i++){
                             JSONObject vending = vendingsArray.getJSONObject(i);
+                            Log.d("TAG","판매 결과 : " + vending);
                             // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
                             vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
 
