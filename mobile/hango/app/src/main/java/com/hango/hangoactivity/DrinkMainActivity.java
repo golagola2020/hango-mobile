@@ -3,6 +3,7 @@ package com.hango.hangoactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,6 +68,17 @@ public class DrinkMainActivity extends AppCompatActivity {
                 intent.putExtra("serialNumber",drinkAdater.getSerialNumber());
                 startActivity(intent);
             }
+        });
+
+        final android.support.v4.widget.SwipeRefreshLayout mainSwipeRefresh = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_drink_main);
+
+        mainSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                drinkDataParser(drinkAdater,drinkGridView);
+                mainSwipeRefresh.setRefreshing(false);
+            }
+
         });
 
         //mainActivity에서 받아온 자판기 정보
