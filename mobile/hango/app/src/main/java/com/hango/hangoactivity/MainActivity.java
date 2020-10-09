@@ -2,6 +2,7 @@ package com.hango.hangoactivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -99,7 +100,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        final android.support.v4.widget.SwipeRefreshLayout mainSwipeRefresh = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_main);
 
+        mainSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                vendingDataParser(vendingAdapter);
+                mainSwipeRefresh.setRefreshing(false);
+            }
+
+        });
 
         //listview 목록 출력
         vendingListView.setAdapter(vendingAdapter);
