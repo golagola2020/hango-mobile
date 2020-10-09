@@ -88,14 +88,20 @@
             android:textSize="18sp" />
 
     </LinearLayout>
-    <ListView
-        android:id="@+id/MainListView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin ="6dp"
-        android:choiceMode="singleChoice"
-        android:textFilterEnabled="true"
-        android:background="@drawable/main_shadow">
-    </ListView>
+        android:layout_height="match_parent">
 
+        <ListView
+            android:id="@+id/MainListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin ="6dp"
+            android:choiceMode="singleChoice"
+            android:textFilterEnabled="true"
+            android:background="@drawable/main_shadow">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
