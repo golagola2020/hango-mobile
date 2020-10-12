@@ -36,9 +36,9 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
 
     LayoutInflater inflater = null;
     // 자판기 정보 ArrayList
-    public ArrayList<VendingData> VendingData = new ArrayList<>();
+    public ArrayList<VendingData> vendingsData = new ArrayList<>();
     // 검색된 자판기 정보를 저장하기 위한 ArrayList
-    private ArrayList<VendingData> filteredVendingData = VendingData;
+    private ArrayList<VendingData> filteredVendingData = vendingsData;
     private Context context;
 
     Filter VendingDataFilter;
@@ -49,13 +49,13 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
     }
 
     // 자판기 정보 Item 생성자
-    public void addItem(String VendingName,String VendingDescripsion,String VendingSerialNumber,int VendingFullsize){
-        VendingData vdata = new VendingData();
-        vdata.setVendingName(VendingName);
-        vdata.setVendingDescription(VendingDescripsion);
-        vdata.setVendingSerialNumber(VendingSerialNumber);
-        vdata.setVendingFullsize(VendingFullsize);
-        VendingData.add(vdata);
+    public void addItem(String vendingName,String vendingDescription,String vendingSerialNumber,int vendingFullSize){
+        VendingData vendingData = new VendingData();
+        vendingData.setVendingName(vendingName);
+        vendingData.setVendingDescription(vendingDescription);
+        vendingData.setVendingSerialNumber(vendingSerialNumber);
+        vendingData.setVendingFullsize(vendingFullSize);
+        vendingsData.add(vendingData);
     }
 
     // UserId Setter,Getter
@@ -69,7 +69,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
 
     // 자판기 data 초기화 method
     public void itemClear(){
-        VendingData.clear();
+        vendingsData.clear();
     }
 
     // 자판기의 수를 반환
@@ -96,7 +96,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
         // position에 해당하는 VendingData
-        final VendingData vendingData = VendingData.get(position);
+        final VendingData vendingData = vendingsData.get(position);
 
         ViewHolder holder;
 
@@ -107,13 +107,13 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
 
             holder = new ViewHolder();
 
-            holder.VendingNameText = (TextView) convertView.findViewById(R.id.vending_list_name);
-            holder.VendingDescriptionText = (TextView) convertView.findViewById(R.id.vending_list_description);
+            holder.tv_vending_item_name = (TextView) convertView.findViewById(R.id.tv_vending_item_name);
+            holder.tv_vending_item_description = (TextView) convertView.findViewById(R.id.tv_vending_item_description);
 
             // 각 Item 의 '수정' ImageView
-            holder.VendingUpdateImage = (ImageView) convertView.findViewById(R.id.Btn_vending_update);
+            holder.btn_vending_update = (ImageView) convertView.findViewById(R.id.btn_vending_update);
             // 각 Item 의 '삭제' ImageView
-            holder.VendingDeletImage = (ImageView) convertView.findViewById(R.id.Btn_vending_delete);
+            holder.btn_vending_delete = (ImageView) convertView.findViewById(R.id.btn_vending_delete);
             convertView.setTag(holder);
 
         }
@@ -121,11 +121,11 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.VendingNameText.setText((position+1) + ". " + VendingData.get(position).getVendingName());
-        holder.VendingDescriptionText.setText(VendingData.get(position).getVendingDescription());
+        holder.tv_vending_item_name.setText((position+1) + ". " + vendingsData.get(position).getVendingName());
+        holder.tv_vending_item_description.setText(vendingsData.get(position).getVendingDescription());
 
         // '수정' ImageView Click Listener
-        holder.VendingUpdateImage.setOnClickListener(new View.OnClickListener(){
+        holder.btn_vending_update.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -136,7 +136,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         });
 
         // '삭제' ImageView Click Listener
-        holder.VendingDeletImage.setOnClickListener(new View.OnClickListener() {
+        holder.btn_vending_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -190,13 +190,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         return VendingDataFilter;
     }
 
-    // 자판기 Item 중복출력 방지를 위한 ViewHolder
-    public class ViewHolder{
-            TextView VendingNameText;
-            TextView VendingDescriptionText;
-            ImageView VendingUpdateImage;
-            ImageView VendingDeletImage;
-    }
 
     // 자판기 정보 검색 class
     private class ListFilter extends Filter{
@@ -206,12 +199,12 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults() ;
 
             if (constraint == null || constraint.length() == 0) {
-                results.values = VendingData ;
-                results.count = VendingData.size() ;
+                results.values = vendingsData ;
+                results.count = vendingsData.size() ;
             } else {
                 ArrayList<VendingData> itemList = new ArrayList<VendingData>() ;
 
-                for (VendingData item : VendingData) {
+                for (VendingData item : vendingsData) {
                     if (item.getVendingName().toUpperCase().contains(constraint.toString().toUpperCase()) ||
                             item.getVendingDescription().toUpperCase().contains(constraint.toString().toUpperCase()))
                     {
@@ -237,6 +230,14 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
                 notifyDataSetInvalidated() ;
             }
         }
+    }
+
+    // 자판기 Item 중복출력 방지를 위한 ViewHolder
+    public class ViewHolder{
+        TextView tv_vending_item_name;
+        TextView tv_vending_item_description;
+        ImageView btn_vending_update;
+        ImageView btn_vending_delete;
     }
 
 }
