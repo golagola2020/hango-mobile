@@ -26,7 +26,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
-
             android:background="@drawable/ic_menu" />
     </RelativeLayout>
 
@@ -43,7 +42,7 @@
         android:background="@drawable/btn_radius" >
 
         <TextView
-            android:id="@+id/NameText"
+            android:id="@+id/tv_main_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -58,7 +57,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:text="환영합니다" />
         <TextView
-            android:id="@+id/VendingCount"
+            android:id="@+id/tv_main_user_vending_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"/>

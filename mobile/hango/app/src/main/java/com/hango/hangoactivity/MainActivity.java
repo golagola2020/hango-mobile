@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         // 로그인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
-        final String UserId = intent.getStringExtra("userId"); //intent로 받아온 userID
+        final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
 
         // Adapter 에 userId 저장
-        vendingAdapter.setUserId(UserId);
+        vendingAdapter.setUserId(userId);
 
         btn_main_to_salesdata.setOnClickListener(new View.OnClickListener(){
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 유저 정보 화면으로 userId 전달
                 Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
-                intent1.putExtra("userId", UserId);
+                intent1.putExtra("userId", userId);
                 intent1.putExtra("userName",userName);
                 startActivity(intent1);
             }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 유저 정보 화면으로 userId 전달
                 Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-                intent.putExtra("userId", UserId);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //자판기검색 editText
-        final EditText vendingSearch = (EditText) findViewById(R.id.et_search_vending);
+        final EditText et_search_vending = (EditText) findViewById(R.id.et_search_vending);
 
 
         //ListView 생성 및 연결
@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final android.support.v4.widget.SwipeRefreshLayout mainSwipeRefresh = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_main);
+        final android.support.v4.widget.SwipeRefreshLayout swiperefresh_main = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_main);
 
-        mainSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swiperefresh_main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 vendingDataParser(vendingAdapter);
-                mainSwipeRefresh.setRefreshing(false);
+                swiperefresh_main.setRefreshing(false);
             }
 
         });
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         vendingListView.setAdapter(vendingAdapter);
 
         //자판기 검색 기능
-        vendingSearch.addTextChangedListener(new TextWatcher(){
+        et_search_vending.addTextChangedListener(new TextWatcher(){
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                VendingData vdata = (VendingData) vendingAdapter.getItem(position);
+                VendingData vendingData = (VendingData) vendingAdapter.getItem(position);
 
                 Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
-                intent.putExtra("name",vdata.getVendingName());
-                intent.putExtra("description",vdata.getVendingDescription());
-                int fullSize = vdata.getVendingFullsize();
+                intent.putExtra("name",vendingData.getVendingName());
+                intent.putExtra("description",vendingData.getVendingDescription());
+                int fullSize = vendingData.getVendingFullsize();
                 intent.putExtra("fullSize",fullSize);
-                intent.putExtra("serialNumber",vdata.getVendingSerialNumber());
+                intent.putExtra("serialNumber",vendingData.getVendingSerialNumber());
                 startActivity(intent);
 
             }
@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
                         // vendings key에 들어있는 자판기 정보를 순차적으로 호출
                         for(int i =0;i<vendingsArray.length();i++){
                             JSONObject vending = vendingsArray.getJSONObject(i);
-                            Log.d("TAG","판매 결과 : " + vending);
                             // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
                             vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
 
@@ -210,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "요청 실패", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e){
@@ -235,23 +233,23 @@ public class MainActivity extends AppCompatActivity {
     }
     //자판기 수 출력 method , integer 형의 자판기 수를 의미하는 vendingCount를 인자로 받는다
     private void printVendingCount(int vendingCount){
-        TextView vendingCountText = (TextView) findViewById(R.id.VendingCount);
+        TextView tv_main_user_vending_count = (TextView) findViewById(R.id.tv_main_user_vending_count);
 
         String _vendingCountText = "보유중인 자판기 수 는 " + vendingCount + " 대입니다.";
         SpannableStringBuilder s_vendingCountText = new SpannableStringBuilder(_vendingCountText);
         s_vendingCountText.setSpan(new ForegroundColorSpan(Color.parseColor("#d3d3d3")), 0, _vendingCountText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        vendingCountText.setText(_vendingCountText);
+        tv_main_user_vending_count.setText(_vendingCountText);
     }
 
     //userName 출력 method, String 형의 userName을 인자로 받는다
     private void printUserName(String userName){
-        TextView idText = (TextView) findViewById(R.id.NameText);
-        String _UserId = userName + "님";
-        SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_User_Id.setSpan(new RelativeSizeSpan(3.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TextView tv_main_user_name = (TextView) findViewById(R.id.tv_main_user_name);
+        String _userId = userName + "님";
+        SpannableStringBuilder s_userId = new SpannableStringBuilder(_userId);
+        s_userId.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s_userId.setSpan(new RelativeSizeSpan(3.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        idText.setText(s_User_Id);
+        tv_main_user_name.setText(s_userId);
 
 
     }

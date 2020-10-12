@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,17 +31,17 @@ import java.util.Map;
 public class DrinkMainActivity extends AppCompatActivity {
 
     // 음료정보 GridView Item 출력을 위한 Adapter 생성
-    private DrinkListAdapter drinkAdater = new DrinkListAdapter();
+    private DrinkListAdapter drinkAdapter = new DrinkListAdapter();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_main);
 
         //뒤로가기 기능을 위한 ImageView
-        ImageView arrowBack = (ImageView)findViewById(R.id.iv_arrow_back_drink_main);
+        ImageView iv_arrow_back_drink_main = (ImageView)findViewById(R.id.iv_arrow_back_drink_main);
 
         //뒤로가기 기능 구현
-        arrowBack.setOnClickListener(new View.OnClickListener() {
+        iv_arrow_back_drink_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -52,8 +52,8 @@ public class DrinkMainActivity extends AppCompatActivity {
         final GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
 
         //음료 정보 가이드 라인 팝업창
-        ImageView guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
-        guide.setOnClickListener(new View.OnClickListener(){
+        ImageView iv_drink_main_guide = (ImageView) findViewById(R.id.iv_drink_main_guide);
+        iv_drink_main_guide.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(DrinkMainActivity.this,GuideDrinkMainActivity.class);
                 startActivity(intent);
@@ -61,22 +61,22 @@ public class DrinkMainActivity extends AppCompatActivity {
         });
 
         // 음료의 남은 개수를 최대로 채우기 위한 refresh Button Click Listener
-        ImageView refresh = (ImageView)findViewById(R.id.iv_drink_refresh);
-        refresh.setOnClickListener(new View.OnClickListener(){
+        ImageView iv_drink_refresh = (ImageView)findViewById(R.id.iv_drink_refresh);
+        iv_drink_refresh.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(DrinkMainActivity.this,DrinkRefreshAcceptActivity.class);
-                intent.putExtra("serialNumber",drinkAdater.getSerialNumber());
+                intent.putExtra("serialNumber",drinkAdapter.getSerialNumber());
                 startActivity(intent);
             }
         });
 
-        final android.support.v4.widget.SwipeRefreshLayout mainSwipeRefresh = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_drink_main);
+        final android.support.v4.widget.SwipeRefreshLayout swiperefresh_drink_main = (android.support.v4.widget.SwipeRefreshLayout)findViewById(R.id.swiperefresh_drink_main);
 
-        mainSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swiperefresh_drink_main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                drinkDataParser(drinkAdater,drinkGridView);
-                mainSwipeRefresh.setRefreshing(false);
+                drinkDataParser(drinkAdapter,drinkGridView);
+                swiperefresh_drink_main.setRefreshing(false);
             }
 
         });
@@ -90,11 +90,11 @@ public class DrinkMainActivity extends AppCompatActivity {
         String vendingDescription = "설명 : " + _vendingDescription;
 
         int _vendingFullSize = intent.getIntExtra("fullSize",1);
-        drinkAdater.setFullSize(_vendingFullSize);     // 자판기 최대 칸 수
+        drinkAdapter.setFullSize(_vendingFullSize);     // 자판기 최대 칸 수
         String vendingFullSize = "칸 수 : " + _vendingFullSize;
 
         final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
-        drinkAdater.setSerialNumber(_vendingSerialNumber);      // 자판기 serialNumber
+        drinkAdapter.setSerialNumber(_vendingSerialNumber);      // 자판기 serialNumber
         final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
 
         // 선택된 자판기 정보 출력
@@ -187,15 +187,15 @@ public class DrinkMainActivity extends AppCompatActivity {
 
     // 자판기 정보 출력 method, 자판기의 이름, 설명, 최대 칸 수 ,serialNumber를 인자로 받는다
     public void printVendingInfo(String name,String description, String fullsize,String serialNumber){
-        TextView vendingName = (TextView) findViewById(R.id.drinkPageVendingName);
-        TextView vendingDescription = (TextView) findViewById(R.id.drinkPageVendingDescription);
-        TextView vendingFullsize = (TextView) findViewById(R.id.drinkPageVendingFullsize);
-        TextView vendingSerialNumber =(TextView) findViewById(R.id.drinkPageVendingSerialNumber);
+        TextView tv_drink_page_vending_name = (TextView) findViewById(R.id.tv_drink_page_vending_name);
+        TextView tv_drink_page_vending_description = (TextView) findViewById(R.id.tv_drink_page_vending_description);
+        TextView tv_drink_page_vending_full_size = (TextView) findViewById(R.id.tv_drink_page_vending_full_size);
+        TextView tv_drink_page_vending_serial_number =(TextView) findViewById(R.id.tv_drink_page_vending_serial_number);
 
-        vendingName.setText(name);
-        vendingDescription.setText(description);
-        vendingFullsize.setText(fullsize);
-        vendingSerialNumber.setText(serialNumber);
+        tv_drink_page_vending_name.setText(name);
+        tv_drink_page_vending_description.setText(description);
+        tv_drink_page_vending_full_size.setText(fullsize);
+        tv_drink_page_vending_serial_number.setText(serialNumber);
     }
 
     // 수정과 같은 작업 후 onResume이 호출 될때 GridView 갱신
@@ -203,6 +203,6 @@ public class DrinkMainActivity extends AppCompatActivity {
     protected  void onResume(){
         super.onResume();
         GridView drinkGridView = (GridView)findViewById(R.id.drink_gridView);
-        drinkDataParser(drinkAdater,drinkGridView);
+        drinkDataParser(drinkAdapter,drinkGridView);
     }
 }

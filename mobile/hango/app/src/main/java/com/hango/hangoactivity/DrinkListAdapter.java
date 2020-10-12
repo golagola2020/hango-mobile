@@ -125,10 +125,10 @@ public class DrinkListAdapter extends BaseAdapter {
                     convertView = inflater.inflate(R.layout.drink_item,
                             parent, false);
 
-                    holder.nameText = (TextView) convertView.findViewById(R.id.nameText) ;
-                    holder.positionText = (TextView) convertView.findViewById(R.id.positionText) ;
-                    holder.priceText = (TextView) convertView.findViewById(R.id.priceText);
-                    holder.ivDrinkAmountCircle = (ImageView)convertView.findViewById(R.id.iv_drink_amount_circle);
+                    holder.tv_drink_item_drink_name = (TextView) convertView.findViewById(R.id.tv_drink_item_drink_name) ;
+                    holder.tv_drink_item_position = (TextView) convertView.findViewById(R.id.tv_drink_item_position) ;
+                    holder.tv_drink_item_price = (TextView) convertView.findViewById(R.id.tv_drink_item_price);
+                    holder.iv_drink_item_amount_circle = (ImageView)convertView.findViewById(R.id.iv_drink_item_amount_circle);
 
                     convertView.setTag(holder);
 
@@ -164,22 +164,22 @@ public class DrinkListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if(viewType == ITEM_VIEW_TYPE_DRINK_INFO){
-            holder.nameText.setText(drinkItems.get(position).getDrinkName());
-            holder.positionText.setText(drinkItems.get(position).getDrinkPosition());
-            holder.priceText.setText(drinkItems.get(position).getDrinkPrice()+"원");
+            holder.tv_drink_item_drink_name.setText(drinkItems.get(position).getDrinkName());
+            holder.tv_drink_item_position.setText(drinkItems.get(position).getDrinkPosition());
+            holder.tv_drink_item_price.setText(drinkItems.get(position).getDrinkPrice()+"원");
 
 
             if(((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 >=70) {
-                GradientDrawable GradientDrawable = (GradientDrawable) holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable GradientDrawable = (GradientDrawable) holder.iv_drink_item_amount_circle.getBackground();
                 GradientDrawable.setColor(Color.BLUE);
             }
             else if((((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 >=40) &&
                     (((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 <70)){
-                GradientDrawable GradientDrawable = (GradientDrawable)holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable GradientDrawable = (GradientDrawable)holder.iv_drink_item_amount_circle.getBackground();
                 GradientDrawable.setColor(Color.GREEN);
             }
             else if(((float)drinkItems.get(position).getCount()/(float)drinkItems.get(position).getMaxCount())*100 <40){
-                GradientDrawable GradientDrawable = (GradientDrawable)holder.ivDrinkAmountCircle.getBackground();
+                GradientDrawable GradientDrawable = (GradientDrawable)holder.iv_drink_item_amount_circle.getBackground();
                 GradientDrawable.setColor(Color.RED);
             }
 
@@ -190,10 +190,10 @@ public class DrinkListAdapter extends BaseAdapter {
 
     // 음료정보 Item 중복출현 방지를 위한 ViewHolder
     public class ViewHolder{
-        TextView positionText;
-        TextView nameText;
-        TextView priceText;
-        ImageView ivDrinkAmountCircle;
+        TextView tv_drink_item_position;
+        TextView tv_drink_item_drink_name;
+        TextView tv_drink_item_price;
+        ImageView iv_drink_item_amount_circle;
     }
 
 }
