@@ -26,7 +26,7 @@ public class AddDrinkActivity extends AppCompatActivity {
 
 
     private Button btn_regi_drink;
-    private EditText tv_drink_name,tv_drink_price,tv_drink_max_count;
+    private EditText et_drink_name,et_drink_price,et_drink_max_count;
     private ImageView iv_arrow_back_add_drink;
 
     private String serialNumber;
@@ -38,12 +38,12 @@ public class AddDrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_drink);
 
         //Activity의 "추가"버튼
-        btn_regi_drink = findViewById(R.id.btn_regi_drink);
+        btn_regi_drink = findViewById(R.id.btn_add_drink);
 
         //각각 Activity의 '이름', '가격', '최대개수' EditText
-        tv_drink_name = findViewById(R.id.et_drink_name);
-        tv_drink_price = findViewById(R.id.et_drink_price);
-        tv_drink_max_count = findViewById(R.id.et_max_count);
+        et_drink_name = findViewById(R.id.et_drink_name);
+        et_drink_price = findViewById(R.id.et_drink_price);
+        et_drink_max_count = findViewById(R.id.et_max_count);
 
         //뒤로가기 버튼
         iv_arrow_back_add_drink = findViewById(R.id.iv_arrow_back_add_drink);
@@ -64,19 +64,19 @@ public class AddDrinkActivity extends AppCompatActivity {
 
         btn_regi_drink.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String drinkName = tv_drink_name.getText().toString();
-                String _drinkPrice = tv_drink_price.getText().toString();
-                int drinkPrice = Integer.parseInt(_drinkPrice);
-                String _drinkMaxCount = tv_drink_max_count.getText().toString();
-                int drinkMaxCount = Integer.parseInt(_drinkMaxCount);
+                String drinkName = et_drink_name.getText().toString();
+                String stringDataDrinkPrice = et_drink_price.getText().toString();
+                int drinkPrice = Integer.parseInt(stringDataDrinkPrice);
+                String stringDataDrinkMaxCount = et_drink_max_count.getText().toString();
+                int drinkMaxCount = Integer.parseInt(stringDataDrinkMaxCount);
 
 
-                JSONObject drink_info = new JSONObject();
+                JSONObject drinkInfo = new JSONObject();
                 try {
-                    drink_info.put("position",position);
-                    drink_info.put("name",drinkName);
-                    drink_info.put("price",drinkPrice);
-                    drink_info.put("maxCount",drinkMaxCount);
+                    drinkInfo.put("position",position);
+                    drinkInfo.put("name",drinkName);
+                    drinkInfo.put("price",drinkPrice);
+                    drinkInfo.put("maxCount",drinkMaxCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -86,7 +86,7 @@ public class AddDrinkActivity extends AppCompatActivity {
 
                 try {
                     object.put("serialNumber", serialNumber);
-                    object.put("drink",drink_info);
+                    object.put("drink",drinkInfo);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
