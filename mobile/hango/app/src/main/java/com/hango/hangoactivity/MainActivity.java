@@ -244,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
     //userName 출력 method, String 형의 userName을 인자로 받는다
     private void printUserName(String userName){
         TextView tv_main_user_name = (TextView) findViewById(R.id.tv_main_user_name);
-        String _userId = userName + "님";
-        SpannableStringBuilder s_userId = new SpannableStringBuilder(_userId);
-        s_userId.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_userId.setSpan(new RelativeSizeSpan(3.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String userIdTitle = userName + "님";
+        SpannableStringBuilder spannableUserIdTitle = new SpannableStringBuilder(userIdTitle);
+        spannableUserIdTitle.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableUserIdTitle.setSpan(new RelativeSizeSpan(3.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        tv_main_user_name.setText(s_userId);
+        tv_main_user_name.setText(spannableUserIdTitle);
 
 
     }

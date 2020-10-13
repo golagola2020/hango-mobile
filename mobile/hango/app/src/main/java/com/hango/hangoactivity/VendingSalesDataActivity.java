@@ -47,9 +47,9 @@ public class VendingSalesDataActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_vendings_salesdata);
             Intent intent = getIntent();
-            final String UserId = intent.getStringExtra("userId");
+            final String userId = intent.getStringExtra("userId");
 
-            salesDataParser(UserId);
+            salesDataParser(userId);
 
         }
 
@@ -120,7 +120,7 @@ public class VendingSalesDataActivity extends AppCompatActivity {
 
         public void addBarChart(JSONArray saleDate,JSONArray price, String vendingName) throws JSONException {
 
-            LinearLayout dynamic = (LinearLayout)findViewById(R.id.vending_dynamic_bar_chart);
+            LinearLayout vending_dynamic_bar_chart = (LinearLayout)findViewById(R.id.vending_dynamic_bar_chart);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     600, 2.0f);
             LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -143,8 +143,8 @@ public class VendingSalesDataActivity extends AppCompatActivity {
             tv_vending_name.setGravity(LinearLayout.VERTICAL);
             tv_vending_name.setText("<"+year + "년도 " +vendingName+"자판기의 월 매출>");
             tv_vending_name.setPadding(0,0,0,100);
-            dynamic.addView(barChart,param);
-            dynamic.addView(tv_vending_name,param1);
+            vending_dynamic_bar_chart.addView(barChart,param);
+            vending_dynamic_bar_chart.addView(tv_vending_name,param1);
         }
 
 }

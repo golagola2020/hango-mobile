@@ -116,7 +116,7 @@ public class DrinkSalesDataActivity extends AppCompatActivity {
 
     public void addBarChart(JSONArray saleDate, JSONArray price, String drinkName) throws JSONException {
 
-        LinearLayout dynamic = (LinearLayout)findViewById(R.id.drink_dynamic_bar_chart);
+        LinearLayout drink_dynamic_bar_chart = (LinearLayout)findViewById(R.id.drink_dynamic_bar_chart);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 600, 2.0f);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -139,8 +139,8 @@ public class DrinkSalesDataActivity extends AppCompatActivity {
         tv_vending_name.setGravity(LinearLayout.VERTICAL);
         tv_vending_name.setText("<"+year + "년도 " +drinkName+"의 월 매출>");
         tv_vending_name.setPadding(0,0,0,100);
-        dynamic.addView(barChart,param);
-        dynamic.addView(tv_vending_name,param1);
+        drink_dynamic_bar_chart.addView(barChart,param);
+        drink_dynamic_bar_chart.addView(tv_vending_name,param1);
     }
 
 }

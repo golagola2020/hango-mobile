@@ -83,22 +83,22 @@ public class DrinkMainActivity extends AppCompatActivity {
 
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
-        String _vendingName =intent.getStringExtra("name"); // 자판기 이름
-        String vendingName = "이름 : " + _vendingName;
+        String vendingName =intent.getStringExtra("name"); // 자판기 이름
+        String vendingNameTitle = "이름 : " + vendingName;
 
-        String _vendingDescription =intent.getStringExtra("description");   // 자판기 설명
-        String vendingDescription = "설명 : " + _vendingDescription;
+        String vendingDescription =intent.getStringExtra("description");   // 자판기 설명
+        String vendingDescriptionTitle = "설명 : " + vendingDescription;
 
-        int _vendingFullSize = intent.getIntExtra("fullSize",1);
-        drinkAdapter.setFullSize(_vendingFullSize);     // 자판기 최대 칸 수
-        String vendingFullSize = "칸 수 : " + _vendingFullSize;
+        int vendingFullSize = intent.getIntExtra("fullSize",1);
+        drinkAdapter.setFullSize(vendingFullSize);     // 자판기 최대 칸 수
+        String vendingFullSizeTitle = "칸 수 : " + vendingFullSize;
 
-        final String _vendingSerialNumber = intent.getStringExtra("serialNumber");
-        drinkAdapter.setSerialNumber(_vendingSerialNumber);      // 자판기 serialNumber
-        final String vendingSerialNumber = "등록번호 : " + _vendingSerialNumber;
+        final String vendingSerialNumber = intent.getStringExtra("serialNumber");
+        drinkAdapter.setSerialNumber(vendingSerialNumber);      // 자판기 serialNumber
+        final String vendingSerialNumberTitle = "등록번호 : " + vendingSerialNumber;
 
         // 선택된 자판기 정보 출력
-        printVendingInfo(vendingName,vendingDescription,vendingFullSize,vendingSerialNumber);
+        printVendingInfo(vendingNameTitle,vendingDescriptionTitle,vendingFullSizeTitle,vendingSerialNumberTitle);
 
 
         // 음료정보 각 Item 클릭 리스너
@@ -108,7 +108,7 @@ public class DrinkMainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent1 = new Intent(DrinkMainActivity.this,UpdateDrinkActivity.class);
                 intent1.putExtra("position",position);
-                intent1.putExtra("serialNumber",_vendingSerialNumber);
+                intent1.putExtra("serialNumber",vendingSerialNumber);
                 startActivity(intent1);
             }
         });
