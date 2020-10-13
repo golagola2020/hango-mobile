@@ -61,8 +61,8 @@ public class SalesDataMainActivity extends AppCompatActivity {
         final String UserId = intent.getStringExtra("userId");
         String userName = intent.getStringExtra("userName");
 
-        Button vendingsSaleData = (Button)findViewById(R.id.btn_vendings_total_sale);
-        vendingsSaleData.setOnClickListener(new View.OnClickListener(){
+        Button btn_vendings_total_sale = (Button)findViewById(R.id.btn_vendings_total_sale);
+        btn_vendings_total_sale.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -73,8 +73,8 @@ public class SalesDataMainActivity extends AppCompatActivity {
             }
         });
 
-        Button drinksSaleData = (Button)findViewById(R.id.btn_drinks_total_sale);
-        drinksSaleData.setOnClickListener(new View.OnClickListener(){
+        Button btn_drinks_total_sale = (Button)findViewById(R.id.btn_drinks_total_sale);
+        btn_drinks_total_sale.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -97,26 +97,26 @@ public class SalesDataMainActivity extends AppCompatActivity {
 
     //userName 출력 method, String 형의 userName을 인자로 받는다
     private void printUserInfo(String userName){
-        TextView nameText = (TextView) findViewById(R.id.tv_salesdata_name);
-        TextView saleText = (TextView) findViewById(R.id.tv_month_total_sales);
-        TextView dateText = (TextView) findViewById(R.id.tv_month_sales_date);
+        TextView tv_salesdata_name = (TextView) findViewById(R.id.tv_salesdata_name);
+        TextView tv_month_total_sales = (TextView) findViewById(R.id.tv_month_total_sales);
+        TextView tv_month_sales_date = (TextView) findViewById(R.id.tv_month_sales_date);
 
-        String _UserId = userName + "님의 이번달 총 매출";
-        SpannableStringBuilder s_User_Id = new SpannableStringBuilder(_UserId);
-        s_User_Id.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s_User_Id.setSpan(new RelativeSizeSpan(1.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String userIdTitle = userName + "님의 이번달 총 매출";
+        SpannableStringBuilder spannalbeUserIdTitle = new SpannableStringBuilder(userIdTitle);
+        spannalbeUserIdTitle.setSpan(new ForegroundColorSpan(Color.parseColor("#2db73e")), 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannalbeUserIdTitle.setSpan(new RelativeSizeSpan(1.0f), 0, userName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         String totalSales = monthSale + "원";
-        SpannableStringBuilder s_totalSales = new SpannableStringBuilder(totalSales);
-        s_totalSales.setSpan(new RelativeSizeSpan(1.5f), 0, totalSales.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder spannalbeTotalSales = new SpannableStringBuilder(totalSales);
+        spannalbeTotalSales.setSpan(new RelativeSizeSpan(1.5f), 0, totalSales.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         String monthDate = month + ".01~"+month+"."+day;
 
 
 
-        nameText.setText(s_User_Id);
-        saleText.setText(s_totalSales);
-        dateText.setText(monthDate);
+        tv_salesdata_name.setText(spannalbeUserIdTitle);
+        tv_month_total_sales.setText(spannalbeTotalSales);
+        tv_month_sales_date.setText(monthDate);
 
     }
 
