@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".InfoActivity"
-    android:background="#d4f6fa">
+    android:background="#9bcbea">
 
 
     <TextView
