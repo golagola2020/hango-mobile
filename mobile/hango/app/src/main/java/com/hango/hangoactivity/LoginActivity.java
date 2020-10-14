@@ -53,32 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.cb_login_check);
 
         if(saveLoginData){
-            Response.Listener<String> reponseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);           // 서버의 응답을 json 파싱하여 변수에 저장
-                        boolean success = jsonObject.getBoolean("success");  // success를 key로 갖는 value를 저장
-
-                        // 회원 정보 등록에 성공시 실행
-                        if (success) {
-                            Toast.makeText(getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("userId", userId);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            // Volley를 이용하여 서버로 로그인 요청 => 이때 리스너가 실행됨.
-            LoginRequest loginRequest = new LoginRequest(userId, userPasswd, reponseListener);
-            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-            queue.add(loginRequest);
+            LoginRequest(userId,userPasswd);
         }
 
         // 로그인 버튼 클릭시 실행
