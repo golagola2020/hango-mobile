@@ -12,9 +12,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.hango.environment.Network;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         appData = getSharedPreferences("appData", MODE_PRIVATE);
-        load();
+        loadLoginData();
 
         // xml의 id 불러오기
         et_user_id = findViewById(R.id.et_user_name);
@@ -85,37 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 userId = et_user_id.getText().toString();
                 userPasswd = et_user_passwd.getText().toString();
 
-                // 리스너 생성
-                Response.Listener<String> reponseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);           // 서버의 응답을 json 파싱하여 변수에 저장
-                            boolean success = jsonObject.getBoolean("success");  // success를 key로 갖는 value를 저장
-
-                            // 회원 정보 등록에 성공시 실행
-                            if (success) {
-                                if(checkBox.isChecked() == true) {
-                                    save(checkBox.isChecked(), userId, userPasswd);
-                                }
-                                Toast.makeText(getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("userId", userId);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                // Volley를 이용하여 서버로 로그인 요청 => 이때 리스너가 실행됨.
-                LoginRequest loginRequest = new LoginRequest(userId, userPasswd, reponseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
+                LoginRequest(userId,userPasswd);
             }
         });
 
@@ -128,7 +102,65 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    public void save(Boolean check,String userId,String userPasswd){
+
+    //로그인 요청 method
+    public void LoginRequest(final String userId, final String userPasswd){
+
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+
+        Network network = new Network();
+        String URL = network.getURL() + "/mobile/login";
+
+        JSONObject user = new JSONObject();
+        try {
+            user.put("id",userId);
+            user.put("passwd",userPasswd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject userData = new JSONObject();
+        try {
+            userData.put("user", user);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL,userData, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    boolean success = response.getBoolean("success");
+                    if (success) {
+
+                        if(checkBox.isChecked() == true) {
+                            setSaveLoginData(checkBox.isChecked(), userId, userPasswd);
+                        }
+                        Toast.makeText(getApplicationContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
+    public void setSaveLoginData(Boolean check,String userId,String userPasswd){
         SharedPreferences.Editor editor = appData.edit();
 
         editor.putBoolean("SAVE_LOGIN_DATA",check);
@@ -137,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
 
         editor.apply();
     }
-    private void load(){
+    private void loadLoginData(){
         saveLoginData = appData.getBoolean("SAVE_LOGIN_DATA", false);
         userId = appData.getString("ID","");
         userPasswd = appData.getString("PWD","");
