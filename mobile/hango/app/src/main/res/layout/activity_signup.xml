@@ -95,7 +95,7 @@
         android:backgroundTint="#E0E0E0"
         android:fontFamily="@font/barungothicbold"
         android:layout_marginTop="20sp"
-        android:text="로그인"
+        android:text="회원가입"
         android:textColor="#404040"
         android:textColorHighlight="#ECE07C"
         android:textSize="20sp"
