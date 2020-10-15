@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".SalesDataMainActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B0DCF8"
+        android:orientation="horizontal">
+        <ImageView
+            android:id ="@+id/iv_arrow_back_vending_saledata_to_salesdata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_arrow_back"/>
+        <TextView
+            android:id="@+id/MainLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle = "bold"
+            android:text="자판기별 매출"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"
+            android:layout_margin="5dp"
+            android:textSize="40sp"
+            android:typeface="normal" />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id = "@+id/vending_dynamic_bar_chart"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+</LinearLayout>

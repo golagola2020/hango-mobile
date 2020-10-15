@@ -12,6 +12,9 @@
         <activity android:name="com.hango.hangoactivity.InfoUpdateActivity"></activity>
         <activity android:name="com.hango.hangoactivity.InfoActivity" />
         <activity android:name="com.hango.hangoactivity.MainActivity" />
+        <activity android:name=".SalesDataMainActivity"/>
+        <activity android:name=".VendingSalesDataActivity"/>
+        <activity android:name=".DrinkSalesDataActivity"/>
         <activity android:name="com.hango.hangoactivity.UpdateVendingActivity" />
         <activity android:name="com.hango.hangoactivity.DrinkMainActivity" />
         <activity android:name="com.hango.hangoactivity.GuideDrinkMainActivity"

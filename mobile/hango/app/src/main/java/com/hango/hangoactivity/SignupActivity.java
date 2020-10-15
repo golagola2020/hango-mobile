@@ -9,12 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.hango.environment.Network;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -32,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // xml의 id 불러오기
         et_user_name = findViewById(R.id.et_user_name);
-        et_user_id = findViewById(R.id.et_user_name);
+        et_user_id = findViewById(R.id.et_user_id);
         et_user_email = findViewById(R.id.et_user_email);
         et_user_passwd = findViewById(R.id.et_user_passwd);
         et_user_passwd_check = findViewById(R.id.et_user_passwd_check);
@@ -58,36 +64,63 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                // 리스너 생성
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);           // 서버의 응답을 json 파싱하여 변수에 저장
-                            boolean success = jsonObject.getBoolean("success");  // success를 key로 갖는 value를 저장
-
-                            // 회원 정보 등록에 성공시 실행
-                            if (success) {
-                                Toast.makeText(getApplicationContext(), "등록되었습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "등록에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                // Volley를 이용하여 서버로 회원가입 요청 => 이때 리스너가 실행됨.
-                SignupRequest signupRequest = new SignupRequest(userName, userId, userEmail, userPasswd, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
-                queue.add(signupRequest);
+                //회원가입 요청
+               signUpRequest(userName,userId,userEmail,userPasswd);
             }
         });
 
+    }
+
+    //회원가입 요청 method
+    public void signUpRequest(String userName,String userId, String userEmail, String userPasswd){
+
+        RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
+
+        Network network = new Network();
+        String URL = network.getURL() + "/mobile/signup";
+
+        JSONObject user = new JSONObject();
+        try {
+            user.put("name",userName);
+            user.put("id",userId);
+            user.put("email",userEmail);
+            user.put("passwd",userPasswd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject userData = new JSONObject();
+        try {
+            userData.put("user", user);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL,userData, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    boolean success = response.getBoolean("success");
+                    if (success) {
+
+                        finish();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(objectRequest);
     }
 }

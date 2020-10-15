@@ -52,7 +52,7 @@
         android:background="@drawable/btn_radius" >
 
         <TextView
-            android:id="@+id/drinkPageVendingName"
+            android:id="@+id/tv_drink_page_vending_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -60,7 +60,7 @@
             android:layout_marginTop = "10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
         <TextView
-            android:id="@+id/drinkPageVendingDescription"
+            android:id="@+id/tv_drink_page_vending_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -69,7 +69,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"  />
 
         <TextView
-            android:id="@+id/drinkPageVendingFullsize"
+            android:id="@+id/tv_drink_page_vending_full_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/drinkPageVendingSerialNumber"
+                android:id="@+id/tv_drink_page_vending_serial_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
@@ -103,14 +103,21 @@
         </LinearLayout>
     </LinearLayout>
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/drink_gridView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:layout_margin = "10dp"
-        android:gravity="center"
-        />
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh_drink_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin = "10dp">
+
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drink_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:gravity="center" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.hango.hangoactivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InfoActivity extends AppCompatActivity {
+
+    private SharedPreferences appData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,9 @@ public class InfoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss(); // 팝업 메시지 닫기
+
+                        appData = getSharedPreferences("appData", MODE_PRIVATE);
+                        save(false,"","");
 
                         // 로그인 화면으로 이동
                         Intent intent = new Intent(InfoActivity.this, LoginActivity.class);
@@ -181,5 +187,15 @@ public class InfoActivity extends AppCompatActivity {
                 ad.show();
             }
         });
+    }
+
+    public void save(Boolean check,String userId,String userPasswd){
+        SharedPreferences.Editor editor = appData.edit();
+
+        editor.putBoolean("SAVE_LOGIN_DATA",check);
+        editor.putString("ID",userId);
+        editor.putString("PWD",userPasswd);
+
+        editor.apply();
     }
 }

@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id = "@+id/positionText"
+            android:id = "@+id/tv_drink_item_position"
             android:layout_margin = "10dp"
             android:layout_gravity="center_vertical"
             android:text = "position"
@@ -28,7 +28,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <ImageView
-            android:id = "@+id/iv_drink_amount_circle"
+            android:id = "@+id/iv_drink_item_amount_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -39,7 +39,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/nameText"
+        android:id = "@+id/tv_drink_item_drink_name"
         android:layout_margin = "10dp"
         android:text = "drinkName"
         android:textSize = "30dp"
@@ -52,7 +52,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/priceText"
+        android:id = "@+id/tv_drink_item_price"
         android:layout_margin = "10dp"
         android:text = "price"
         android:textSize = "20dp"

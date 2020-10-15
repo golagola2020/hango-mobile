@@ -26,9 +26,9 @@ public class DrinkRefreshAcceptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink_refresh_accept);
 
         // '예' Button
-        Button accept = (Button)findViewById(R.id.btn_refresh_accept);
+        Button btn_refresh_accept = (Button)findViewById(R.id.btn_refresh_accept);
         // '아니오' Button
-        Button deny = (Button)findViewById(R.id.btn_refresh_deny);
+        Button btn_refresh_deny = (Button)findViewById(R.id.btn_refresh_deny);
 
         // DrinkMainActivity 에서 받아온 자판기 serialNumber 값
         Intent intent = getIntent();
@@ -50,7 +50,7 @@ public class DrinkRefreshAcceptActivity extends AppCompatActivity {
         final String URL = network.getURL() + "/mobile/drink/refresh";  //URL + 음료 개수를 채우기 위한 API Key
 
         // '예' Button Click Listener
-        accept.setOnClickListener(new View.OnClickListener() {
+        btn_refresh_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL,object, new Response.Listener<JSONObject>() {
@@ -85,7 +85,7 @@ public class DrinkRefreshAcceptActivity extends AppCompatActivity {
         });
 
         // '아니오' Button Click Listener
-        deny.setOnClickListener(new View.OnClickListener() {
+        btn_refresh_deny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
