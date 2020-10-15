@@ -60,7 +60,17 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        // 로그아웃 클릭 이벤트
+        //알람수신 클릭 이벤트트
+        btn_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InfoActivity.this, NotificationActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+            }
+        });
+
+       // 로그아웃 클릭 이벤트
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
