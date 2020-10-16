@@ -121,9 +121,8 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 try {
                     user.put("id", userId);
                     user.put("name", userName);
-                    user.put("newId", userNewId);
                     user.put("email", userEmail);
-                    user.put("newEmail", userNewPasswd);
+                    user.put("newPasswd", userNewPasswd);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
