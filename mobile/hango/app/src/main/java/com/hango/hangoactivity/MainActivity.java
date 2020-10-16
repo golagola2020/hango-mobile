@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
     String userName;
 
+    private MainBackPressCloseHandler mainBackPressCloseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView btn_user_info = (ImageView) findViewById(R.id.btn_user_info);
         Button btn_main_to_salesdata = (Button)findViewById(R.id.btn_main_to_salesdata);
+
+        mainBackPressCloseHandler = new MainBackPressCloseHandler(this);
 
         // 로그인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
@@ -162,6 +166,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override public void onBackPressed() {
+        //super.onBackPressed();
+        mainBackPressCloseHandler.onBackPressed();
+    }
+
 
 
     // 자판기 데이터 파싱 method, Adapter를 인자로 받는다
