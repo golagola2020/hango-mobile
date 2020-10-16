@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -35,6 +36,17 @@ public class NotificationActivity extends AppCompatActivity {
             }
 
         });
+
+
+        ImageView iv_arrow_back_notification = (ImageView)findViewById(R.id.iv_arrow_back_notification);
+        //뒤로가기 기능 구현
+        iv_arrow_back_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     private void saveSwitchState(Boolean switchChecked){
