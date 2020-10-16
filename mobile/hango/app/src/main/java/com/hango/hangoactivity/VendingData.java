@@ -6,6 +6,15 @@ public class VendingData {
     private String VendingDescription;
     private String VendingSerialNumber;
     private int VendingFullsize;
+    private int type;
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
 
     public void setVendingName(String vendingName) {
         VendingName = vendingName;

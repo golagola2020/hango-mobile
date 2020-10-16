@@ -3,6 +3,7 @@ package com.hango.hangoactivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -31,6 +33,12 @@ import java.util.Map;
 
 
 public class VendingListAdapter extends BaseAdapter implements Filterable {
+
+    // 자판기 정보 Item View Type
+    private static final int ITEM_VIEW_TYPE_VENDING_INFO = 0;
+    // 자판기 정보가 없을때의 Item View Type
+    private static final int ITEM_VIEW_TYPE_EMPTY_VENDING = 1;
+
 
     String userId;
 
@@ -55,6 +63,13 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         vendingData.setVendingDescription(vendingDescription);
         vendingData.setVendingSerialNumber(vendingSerialNumber);
         vendingData.setVendingFullsize(vendingFullSize);
+        vendingData.setType(ITEM_VIEW_TYPE_VENDING_INFO);
+        vendingsData.add(vendingData);
+    }
+
+    public void addItem(){
+        VendingData vendingData = new VendingData();
+        vendingData.setType(ITEM_VIEW_TYPE_EMPTY_VENDING);
         vendingsData.add(vendingData);
     }
 
@@ -71,6 +86,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
     public void itemClear(){
         vendingsData.clear();
     }
+
 
     // 자판기의 수를 반환
     @Override
@@ -97,87 +113,96 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         final Context context = parent.getContext();
         // position에 해당하는 VendingData
         final VendingData vendingData = vendingsData.get(position);
+        int viewType = vendingData.getType();
+        Log.d("TAG","뷰 타입 : "+viewType);
 
         ViewHolder holder;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        holder = new ViewHolder();
 
         if(convertView == null) {
+            switch (viewType){
+                case ITEM_VIEW_TYPE_VENDING_INFO:
+                    convertView = inflater.inflate(R.layout.listview_item, parent, false);
 
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_item, parent, false);
 
-            holder = new ViewHolder();
+                    holder.tv_vending_item_name = (TextView) convertView.findViewById(R.id.tv_vending_item_name);
+                    holder.tv_vending_item_description = (TextView) convertView.findViewById(R.id.tv_vending_item_description);
 
-            holder.tv_vending_item_name = (TextView) convertView.findViewById(R.id.tv_vending_item_name);
-            holder.tv_vending_item_description = (TextView) convertView.findViewById(R.id.tv_vending_item_description);
-
-            // 각 Item 의 '수정' ImageView
-            holder.btn_vending_update = (ImageView) convertView.findViewById(R.id.btn_vending_update);
-            // 각 Item 의 '삭제' ImageView
-            holder.btn_vending_delete = (ImageView) convertView.findViewById(R.id.btn_vending_delete);
-            convertView.setTag(holder);
+                    // 각 Item 의 '수정' ImageView
+                    holder.btn_vending_update = (ImageView) convertView.findViewById(R.id.btn_vending_update);
+                    // 각 Item 의 '삭제' ImageView
+                    holder.btn_vending_delete = (ImageView) convertView.findViewById(R.id.btn_vending_delete);
+                    convertView.setTag(holder);
+                    break;
+                case ITEM_VIEW_TYPE_EMPTY_VENDING:
+                    convertView = inflater.inflate(R.layout.empty_vending, parent, false);
+                    break;
+            }
 
         }
         else{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tv_vending_item_name.setText((position+1) + ". " + vendingsData.get(position).getVendingName());
-        holder.tv_vending_item_description.setText(vendingsData.get(position).getVendingDescription());
+        if(viewType == ITEM_VIEW_TYPE_VENDING_INFO) {
+            holder.tv_vending_item_name.setText((position + 1) + ". " + vendingsData.get(position).getVendingName());
+            holder.tv_vending_item_description.setText(vendingsData.get(position).getVendingDescription());
 
-        // '수정' ImageView Click Listener
-        holder.btn_vending_update.setOnClickListener(new View.OnClickListener(){
+            // '수정' ImageView Click Listener
+            holder.btn_vending_update.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,UpdateVendingActivity.class);
-                intent.putExtra("serialNumber",vendingData.getVendingSerialNumber());
-                v.getContext().startActivity(intent);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UpdateVendingActivity.class);
+                    intent.putExtra("serialNumber", vendingData.getVendingSerialNumber());
+                    v.getContext().startActivity(intent);
+                }
+            });
 
-        // '삭제' ImageView Click Listener
-        holder.btn_vending_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            // '삭제' ImageView Click Listener
+            holder.btn_vending_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                //RequestQueue 생성
-                RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+                    //RequestQueue 생성
+                    RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
 
-                // 요청 URL
-                Network network = new Network();
-                final String url = network.getURL() + "/mobile/vending/delete";
-                StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject object = new JSONObject(response);
-                            boolean success = object.getBoolean("success");
-                            if(success){
+                    // 요청 URL
+                    Network network = new Network();
+                    final String url = network.getURL() + "/mobile/vending/delete";
+                    StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject object = new JSONObject(response);
+                                boolean success = object.getBoolean("success");
+                                if (success) {
+                                } else {
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else{
-                            }
-
-                        } catch (JSONException e){
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                    }
-                }){
-                    protected Map<String,String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("serialNumber", vendingData.getVendingSerialNumber());
-                        return params;
-                    }
-                };
+                        }
+                    }) {
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("serialNumber", vendingData.getVendingSerialNumber());
+                            return params;
+                        }
+                    };
 
-                queue.add(strReq);
-            }
-        });
-
+                    queue.add(strReq);
+                }
+            });
+        }
         return convertView;
     }
 
