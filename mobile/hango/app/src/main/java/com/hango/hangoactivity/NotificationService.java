@@ -60,9 +60,6 @@ public class NotificationService extends Service {
         public void handleMessage(android.os.Message msg) {
 
             drinkDataParser(userId);
-
-            //토스트 띄우기
-            Toast.makeText(NotificationService.this, "뜸?"+ userId, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -149,6 +146,7 @@ public class NotificationService extends Service {
     private void setNotification(String vendingName, String drinkName, int id){
 
         Intent intent = new Intent(NotificationService.this, MainActivity.class);
+        intent.putExtra("userId",userId);
         PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(NotificationService.this);
         builder.setContentTitle(vendingName)
