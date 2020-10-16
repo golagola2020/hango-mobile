@@ -15,6 +15,8 @@
         <activity android:name=".SalesDataMainActivity"/>
         <activity android:name=".VendingSalesDataActivity"/>
         <activity android:name=".DrinkSalesDataActivity"/>
+        <service android:name=".NotificationService"/>
+        <activity android:name="com.hango.hangoactivity.NotificationActivity"/>
         <activity android:name="com.hango.hangoactivity.UpdateVendingActivity" />
         <activity android:name="com.hango.hangoactivity.DrinkMainActivity" />
         <activity android:name="com.hango.hangoactivity.GuideDrinkMainActivity"
