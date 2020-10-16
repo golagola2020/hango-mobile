@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text = "등록된 자판기가 존재하지 않습니다.\n\n자판기를 등록해주십시오."
+        android:textSize = "15dp"
+        android:gravity="center_horizontal"/>
+</android.support.constraint.ConstraintLayout>
