@@ -3,6 +3,7 @@ package com.hango.hangoactivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,6 +91,7 @@ public class InfoActivity extends AppCompatActivity {
                         // 로그인 화면으로 이동
                         Intent intent = new Intent(InfoActivity.this, LoginActivity.class);
                         startActivity(intent);
+
 
                         Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                     }
