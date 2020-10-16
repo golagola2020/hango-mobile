@@ -3,7 +3,9 @@ package com.hango.hangoactivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import java.util.Map;
 
 public class DrinkSalesDataActivity extends AppCompatActivity {
 
+
     // 현재시간을 msec 으로 구한다.
     long now = System.currentTimeMillis();
     // 현재시간을 date 변수에 저장한다.
@@ -46,6 +49,16 @@ public class DrinkSalesDataActivity extends AppCompatActivity {
         final String UserId = intent.getStringExtra("userId");
 
         salesDataParser(UserId);
+
+        ImageView iv_arrow_back_drink_salesdata_to_salesdata = (ImageView)findViewById(R.id.iv_arrow_back_drink_salesdata_to_salesdata);
+        //뒤로가기 기능 구현
+        iv_arrow_back_drink_salesdata_to_salesdata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 

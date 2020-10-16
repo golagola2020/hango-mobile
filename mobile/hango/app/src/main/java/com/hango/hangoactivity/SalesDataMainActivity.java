@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -92,6 +93,17 @@ public class SalesDataMainActivity extends AppCompatActivity {
 
 
         bar_chart_main.startAnimation();
+
+
+        ImageView iv_arrow_back_salesdata_main = (ImageView)findViewById(R.id.iv_arrow_back_salesdata_main);
+        //뒤로가기 기능 구현
+        iv_arrow_back_salesdata_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 
