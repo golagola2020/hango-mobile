@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 // 유저 정보 화면으로 userId 전달
                 Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("userName",userName);
                 startActivity(intent);
             }
         });

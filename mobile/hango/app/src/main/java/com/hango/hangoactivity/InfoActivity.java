@@ -48,7 +48,8 @@ public class InfoActivity extends AppCompatActivity {
         // 메인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
-        tv_user_name.setText(userId + "님");
+        String username = intent.getStringExtra("userName");
+        tv_user_name.setText(username + "님");
 
         // 유저 정보 변경 클릭 이벤트
         btn_info_change.setOnClickListener(new View.OnClickListener() {
