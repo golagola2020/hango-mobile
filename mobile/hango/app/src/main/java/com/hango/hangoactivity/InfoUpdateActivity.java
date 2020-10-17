@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,7 +29,9 @@ import java.util.Map;
 
 public class InfoUpdateActivity extends AppCompatActivity {
 
-    EditText et_user_name, et_user_id, et_user_email, et_user_passwd, et_user_new_passwd, et_user_new_passwd_check;
+    EditText et_user_name, et_user_email, et_user_passwd, et_user_new_passwd, et_user_new_passwd_check;
+    TextView tv_user_id;
+    ImageView iv_arrow_back_update_info;
     Button btn_update;
 
     @Override
@@ -37,13 +41,22 @@ public class InfoUpdateActivity extends AppCompatActivity {
 
         // xml 객체 파싱
         et_user_name = (EditText)findViewById(R.id.et_user_name);
-        et_user_id = (EditText)findViewById(R.id.et_user_id);
+        tv_user_id = (TextView)findViewById(R.id.tv_user_id);
         et_user_email = (EditText)findViewById(R.id.et_user_email);
         et_user_passwd = (EditText)findViewById(R.id.et_user_passwd);
         et_user_new_passwd = (EditText)findViewById(R.id.et_user_new_passwd);
         et_user_new_passwd_check = (EditText)findViewById(R.id.et_user_new_passwd_check);
 
+        iv_arrow_back_update_info = (ImageView)findViewById(R.id.iv_arrow_back_update_info);
+
         btn_update = (Button)findViewById(R.id.btn_update);
+
+        iv_arrow_back_update_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // 유저 정보 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
@@ -77,7 +90,7 @@ public class InfoUpdateActivity extends AppCompatActivity {
 
                         // EditText에 기존 정보 세팅
                         et_user_name.setText(userName);
-                        et_user_id.setText(userId);
+                        tv_user_id.setText(userId);
                         et_user_email.setText(userEmail);
                     }
                     else{
@@ -104,7 +117,7 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 return params;
             }
         };
-        
+
         // 서버에게 데이터 처리 요청
         queue.add(strReq);
 
@@ -113,7 +126,6 @@ public class InfoUpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // EditText 입력값 불러오기
                 final String userName = et_user_name.getText().toString();
-                final String userNewId = et_user_id.getText().toString();
                 final String userEmail = et_user_email.getText().toString();
                 final String userNewPasswd = et_user_new_passwd.getText().toString();
 
