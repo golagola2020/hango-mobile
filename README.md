@@ -67,14 +67,25 @@ $ git merge upstream/master
    
 ## Screenshots
 
-<img src="https://user-images.githubusercontent.com/64050689/91752339-3108bc80-ec01-11ea-83d5-02b348910a73.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752347-3534da00-ec01-11ea-8c1b-c091c436591b.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752351-36fe9d80-ec01-11ea-95df-d823f748b1b0.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752361-3960f780-ec01-11ea-9351-d86d432e3739.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752379-44b42300-ec01-11ea-829b-00db35f748f6.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752384-467de680-ec01-11ea-8efc-091cd813d723.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752391-4847aa00-ec01-11ea-8d44-9fb310ec1521.PNG" width="180px" height="320px"></img>
-<img src="https://user-images.githubusercontent.com/64050689/91752396-4978d700-ec01-11ea-862d-9eac5ed36ea5.PNG" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96349945-ddd5c500-10ed-11eb-8939-d69fb5b7a1c5.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96349958-efb76800-10ed-11eb-90e0-874ac5909cc5.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96349967-fb0a9380-10ed-11eb-988e-42412e0b211a.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96349983-0c53a000-10ee-11eb-9edc-28dc0e478303.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350000-23928d80-10ee-11eb-9de8-8e57a92f1109.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350004-2d1bf580-10ee-11eb-83ff-c378fc3e0941.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350012-373df400-10ee-11eb-9dd2-4395158c41fb.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350017-402ec580-10ee-11eb-9659-a83a154a440a.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350022-491f9700-10ee-11eb-8766-36c52b62bb27.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350030-53da2c00-10ee-11eb-979b-56e190453327.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350039-5c326700-10ee-11eb-9cc5-0f0958a3fe0a.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350044-66546580-10ee-11eb-9252-f6bb3f6925a4.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350051-6f453700-10ee-11eb-9420-83f7f8734e0f.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350053-79673580-10ee-11eb-8e3f-87c4ef3bde47.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350060-83893400-10ee-11eb-8312-23d0052cf29f.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350066-8be16f00-10ee-11eb-870f-1611abb4e5c3.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350069-93087d00-10ee-11eb-8363-cbd9e15411ba.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350073-9b60b800-10ee-11eb-9b65-ce6ff0f40af3.jpg" width="180px" height="320px"></img>
+<img src="https://user-images.githubusercontent.com/64050689/96350075-a3b8f300-10ee-11eb-99b1-627eda92d26d.jpg" width="180px" height="320px"></img>
 
 ## 의존성
    * Volley  
