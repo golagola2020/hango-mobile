@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.hango.hangoactivity.InfoUpdateActivity"></activity>
         <activity android:name="com.hango.hangoactivity.InfoActivity" />
@@ -15,6 +16,8 @@
         <activity android:name=".SalesDataMainActivity"/>
         <activity android:name=".VendingSalesDataActivity"/>
         <activity android:name=".DrinkSalesDataActivity"/>
+        <service android:name=".NotificationService"/>
+        <activity android:name="com.hango.hangoactivity.NotificationActivity"/>
         <activity android:name="com.hango.hangoactivity.UpdateVendingActivity" />
         <activity android:name="com.hango.hangoactivity.DrinkMainActivity" />
         <activity android:name="com.hango.hangoactivity.GuideDrinkMainActivity"
@@ -43,6 +46,12 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <uses-library
+
+            android:name="org.apache.http.legacy"
+
+            android:required="false" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

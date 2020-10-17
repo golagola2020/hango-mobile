@@ -3,6 +3,7 @@ package com.hango.hangoactivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,7 +48,8 @@ public class InfoActivity extends AppCompatActivity {
         // 메인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
-        tv_user_name.setText(userId + "님");
+        String username = intent.getStringExtra("userName");
+        tv_user_name.setText(username + "님");
 
         // 유저 정보 변경 클릭 이벤트
         btn_info_change.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,17 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        // 로그아웃 클릭 이벤트
+        //알람수신 클릭 이벤트트
+        btn_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InfoActivity.this, NotificationActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+            }
+        });
+
+       // 로그아웃 클릭 이벤트
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +92,7 @@ public class InfoActivity extends AppCompatActivity {
                         // 로그인 화면으로 이동
                         Intent intent = new Intent(InfoActivity.this, LoginActivity.class);
                         startActivity(intent);
+
 
                         Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                     }

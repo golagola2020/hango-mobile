@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
     String userName;
 
+    private MainBackPressCloseHandler mainBackPressCloseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView btn_user_info = (ImageView) findViewById(R.id.btn_user_info);
         Button btn_main_to_salesdata = (Button)findViewById(R.id.btn_main_to_salesdata);
+
+        mainBackPressCloseHandler = new MainBackPressCloseHandler(this);
 
         // 로그인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 // 유저 정보 화면으로 userId 전달
                 Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("userName",userName);
                 startActivity(intent);
             }
         });
@@ -163,6 +168,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override public void onBackPressed() {
+        //super.onBackPressed();
+        mainBackPressCloseHandler.onBackPressed();
+    }
+
+
 
     // 자판기 데이터 파싱 method, Adapter를 인자로 받는다
     public void vendingDataParser(final VendingListAdapter vendingAdapter){
@@ -187,20 +198,25 @@ public class MainActivity extends AppCompatActivity {
                     // userId에 해당하는 자판기 정보가 존재 할 경우 true, 그렇지 않을경우 false 를 반환하는 Key("success")
                     boolean success = object.getBoolean("success");
 
-                    // userId에 해당하는 자판기 정보 key("vendings")
-                    JSONArray vendingsArray = object.getJSONArray("vendings");
 
                     // userId에 해당하는 userName key("userName")
                     userName = object.getString("userName");
                     if(success){
-                        // vendings key에 들어있는 자판기 정보를 순차적으로 호출
-                        for(int i =0;i<vendingsArray.length();i++){
-                            JSONObject vending = vendingsArray.getJSONObject(i);
-                            // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
-                            vendingAdapter.addItem(vending.getString("name"),vending.getString("description"),vending.getString("serialNumber"),vending.getInt("fullSize"));
+                        try {
+                            // userId에 해당하는 자판기 정보 key("vendings")
+                            JSONArray vendingsArray = object.getJSONArray("vendings");
+
+                            // vendings key에 들어있는 자판기 정보를 순차적으로 호출
+                            for (int i = 0; i < vendingsArray.length(); i++) {
+                                JSONObject vending = vendingsArray.getJSONObject(i);
+                                // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
+                                vendingAdapter.addItem(vending.getString("name"), vending.getString("description"), vending.getString("serialNumber"), vending.getInt("fullSize"));
+
+                            }
+                        }catch(JSONException e) {
+                            vendingAdapter.addItem();
 
                         }
-
                         //유저 이름 출력
                         printUserName(userName);
 
@@ -209,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     else{
+
                     }
 
                 } catch (JSONException e){

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +25,7 @@ public class UpdateDrinkActivity extends AppCompatActivity {
 
     private EditText et_drink_name,et_drink_price,et_drink_max_count;
     private Button btn_drink_update_accept,btn_drink_update_deny;
+    private ImageView iv_arrow_back_update_vending;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,17 @@ public class UpdateDrinkActivity extends AppCompatActivity {
 
         btn_drink_update_accept =(Button)findViewById(R.id.btn_drink_update_accept);
         btn_drink_update_deny =(Button)findViewById(R.id.btn_drink_update_deny);
+
+        iv_arrow_back_update_vending = (ImageView)findViewById(R.id.iv_arrow_back_update_vending);
+
+        //뒤로가기 기능 구현
+        iv_arrow_back_update_vending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         btn_drink_update_accept.setOnClickListener(new View.OnClickListener() {
             @Override
