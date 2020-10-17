@@ -76,31 +76,28 @@
             android:layout_marginRight="10sp"
             android:layout_marginTop = "10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_drink_page_vending_serial_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
+                android:layout_marginRight="60sp"
                 android:layout_marginTop = "10sp"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
             <ImageView
                 android:id = "@+id/iv_drink_main_guide"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-
+                android:layout_alignParentRight="true"
                 android:background="@drawable/ic_info"/>
-        </LinearLayout>
+        </RelativeLayout>
+
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
