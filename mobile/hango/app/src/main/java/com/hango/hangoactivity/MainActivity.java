@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //listview 목록 출력
-        vendingListView.setAdapter(vendingAdapter);
 
         //자판기 검색 기능
         et_search_vending.addTextChangedListener(new TextWatcher(){
@@ -135,14 +133,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String filterText = s.toString();
-                if(filterText.length() > 0){
+                /*if(filterText.length() > 0){
                     vendingListView.setFilterText(filterText);
                 }
                 else{
                     vendingListView.clearTextFilter();
-                }
+                }*/
+                ((VendingListAdapter)vendingListView.getAdapter()).getFilter().filter(filterText) ;
             }
         });
+
+
+        //listview 목록 출력
+        vendingListView.setAdapter(vendingAdapter);
 
         // 자판기 정보 파싱 및 ListView 출력 method
         vendingDataParser(vendingAdapter);
