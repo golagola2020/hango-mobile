@@ -78,7 +78,7 @@
                 android:padding="15dp"
                 android:inputType="textPersonName"
                 android:textSize="20sp"
-                android:background="@drawable/textbox_radius" />
+                android:background="@drawable/textbox_radius_white" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -1,8 +1,12 @@
 package com.hango.hangoactivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -90,7 +94,9 @@ public class InfoUpdateActivity extends AppCompatActivity {
 
                         // EditText에 기존 정보 세팅
                         et_user_name.setText(userName);
-                        tv_user_id.setText(userId);
+                        SpannableStringBuilder spannableStringUserId = new SpannableStringBuilder(userId);
+                        spannableStringUserId.setSpan(new ForegroundColorSpan(Color.parseColor("#000000")), 0, userId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        tv_user_id.setText(spannableStringUserId);
                         et_user_email.setText(userEmail);
                     }
                     else{
