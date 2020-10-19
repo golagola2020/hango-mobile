@@ -21,15 +21,15 @@
    
 ## 설치
    
-   https://github.com/golagola2020/hango-client 에 push 권한이 있다면 :  
+   https://github.com/golagola2020/hango-mobile 에 push 권한이 있다면 :  
    1. git fetch or pull or clone
 ```
 $ git clone https://github.com/golagola2020/hango-client.git
 $ cd hango-client/mobile/hango
 ```
 
-https://github.com/golagola2020/hango-client 에 push 권한이 없다면 :  
-   1. https://github.com/golagola2020/hango-client 에서 ```Fork```버튼 클릭하고,
+https://github.com/golagola2020/hango-mobile 에 push 권한이 없다면 :  
+   1. https://github.com/golagola2020/hango-mobile 에서 ```Fork```버튼 클릭하고,
    2. 포크 저장소 계정(maybe 개인 계정) 선택
    3. git fetch or pull or clone
    4. 포크 설정 [Configuring a remote for a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork)
