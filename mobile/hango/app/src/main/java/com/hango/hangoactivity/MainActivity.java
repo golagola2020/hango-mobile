@@ -125,33 +125,27 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        if(vendingCount>0) {
+            //자판기 검색 기능
+            et_search_vending.addTextChangedListener(new TextWatcher() {
 
-        //자판기 검색 기능
-        et_search_vending.addTextChangedListener(new TextWatcher(){
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String filterText = s.toString();
-                /*if(filterText.length() > 0){
-                    vendingListView.setFilterText(filterText);
                 }
-                else{
-                    vendingListView.clearTextFilter();
-                }*/
-                ((VendingListAdapter)vendingListView.getAdapter()).getFilter().filter(filterText) ;
-            }
-        });
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String filterText = s.toString();
+                    ((VendingListAdapter) vendingListView.getAdapter()).getFilter().filter(filterText);
+                }
+            });
+        }
 
         //listview 목록 출력
         vendingListView.setAdapter(vendingAdapter);
