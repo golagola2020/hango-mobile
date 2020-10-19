@@ -37,12 +37,14 @@
 
     </RelativeLayout>
     <LinearLayout
+        android:id = "@+id/salse_data_main_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="12dp"
         android:padding="6dp"
         android:background="@drawable/btn_radius" >
+
 
         <TextView
             android:id="@+id/tv_salesdata_name"
