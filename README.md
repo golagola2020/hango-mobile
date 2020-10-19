@@ -120,3 +120,9 @@ $ git merge upstream/master
 
 
 [기여자 목록](https://github.com/golagola2020/hango-server/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
+
+
+## 라이센스
+
+이 프로젝트는 Apache 2.0을 사용합니다 - [LICENSE](https://github.com/golagola2020/hango-mobile/blob/master/LICENSE) 파일에서 자세히 알아보세요.
+
