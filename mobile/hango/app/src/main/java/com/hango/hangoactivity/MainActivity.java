@@ -216,10 +216,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             // userId에 해당하는 자판기 정보 key("vendings")
                             JSONArray vendingsArray = object.getJSONArray("vendings");
-
+                            vendingCount = 0;
 
                             // vendings key에 들어있는 자판기 정보를 순차적으로 호출
                             for (int i = 0; i < vendingsArray.length(); i++) {
+
                                 JSONObject vending = vendingsArray.getJSONObject(i);
                                 // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
                                 vendingAdapter.addItem(vending.getString("name"), vending.getString("description"), vending.getString("serialNumber"), vending.getInt("fullSize"));
