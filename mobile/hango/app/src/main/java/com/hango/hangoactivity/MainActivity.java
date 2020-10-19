@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
     String userName;
 
+    //자판기 Adapter count용 변수
+    int vendingCount = 0;
+
     private MainBackPressCloseHandler mainBackPressCloseHandler;
 
     @Override
@@ -72,11 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                // 유저 정보 화면으로 userId 전달
-                Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
-                intent1.putExtra("userId", userId);
-                intent1.putExtra("userName",userName);
-                startActivity(intent1);
+
+                if(vendingCount>0) {
+                    // 유저 정보 화면으로 userId 전달
+                    Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
+                    intent1.putExtra("userId", userId);
+                    intent1.putExtra("userName", userName);
+                    startActivity(intent1);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "자판기가 존재하지 않아 매출 통계를 제공하지 않습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -154,8 +163,10 @@ public class MainActivity extends AppCompatActivity {
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 VendingData vendingData = (VendingData) vendingAdapter.getItem(position);
 
+                
                 Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
                 intent.putExtra("name",vendingData.getVendingName());
                 intent.putExtra("description",vendingData.getVendingDescription());
@@ -209,12 +220,13 @@ public class MainActivity extends AppCompatActivity {
                             // userId에 해당하는 자판기 정보 key("vendings")
                             JSONArray vendingsArray = object.getJSONArray("vendings");
 
+
                             // vendings key에 들어있는 자판기 정보를 순차적으로 호출
                             for (int i = 0; i < vendingsArray.length(); i++) {
                                 JSONObject vending = vendingsArray.getJSONObject(i);
                                 // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
                                 vendingAdapter.addItem(vending.getString("name"), vending.getString("description"), vending.getString("serialNumber"), vending.getInt("fullSize"));
-
+                                vendingCount++;
                             }
                         }catch(JSONException e) {
                             vendingAdapter.addItem();
@@ -224,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                         printUserName(userName);
 
                         //자판기 보유수 출력
-                        printVendingCount(vendingAdapter.getCount());
+                        printVendingCount(vendingCount);
 
                     }
                     else{
