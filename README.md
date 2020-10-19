@@ -101,19 +101,19 @@ $ git merge upstream/master
 
 ## 의존성
    * Volley  
-      네트워크 연결에 ```Volley @1.1.1```를 사용
+      네트워크 연결에 ```Volley @1.1.1```를 사용  
       Volley 사용을 위해 Gradle에 아래의 의존성 문장 추가
       ```
       implementation 'com.android.volley:volley:1.1.1'
       ```
-   * EazeGraph
-      매출 통계 그래프 생성시 사용
+   * EazeGraph  
+      매출 통계 그래프 생성시 사용  
       EazeGraph 사용을 위해 Gradle에 아래의 의존성 문장 추가
       ```
       implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
       ```
-   * NineOldAndroids
-      매출 통계 그래프 애니메이션 효과를 위해 사용
+   * NineOldAndroids  
+      매출 통계 그래프 애니메이션 효과를 위해 사용  
       NineOldAndroids 사용을 위해 Gradle에 아래의 의존성 문장 추가
       ```
       implementation 'com.nineoldandroids:library:2.4.0'
