@@ -160,19 +160,22 @@ public class MainActivity extends AppCompatActivity {
         vendingDataParser(vendingAdapter);
 
         //각 자판기 Item Click Listener
+
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 자판기 정보 Item View Type
+
 
                 VendingData vendingData = (VendingData) vendingAdapter.getItem(position);
 
-                
-                Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
-                intent.putExtra("name",vendingData.getVendingName());
-                intent.putExtra("description",vendingData.getVendingDescription());
+
+                Intent intent = new Intent(getApplicationContext(), DrinkMainActivity.class);
+                intent.putExtra("name", vendingData.getVendingName());
+                intent.putExtra("description", vendingData.getVendingDescription());
                 int fullSize = vendingData.getVendingFullsize();
-                intent.putExtra("fullSize",fullSize);
-                intent.putExtra("serialNumber",vendingData.getVendingSerialNumber());
+                intent.putExtra("fullSize", fullSize);
+                intent.putExtra("serialNumber", vendingData.getVendingSerialNumber());
                 startActivity(intent);
 
             }

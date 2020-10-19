@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -137,6 +138,14 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
                     break;
                 case ITEM_VIEW_TYPE_EMPTY_VENDING:
                     convertView = inflater.inflate(R.layout.empty_vending, parent, false);
+                    //클릭 비활성화
+                    convertView.setOnTouchListener(new View.OnTouchListener() {
+
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+
+                        }});
                     break;
             }
 
