@@ -106,7 +106,19 @@ $ git merge upstream/master
       ```
       implementation 'com.android.volley:volley:1.1.1'
       ```
-
+   * EazeGraph
+      매출 통계 그래프 생성시 사용
+      EazeGraph 사용을 위해 Gradle에 아래의 의존성 문장 추가
+      ```
+      implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
+      ```
+   * NineOldAndroids
+      매출 통계 그래프 애니메이션 효과를 위해 사용
+      NineOldAndroids 사용을 위해 Gradle에 아래의 의존성 문장 추가
+      ```
+      implementation 'com.nineoldandroids:library:2.4.0'
+      ```
+     
       예시  
       ```
       dependencies {
@@ -117,6 +129,8 @@ $ git merge upstream/master
                testImplementation 'junit:junit:4.12'
                androidTestImplementation 'com.android.support.test:runner:1.0.2'
                androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+               implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
+               implementation 'com.nineoldandroids:library:2.4.0'
            }
       ```
       
