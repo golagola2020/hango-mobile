@@ -1,6 +1,7 @@
 package com.hango.hangoactivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,7 +61,13 @@ public class NotificationActivity extends AppCompatActivity {
         if(appData.getBoolean("SAVE_SWITCH_STATE", false)){
 
             serviceIntent.putExtra("userId",userId);
-            startService(serviceIntent);
+            if(android.os.Build.VERSION.SDK_INT > 25) {
+                getApplicationContext().startForegroundService(serviceIntent);
+                //startService(serviceIntent);
+            }
+            else {
+                startService(serviceIntent);
+            }
         }
         else{
             stopService(serviceIntent);

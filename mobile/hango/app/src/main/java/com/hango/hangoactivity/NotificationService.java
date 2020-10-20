@@ -169,11 +169,19 @@ public class NotificationService extends Service {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build();
-
                 mNotificationManager.createNotificationChannel(mChannel);
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(id, notification);
-                Log.d("TAG","noti ID : "+ id );
+                int titleId = 10000;
+                Notification notificationTitle = new Notification.Builder(NotificationService.this,channelId)
+                        .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
+                        .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build();
+                startForeground(titleId,notificationTitle);
+
 
             }
             catch (Exception e) {
