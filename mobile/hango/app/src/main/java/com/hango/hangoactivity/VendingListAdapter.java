@@ -173,41 +173,9 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             holder.btn_vending_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    //RequestQueue 생성
-                    RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
-
-                    // 요청 URL
-                    Network network = new Network();
-                    final String url = network.getURL() + "/mobile/vending/delete";
-                    StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject object = new JSONObject(response);
-                                boolean success = object.getBoolean("success");
-                                if (success) {
-                                } else {
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    }) {
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("serialNumber", vendingData.getVendingSerialNumber());
-                            return params;
-                        }
-                    };
-
-                    queue.add(strReq);
+                    Intent intent = new Intent(context,VendingDeleteActivity.class);
+                    intent.putExtra("serialNumber", vendingData.getVendingSerialNumber());
+                    v.getContext().startActivity(intent);
                 }
             });
         }

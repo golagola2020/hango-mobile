@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         swiperefresh_main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                vendingDataParser(vendingAdapter);
+                vendingDataParser(vendingAdapter,vendingListView);
                 swiperefresh_main.setRefreshing(false);
             }
 
@@ -167,11 +167,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //listview 목록 출력
-        vendingListView.setAdapter(vendingAdapter);
+
 
         // 자판기 정보 파싱 및 ListView 출력 method
-        vendingDataParser(vendingAdapter);
+        vendingDataParser(vendingAdapter, vendingListView);
 
         //각 자판기 Item Click Listener
 
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 자판기 데이터 파싱 method, Adapter를 인자로 받는다
-    public void vendingDataParser(final VendingListAdapter vendingAdapter){
+    public void vendingDataParser(final VendingListAdapter vendingAdapter, final ListView vendingListView){
 
         // 파싱 전 Adapter Item Clear
         vendingAdapter.itemClear();
@@ -257,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
                         //자판기 보유수 출력
                         printVendingCount(vendingCount);
 
+                        //listview 목록 출력
+                        vendingListView.setAdapter(vendingAdapter);
                     }
                     else{
 
@@ -307,8 +308,12 @@ public class MainActivity extends AppCompatActivity {
 
     // 수정, 삭제등 다른 작업 후 onRestart 가 호출되며 ListView 갱신
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        vendingDataParser(vendingAdapter);
+    protected void onResume() {
+        super.onResume();
+        //ListView 생성 및 연결
+        ListView vendingListView = (ListView) findViewById(R.id.MainListView);
+        vendingDataParser(vendingAdapter,vendingListView);
+        Log.d("TAG","이거 실행됨?");
+
     }
 }
