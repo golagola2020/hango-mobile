@@ -8,8 +8,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +50,9 @@ public class NotificationService extends Service {
         myServiceHandler handler = new myServiceHandler();
         thread = new NotificationThread(handler);
         thread.start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setNotificationTitle();
+        }
         return START_STICKY;
     }
 
@@ -96,10 +102,10 @@ public class NotificationService extends Service {
                         for(int i=0; i<vendingNames.length();i++){
                             soldOutData = soldOuts.getJSONArray(vendingNames.getString(i));
                             for(int j=0;j<soldOutData.length();j++){
-                                if(getSoldOutData(vendingNames.getString(i)+":"+soldOutData.getString(j))){
+                                if(getSoldOutData(vendingNames.getString(i)+soldOutData.getString(j))){
                                     Log.d("TAG",vendingNames.getString(i)+"자판기의 "+soldOutData.getString(j)+" 품절");
                                     setNotification(vendingNames.getString(i),soldOutData.getString(j),(i+1)*(j+1));
-                                    setSoldOutData(vendingNames.getString(i)+":"+soldOutData.getString(j));
+                                    setSoldOutData(vendingNames.getString(i)+soldOutData.getString(j),false);
                                 }
 
                             }
@@ -134,15 +140,37 @@ public class NotificationService extends Service {
         // RequestQueue 실행
         queue.add(drinkRequest);
     }
-    private void setSoldOutData(String vendingAndDrink){
+    private void setSoldOutData(String vendingAndDrink,boolean check){
         soldOutData = getSharedPreferences("soldOutData", MODE_PRIVATE);
         SharedPreferences.Editor editor = soldOutData.edit();
-        editor.putBoolean(vendingAndDrink,false);
+        editor.putBoolean(vendingAndDrink,check);
         editor.apply();
     }
     private boolean getSoldOutData(String vendingAndDrink){
         soldOutData = getSharedPreferences("soldOutData", MODE_PRIVATE);
         return soldOutData.getBoolean(vendingAndDrink, true);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setNotificationTitle(){
+        String channelId = "hangoNotification";
+        Intent intent = new Intent(NotificationService.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int titleId = 10000;
+        Notification notificationTitle = null;
+        try {
+            notificationTitle = new Notification.Builder(NotificationService.this,channelId)
+                    .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
+                    .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .build();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        startForeground(titleId,notificationTitle);
     }
 
     private void setNotification(String vendingName, String drinkName, int id){
@@ -172,15 +200,7 @@ public class NotificationService extends Service {
                 mNotificationManager.createNotificationChannel(mChannel);
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(id, notification);
-                int titleId = 10000;
-                Notification notificationTitle = new Notification.Builder(NotificationService.this,channelId)
-                        .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
-                        .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .build();
-                startForeground(titleId,notificationTitle);
+
 
 
             }

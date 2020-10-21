@@ -262,7 +262,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
             filteredVendingData = (ArrayList<VendingData>) results.values ;
             // notify
             if (results.count > 0) {
-
                 notifyDataSetChanged() ;
             } else {
                 notifyDataSetInvalidated() ;
