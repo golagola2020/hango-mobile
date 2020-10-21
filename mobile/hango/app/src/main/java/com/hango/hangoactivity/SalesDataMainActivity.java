@@ -9,9 +9,11 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -161,21 +163,23 @@ public class SalesDataMainActivity extends AppCompatActivity {
                     if(success){
                         int average=0;
                         int count=0;
-                        for(int i =0;i<date.length();i++){
+                        Log.d("TAG","데이타"+date.length());
+                        for (int i = 0; i < date.length(); i++) {
                             String[] buf = date.getString(i).split("-");
 
 
-                            if(Integer.parseInt(buf[0])==20){
+                            if (Integer.parseInt(buf[0]) == 20) {
                                 average += price.getInt(i);
                                 count++;
                                 bar_chart_main.addBar(new BarModel(buf[1] + "월", price.getInt(i), 0xFF56B7F1));
-                                if(Integer.parseInt(buf[1])==Integer.parseInt(month)){
+                                if (Integer.parseInt(buf[1]) == Integer.parseInt(month)) {
                                     monthSale = price.getInt(i);
                                 }
                             }
                         }
-                        bar_chart_main.addBar(new BarModel("평균", average/count, 0xFFe6f4fa));
+                        bar_chart_main.addBar(new BarModel("평균", average / count, 0xFFe6f4fa));
                         printUserInfo(userName);
+
                     }
                     else{
 

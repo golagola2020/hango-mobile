@@ -1,3 +1,19 @@
+/**
+*        Copyright (C) 2020 Golagola
+*
+*        Licensed under the Apache License, Version 2.0 (the "License");
+*        you may not use this file except in compliance with the License.
+*        You may obtain a copy of the License at
+*
+*        http://www.apache.org/licenses/LICENSE-2.0
+*
+*        Unless required by applicable law or agreed to in writing, software
+*        distributed under the License is distributed on an "AS IS" BASIS,
+*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*        See the License for the specific language governing permissions and
+*        limitations under the License.
+*/
+
 package com.hango.hangoactivity;
 
 import android.content.Intent;
@@ -35,6 +51,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hango.environment.Network;
+import com.hango.hangoactivity.DrinkMainActivity;
+import com.hango.hangoactivity.InfoActivity;
+import com.hango.hangoactivity.MainBackPressCloseHandler;
+import com.hango.hangoactivity.R;
+import com.hango.hangoactivity.SalesDataMainActivity;
+import com.hango.hangoactivity.VendingData;
+import com.hango.hangoactivity.VendingListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     // 자판기 정보 ListView Adapter 생성
     private VendingListAdapter vendingAdapter = new VendingListAdapter(MainActivity.this);
     String userName;
+
+    //자판기 Adapter count용 변수
+    int vendingCount = 0;
 
     private MainBackPressCloseHandler mainBackPressCloseHandler;
 
@@ -72,11 +98,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                // 유저 정보 화면으로 userId 전달
-                Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
-                intent1.putExtra("userId", userId);
-                intent1.putExtra("userName",userName);
-                startActivity(intent1);
+
+                if(vendingCount>0) {
+                    // 유저 정보 화면으로 userId 전달
+                    Intent intent1 = new Intent(MainActivity.this, SalesDataMainActivity.class);
+                    intent1.putExtra("userId", userId);
+                    intent1.putExtra("userName", userName);
+                    startActivity(intent1);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "자판기가 존재하지 않아 매출 통계를 제공하지 않습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -116,49 +148,49 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //listview 목록 출력
-        vendingListView.setAdapter(vendingAdapter);
 
         //자판기 검색 기능
-        et_search_vending.addTextChangedListener(new TextWatcher(){
-
+        et_search_vending.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-                String filterText = s.toString();
-                if(filterText.length() > 0){
-                    vendingListView.setFilterText(filterText);
-                }
-                else{
-                    vendingListView.clearTextFilter();
+                if(vendingCount>0) {
+                    String filterText = s.toString();
+                    ((VendingListAdapter) vendingListView.getAdapter()).getFilter().filter(filterText);
                 }
             }
         });
+
+
+        //listview 목록 출력
+        vendingListView.setAdapter(vendingAdapter);
 
         // 자판기 정보 파싱 및 ListView 출력 method
         vendingDataParser(vendingAdapter);
 
         //각 자판기 Item Click Listener
+
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 자판기 정보 Item View Type
+
+
                 VendingData vendingData = (VendingData) vendingAdapter.getItem(position);
 
-                Intent intent = new Intent(getApplicationContext(),DrinkMainActivity.class);
-                intent.putExtra("name",vendingData.getVendingName());
-                intent.putExtra("description",vendingData.getVendingDescription());
+
+                Intent intent = new Intent(getApplicationContext(), DrinkMainActivity.class);
+                intent.putExtra("userId",userId);
+                intent.putExtra("name", vendingData.getVendingName());
+                intent.putExtra("description", vendingData.getVendingDescription());
                 int fullSize = vendingData.getVendingFullsize();
-                intent.putExtra("fullSize",fullSize);
-                intent.putExtra("serialNumber",vendingData.getVendingSerialNumber());
+                intent.putExtra("fullSize", fullSize);
+                intent.putExtra("serialNumber", vendingData.getVendingSerialNumber());
                 startActivity(intent);
 
             }
@@ -205,13 +237,15 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             // userId에 해당하는 자판기 정보 key("vendings")
                             JSONArray vendingsArray = object.getJSONArray("vendings");
+                            vendingCount = 0;
 
                             // vendings key에 들어있는 자판기 정보를 순차적으로 호출
                             for (int i = 0; i < vendingsArray.length(); i++) {
+
                                 JSONObject vending = vendingsArray.getJSONObject(i);
                                 // 각 자판기 정보(name, description, serialNumber, fullSize)를 Adapter에 추가
                                 vendingAdapter.addItem(vending.getString("name"), vending.getString("description"), vending.getString("serialNumber"), vending.getInt("fullSize"));
-
+                                vendingCount++;
                             }
                         }catch(JSONException e) {
                             vendingAdapter.addItem();
@@ -221,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                         printUserName(userName);
 
                         //자판기 보유수 출력
-                        printVendingCount(vendingAdapter.getCount());
+                        printVendingCount(vendingCount);
 
                     }
                     else{

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.Switch;
+
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -39,7 +40,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
     // 자판기 정보가 없을때의 Item View Type
     private static final int ITEM_VIEW_TYPE_EMPTY_VENDING = 1;
 
-
+    int i=0;
     String userId;
 
     LayoutInflater inflater = null;
@@ -114,7 +115,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         // position에 해당하는 VendingData
         final VendingData vendingData = vendingsData.get(position);
         int viewType = vendingData.getType();
-        Log.d("TAG","뷰 타입 : "+viewType);
 
         ViewHolder holder;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -138,6 +138,14 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
                     break;
                 case ITEM_VIEW_TYPE_EMPTY_VENDING:
                     convertView = inflater.inflate(R.layout.empty_vending, parent, false);
+                    //클릭 비활성화
+                    convertView.setOnTouchListener(new View.OnTouchListener() {
+
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+
+                        }});
                     break;
             }
 
@@ -147,8 +155,8 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         }
 
         if(viewType == ITEM_VIEW_TYPE_VENDING_INFO) {
-            holder.tv_vending_item_name.setText((position + 1) + ". " + vendingsData.get(position).getVendingName());
-            holder.tv_vending_item_description.setText(vendingsData.get(position).getVendingDescription());
+            holder.tv_vending_item_name.setText((position + 1) + ". " + filteredVendingData.get(position).getVendingName());
+            holder.tv_vending_item_description.setText(filteredVendingData.get(position).getVendingDescription());
 
             // '수정' ImageView Click Listener
             holder.btn_vending_update.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +220,7 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         if(VendingDataFilter == null){
             VendingDataFilter = new ListFilter();
         }
+
         return VendingDataFilter;
     }
 
@@ -233,13 +242,17 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
                     if (item.getVendingName().toUpperCase().contains(constraint.toString().toUpperCase()) ||
                             item.getVendingDescription().toUpperCase().contains(constraint.toString().toUpperCase()))
                     {
+
                         itemList.add(item) ;
+
                     }
                 }
 
                 results.values = itemList ;
+
                 results.count = itemList.size() ;
             }
+
             return results;
         }
 
@@ -247,7 +260,6 @@ public class VendingListAdapter extends BaseAdapter implements Filterable {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             // update listview by filtered data list.
             filteredVendingData = (ArrayList<VendingData>) results.values ;
-
             // notify
             if (results.count > 0) {
                 notifyDataSetChanged() ;

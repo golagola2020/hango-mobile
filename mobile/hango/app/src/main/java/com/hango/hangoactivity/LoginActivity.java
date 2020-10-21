@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private MainBackPressCloseHandler loginBackPressCloseHandler;
+
     // 참조변수 선언
     private EditText et_user_id, et_user_passwd;
     private Button btn_login, btn_signup;
@@ -44,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
 
         appData = getSharedPreferences("appData", MODE_PRIVATE);
         loadLoginData();
+
+        //back button 두번 클릭시 종료
+        loginBackPressCloseHandler = new MainBackPressCloseHandler(this);
 
         // xml의 id 불러오기
         et_user_id = findViewById(R.id.et_user_name);
@@ -76,6 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override public void onBackPressed() {
+        //super.onBackPressed();
+        loginBackPressCloseHandler.onBackPressed();
     }
 
     //로그인 요청 method

@@ -84,6 +84,7 @@
             android:background="@drawable/main_radius"
             android:drawableLeft="@drawable/ic_search"
             android:gravity="center_vertical"
+            android:textFilterEnabled="true"
             android:hint="자판기를 검색하세요"
             android:textColor="#d3d3d3"
             android:textSize="18sp" />
@@ -94,6 +95,7 @@
         android:id="@+id/swiperefresh_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textFilterEnabled="true"
         android:layout_margin = "10dp">
 
         <ListView

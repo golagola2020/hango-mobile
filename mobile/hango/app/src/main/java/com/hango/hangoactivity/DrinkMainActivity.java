@@ -30,6 +30,8 @@ import java.util.Map;
 
 public class DrinkMainActivity extends AppCompatActivity {
 
+    private String userId;
+
     // 음료정보 GridView Item 출력을 위한 Adapter 생성
     private DrinkListAdapter drinkAdapter = new DrinkListAdapter();
 
@@ -66,6 +68,8 @@ public class DrinkMainActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(DrinkMainActivity.this,DrinkRefreshAcceptActivity.class);
                 intent.putExtra("serialNumber",drinkAdapter.getSerialNumber());
+                intent.putExtra("vendingName",drinkAdapter.getVendingName());
+                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });
@@ -83,7 +87,11 @@ public class DrinkMainActivity extends AppCompatActivity {
 
         //mainActivity에서 받아온 자판기 정보
         Intent intent = getIntent();
+
+        userId = intent.getStringExtra("userId");
+
         String vendingName =intent.getStringExtra("name"); // 자판기 이름
+        drinkAdapter.setVendingName(vendingName);
         String vendingNameTitle = "이름 : " + vendingName;
 
         String vendingDescription =intent.getStringExtra("description");   // 자판기 설명

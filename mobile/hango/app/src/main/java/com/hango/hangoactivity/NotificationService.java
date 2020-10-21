@@ -1,14 +1,17 @@
 package com.hango.hangoactivity;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +50,9 @@ public class NotificationService extends Service {
         myServiceHandler handler = new myServiceHandler();
         thread = new NotificationThread(handler);
         thread.start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setNotificationTitle();
+        }
         return START_STICKY;
     }
 
@@ -94,10 +102,10 @@ public class NotificationService extends Service {
                         for(int i=0; i<vendingNames.length();i++){
                             soldOutData = soldOuts.getJSONArray(vendingNames.getString(i));
                             for(int j=0;j<soldOutData.length();j++){
-                                if(getSoldOutData(vendingNames.getString(i)+":"+soldOutData.getString(j))){
+                                if(getSoldOutData(vendingNames.getString(i)+soldOutData.getString(j))){
                                     Log.d("TAG",vendingNames.getString(i)+"자판기의 "+soldOutData.getString(j)+" 품절");
-                                    setNotification(vendingNames.getString(i),soldOutData.getString(j),i*j);
-                                    setSoldOutData(vendingNames.getString(i)+":"+soldOutData.getString(j));
+                                    setNotification(vendingNames.getString(i),soldOutData.getString(j),(i+1)*(j+1));
+                                    setSoldOutData(vendingNames.getString(i)+soldOutData.getString(j),false);
                                 }
 
                             }
@@ -132,10 +140,10 @@ public class NotificationService extends Service {
         // RequestQueue 실행
         queue.add(drinkRequest);
     }
-    private void setSoldOutData(String vendingAndDrink){
+    private void setSoldOutData(String vendingAndDrink,boolean check){
         soldOutData = getSharedPreferences("soldOutData", MODE_PRIVATE);
         SharedPreferences.Editor editor = soldOutData.edit();
-        editor.putBoolean(vendingAndDrink,false);
+        editor.putBoolean(vendingAndDrink,check);
         editor.apply();
     }
     private boolean getSoldOutData(String vendingAndDrink){
@@ -143,20 +151,79 @@ public class NotificationService extends Service {
         return soldOutData.getBoolean(vendingAndDrink, true);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setNotificationTitle(){
+        String channelId = "hangoNotification";
+        Intent intent = new Intent(NotificationService.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int titleId = 10000;
+        Notification notificationTitle = null;
+        try {
+            notificationTitle = new Notification.Builder(NotificationService.this,channelId)
+                    .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
+                    .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .build();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        startForeground(titleId,notificationTitle);
+    }
+
     private void setNotification(String vendingName, String drinkName, int id){
 
-        Intent intent = new Intent(NotificationService.this, MainActivity.class);
-        intent.putExtra("userId",userId);
-        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(NotificationService.this);
-        builder.setContentTitle(vendingName)
-                .setContentText(drinkName+"품절")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentIntent(pendingIntent)
-                .build();
+        String channelId = "hangoNotification";
+        CharSequence name = "hangoPush";
+        if(android.os.Build.VERSION.SDK_INT > 25) {
+            //푸시를 클릭했을때 이동//
+            Intent intent = new Intent(NotificationService.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            //푸시를 클릭했을때 이동//
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel mChannel = new NotificationChannel(channelId,name , NotificationManager.IMPORTANCE_HIGH);
+            mChannel.setDescription("drink sold out");
+            mChannel.enableLights(true);
+            mChannel.enableVibration(true);
 
-        Notification notification = builder.build();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(id,notification);
+            try {
+                Notification notification = new Notification.Builder(NotificationService.this,channelId)
+                        .setContentTitle(URLDecoder.decode(vendingName, "UTF-8"))
+                        .setContentText(URLDecoder.decode(drinkName + "품절", "UTF-8"))
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build();
+                mNotificationManager.createNotificationChannel(mChannel);
+                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(id, notification);
+
+
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else {
+            Intent intent = new Intent(NotificationService.this, MainActivity.class);
+            intent.putExtra("userId", userId);
+            PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(NotificationService.this);
+            builder.setContentTitle(vendingName)
+                    .setContentText(drinkName + "품절")
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .build();
+
+            Notification notification = builder.build();
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(id, notification);
+        }
     }
 }
