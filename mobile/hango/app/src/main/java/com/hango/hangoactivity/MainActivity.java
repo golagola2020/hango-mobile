@@ -125,27 +125,24 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        if(vendingCount>0) {
-            //자판기 검색 기능
-            et_search_vending.addTextChangedListener(new TextWatcher() {
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
+        //자판기 검색 기능
+        et_search_vending.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(vendingCount>0) {
                     String filterText = s.toString();
                     ((VendingListAdapter) vendingListView.getAdapter()).getFilter().filter(filterText);
                 }
-            });
-        }
+            }
+        });
+
 
         //listview 목록 출력
         vendingListView.setAdapter(vendingAdapter);
@@ -165,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(getApplicationContext(), DrinkMainActivity.class);
+                intent.putExtra("userId",userId);
                 intent.putExtra("name", vendingData.getVendingName());
                 intent.putExtra("description", vendingData.getVendingDescription());
                 int fullSize = vendingData.getVendingFullsize();

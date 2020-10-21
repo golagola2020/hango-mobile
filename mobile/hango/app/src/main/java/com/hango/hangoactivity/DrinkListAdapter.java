@@ -27,6 +27,7 @@ public class DrinkListAdapter extends BaseAdapter {
     private int fullSize;
     // 자판기 SerialNumber
     private String serialNumber;
+    private String vendingName;
 
     ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
 
@@ -68,6 +69,10 @@ public class DrinkListAdapter extends BaseAdapter {
     public String getSerialNumber(){
         return serialNumber;
     }
+
+    public void setVendingName(String vendingName){this.vendingName = vendingName;}
+
+    public String getVendingName(){return vendingName;}
 
     // 음료정보 초기화
     public void itemClear(){
