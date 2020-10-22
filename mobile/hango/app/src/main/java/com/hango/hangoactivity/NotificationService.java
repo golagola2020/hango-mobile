@@ -155,6 +155,7 @@ public class NotificationService extends Service {
     private void setNotificationTitle(){
         String channelId = "hangoNotification";
         Intent intent = new Intent(NotificationService.this, MainActivity.class);
+        intent.putExtra("userId",userId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
         int titleId = 10000;
@@ -181,6 +182,7 @@ public class NotificationService extends Service {
             //푸시를 클릭했을때 이동//
             Intent intent = new Intent(NotificationService.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("userId", userId);
             PendingIntent pendingIntent = PendingIntent.getActivity(NotificationService.this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
             //푸시를 클릭했을때 이동//
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

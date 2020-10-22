@@ -168,10 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        // 자판기 정보 파싱 및 ListView 출력 method
-        vendingDataParser(vendingAdapter, vendingListView);
-
         //각 자판기 Item Click Listener
 
         vendingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -258,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
                         //listview 목록 출력
                         vendingListView.setAdapter(vendingAdapter);
+
                     }
                     else{
 
@@ -310,10 +307,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //ListView 생성 및 연결
         ListView vendingListView = (ListView) findViewById(R.id.MainListView);
-        vendingDataParser(vendingAdapter,vendingListView);
-        Log.d("TAG","이거 실행됨?");
-
+        vendingDataParser(vendingAdapter, vendingListView);
     }
 }
