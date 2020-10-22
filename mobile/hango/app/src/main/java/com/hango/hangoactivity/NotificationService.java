@@ -151,7 +151,6 @@ public class NotificationService extends Service {
         return soldOutData.getBoolean(vendingAndDrink, true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setNotificationTitle(){
         String channelId = "hangoNotification";
         Intent intent = new Intent(NotificationService.this, MainActivity.class);
@@ -161,13 +160,15 @@ public class NotificationService extends Service {
         int titleId = 10000;
         Notification notificationTitle = null;
         try {
-            notificationTitle = new Notification.Builder(NotificationService.this,channelId)
-                    .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
-                    .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true)
-                    .build();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationTitle = new Notification.Builder(NotificationService.this,channelId)
+                        .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
+                        .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build();
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

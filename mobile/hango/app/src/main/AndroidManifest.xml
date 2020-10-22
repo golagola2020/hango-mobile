@@ -55,7 +55,7 @@
             android:required="false" />
 
     </application>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
