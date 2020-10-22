@@ -63,7 +63,6 @@ public class NotificationActivity extends AppCompatActivity {
             serviceIntent.putExtra("userId",userId);
             if(android.os.Build.VERSION.SDK_INT > 25) {
                 getApplicationContext().startForegroundService(serviceIntent);
-                //startService(serviceIntent);
             }
             else {
                 startService(serviceIntent);
