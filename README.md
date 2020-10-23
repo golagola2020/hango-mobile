@@ -67,6 +67,10 @@ $ git merge upstream/master
     }
 }
    ```
+ 
+## 가이드 데모
+[![Watch the video](https://user-images.githubusercontent.com/56839474/96984429-6b386f80-155b-11eb-8587-d54c5ab4bd08.png)](https://youtu.be/rd4TTz4IxyQ)
+
 
 ## 개발 환경
 
