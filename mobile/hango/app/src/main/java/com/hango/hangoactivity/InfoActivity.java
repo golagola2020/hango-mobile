@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,12 +45,20 @@ public class InfoActivity extends AppCompatActivity {
         Button btn_withdrawal = (Button)findViewById(R.id.btn_withdrawal);
         Button btn_question = (Button)findViewById(R.id.btn_question);
         Button btn_etc = (Button)findViewById(R.id.btn_etc);
+        TextView tv_version = (TextView)findViewById(R.id.tv_version);
 
         // 메인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
         String username = intent.getStringExtra("userName");
         tv_user_name.setText(username + "님");
+
+        tv_version.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         // 유저 정보 변경 클릭 이벤트
         btn_info_change.setOnClickListener(new View.OnClickListener() {
