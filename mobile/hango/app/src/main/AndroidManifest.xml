@@ -13,6 +13,8 @@
         <activity android:name="com.hango.hangoactivity.InfoUpdateActivity"></activity>
         <activity android:name="com.hango.hangoactivity.InfoActivity" />
         <activity android:name="com.hango.hangoactivity.MainActivity" />
+        <activity android:name=".VendingDeleteActivity"
+            android:theme="@style/Transparent"></activity>
         <activity android:name=".SalesDataMainActivity"/>
         <activity android:name=".VendingSalesDataActivity"/>
         <activity android:name=".DrinkSalesDataActivity"/>
@@ -53,7 +55,7 @@
             android:required="false" />
 
     </application>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
