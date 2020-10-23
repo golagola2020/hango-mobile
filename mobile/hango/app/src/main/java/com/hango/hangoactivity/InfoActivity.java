@@ -45,7 +45,7 @@ public class InfoActivity extends AppCompatActivity {
         Button btn_withdrawal = (Button)findViewById(R.id.btn_withdrawal);
         Button btn_question = (Button)findViewById(R.id.btn_question);
         Button btn_etc = (Button)findViewById(R.id.btn_etc);
-        TextView tv_version = (TextView)findViewById(R.id.tv_version);
+        TextView tv_license = (TextView)findViewById(R.id.tv_license);
 
         // 메인 화면에서 유저 이름 받아오기
         Intent intent = getIntent();
@@ -53,10 +53,10 @@ public class InfoActivity extends AppCompatActivity {
         String username = intent.getStringExtra("userName");
         tv_user_name.setText(username + "님");
 
-        tv_version.setOnClickListener(new View.OnClickListener() {
+        tv_license.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
 
