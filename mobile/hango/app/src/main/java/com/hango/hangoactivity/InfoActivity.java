@@ -48,7 +48,7 @@ public class InfoActivity extends AppCompatActivity {
         TextView tv_license = (TextView)findViewById(R.id.tv_license);
 
         // 메인 화면에서 유저 이름 받아오기
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         final String userId = intent.getStringExtra("userId"); //intent로 받아온 userID
         String username = intent.getStringExtra("userName");
         tv_user_name.setText(username + "님");
@@ -56,7 +56,8 @@ public class InfoActivity extends AppCompatActivity {
         tv_license.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent1 = new Intent(InfoActivity.this,LicenseActivity.class);
+                startActivity(intent1);
             }
         });
 
