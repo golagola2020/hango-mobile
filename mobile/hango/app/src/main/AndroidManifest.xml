@@ -16,6 +16,8 @@
         <activity android:name=".VendingDeleteActivity"
             android:theme="@style/Transparent"></activity>
         <activity android:name=".SalesDataMainActivity"/>
+        <activity android:name=".LicenseActivity"/>
+        <activity android:name=".PrintLicenseActivity"/>
         <activity android:name=".VendingSalesDataActivity"/>
         <activity android:name=".DrinkSalesDataActivity"/>
         <service android:name=".NotificationService"/>
