@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 public class UpdateVendingActivity extends AppCompatActivity {
     private Button btn_add_vending;
     private EditText vending_name, vending_description, vending_fullsize;
+    private ImageView iv_arrow_back_update_vending;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,15 @@ public class UpdateVendingActivity extends AppCompatActivity {
         vending_fullsize = findViewById(R.id.Vending_size);
         // '수정' Button
         btn_add_vending = findViewById(R.id.btn_Regi_vending);
+
+        //뒤로가기 버튼
+        iv_arrow_back_update_vending = findViewById(R.id.iv_arrow_back_update_vending);
+        iv_arrow_back_update_vending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // MainActivity 에서 받아온 serialNumber
         final Intent intent = getIntent();
