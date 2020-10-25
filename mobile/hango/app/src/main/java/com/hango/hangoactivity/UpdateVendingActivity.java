@@ -47,7 +47,22 @@ public class UpdateVendingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String vendingName = vending_name.getText().toString();
                 final String vendingDescription = vending_description.getText().toString();
-                String vendingFullSize = vending_fullsize.getText().toString();
+                String vendingFullSize = null;
+                try{
+                    vendingFullSize = vending_fullsize.getText().toString().trim();
+                    int vendingFullSizeCheck = Integer.parseInt(vendingFullSize);
+                    
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "최대 칸 수는 숫자만 입력 가능 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (vendingName.length() == 0 || vendingDescription.length() == 0 || vendingFullSize.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 // 자판기 정보 JSONObject 생성
                 JSONObject vending_parameters = new JSONObject();
