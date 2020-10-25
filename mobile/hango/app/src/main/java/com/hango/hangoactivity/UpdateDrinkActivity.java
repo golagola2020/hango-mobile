@@ -50,8 +50,23 @@ public class UpdateDrinkActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String drinkName = et_drink_name.getText().toString();
-                final String drinkPrice = et_drink_price.getText().toString();
-                final String drinkMaxCount = et_drink_max_count.getText().toString();
+                String drinkPrice = null;
+                String drinkMaxCount = null;
+                try{
+                    drinkMaxCount = et_drink_max_count.getText().toString().trim();
+                    drinkPrice = et_drink_price.getText().toString().trim();
+                    int drinkMaxCountCheck = Integer.parseInt(drinkMaxCount);
+                    int drinkPriceCheck =Integer.parseInt(drinkPrice);
+
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "음료 가격과 음료 최대 개수는 숫자만 입력 가능 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (drinkName.length() == 0 || drinkPrice.length() == 0 || drinkMaxCount.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // drink JSON 객체 생성
                 JSONObject drink = new JSONObject();
