@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 public class UpdateVendingActivity extends AppCompatActivity {
     private Button btn_add_vending;
     private EditText vending_name, vending_description, vending_fullsize;
+    private ImageView iv_arrow_back_update_vending;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,15 @@ public class UpdateVendingActivity extends AppCompatActivity {
         vending_fullsize = findViewById(R.id.Vending_size);
         // '수정' Button
         btn_add_vending = findViewById(R.id.btn_Regi_vending);
+
+        //뒤로가기 버튼
+        iv_arrow_back_update_vending = findViewById(R.id.iv_arrow_back_update_vending);
+        iv_arrow_back_update_vending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // MainActivity 에서 받아온 serialNumber
         final Intent intent = getIntent();
@@ -47,7 +58,22 @@ public class UpdateVendingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String vendingName = vending_name.getText().toString();
                 final String vendingDescription = vending_description.getText().toString();
-                String vendingFullSize = vending_fullsize.getText().toString();
+                String vendingFullSize = null;
+                try{
+                    vendingFullSize = vending_fullsize.getText().toString().trim();
+                    int vendingFullSizeCheck = Integer.parseInt(vendingFullSize);
+                    
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "최대 칸 수는 숫자만 입력 가능 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (vendingName.length() == 0 || vendingDescription.length() == 0 || vendingFullSize.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 // 자판기 정보 JSONObject 생성
                 JSONObject vending_parameters = new JSONObject();
