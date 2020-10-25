@@ -133,7 +133,18 @@ public class InfoUpdateActivity extends AppCompatActivity {
                 // EditText 입력값 불러오기
                 final String userName = et_user_name.getText().toString();
                 final String userEmail = et_user_email.getText().toString();
+                String userPasswd = et_user_passwd.getText().toString();
                 final String userNewPasswd = et_user_new_passwd.getText().toString();
+                String userNewPasswdCheck = et_user_new_passwd_check.getText().toString();
+                // 입력된 데이터 검사
+                if (userName.length() == 0 || userId.length() == 0 || userEmail.length() == 0 || userEmail.length() == 0 || userNewPasswd.length() == 0 || userPasswd.length() == 0|| userNewPasswdCheck.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!userNewPasswd.equals(userNewPasswdCheck)){
+                    Toast.makeText(getApplicationContext(), "입력하신 새 비밀번호와 새 비밀번호 확인이 같지 않습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 JSONObject user = new JSONObject();
                 try {
