@@ -65,10 +65,26 @@ public class AddDrinkActivity extends AppCompatActivity {
         btn_regi_drink.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String drinkName = et_drink_name.getText().toString();
-                String stringDataDrinkPrice = et_drink_price.getText().toString();
-                int drinkPrice = Integer.parseInt(stringDataDrinkPrice);
-                String stringDataDrinkMaxCount = et_drink_max_count.getText().toString();
-                int drinkMaxCount = Integer.parseInt(stringDataDrinkMaxCount);
+                String stringDataDrinkPrice;
+                int drinkPrice;
+                String stringDataDrinkMaxCount;
+                int drinkMaxCount;
+
+                try{
+                    stringDataDrinkPrice = et_drink_price.getText().toString();
+                    drinkPrice = Integer.parseInt(stringDataDrinkPrice);
+                    stringDataDrinkMaxCount = et_drink_max_count.getText().toString();
+                    drinkMaxCount = Integer.parseInt(stringDataDrinkMaxCount);
+
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "음료 가격과 음료 최대 개수는 숫자만 입력 가능 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (drinkName.length() == 0 || stringDataDrinkPrice.length() == 0 || stringDataDrinkMaxCount.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "모든 정보는 필수 입력 사항입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 JSONObject drinkInfo = new JSONObject();
