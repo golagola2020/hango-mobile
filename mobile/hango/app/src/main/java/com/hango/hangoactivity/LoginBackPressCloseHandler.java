@@ -17,7 +17,6 @@ public class LoginBackPressCloseHandler {
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             ActivityCompat.finishAffinity(activity);
-            System.exit(0);
         }
     }
     public void showGuide() {
