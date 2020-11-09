@@ -161,6 +161,8 @@ public class NotificationService extends Service {
         Notification notificationTitle = null;
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(channelId,"hangoChannel",NotificationManager.IMPORTANCE_LOW);
+                ((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
                 notificationTitle = new Notification.Builder(NotificationService.this,channelId)
                         .setContentTitle(URLDecoder.decode("hango", "UTF-8"))
                         .setContentText(URLDecoder.decode("음료품절 알림이 켜졌습니다.", "UTF-8"))
